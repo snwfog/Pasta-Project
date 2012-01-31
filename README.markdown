@@ -8,7 +8,7 @@
 	Eric Rideough
 	Bobby Yit
 	Charles Chao Yang (snwfog)
-	Wais Kedri
+	Wais Kedri (waisk)
 	Duc Hoang Michel Pham
 	Walter Chacon
 
