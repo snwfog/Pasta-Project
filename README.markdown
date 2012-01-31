@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ##### Announcement
 
 - Removed the TEST branch, use only develop and master. Three branches seems to be hard to managed.
@@ -9,8 +8,6 @@
 - develop branch should contains our infinished testing code. It is your duty to insure that whatever code your adding, that piece of code should be compatible with the rest of the other codes.
 - topic branch(es) should be only created on your __local__ machine. Merge your final code into `develop` branch first, and then `push` it to the `develop` branch so other people can see it, test it, or modify it.
 
-=======
->>>>>>> caf246faa0234b2d75e9c1e01c98e2877da966c4
 # Hi Welcome to Pasta
 #### The online Concordia software engineer schedule marker for the year of 2011/2012
 
@@ -34,7 +31,4 @@ Second line: Space
 Third line and plus: The detail message of your commit.
 
 Please make sure that the commit message body and subject should not be wider than 80 characters wide. Its just a convention.
-<<<<<<< HEAD
 
-=======
->>>>>>> caf246faa0234b2d75e9c1e01c98e2877da966c4
