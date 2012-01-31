@@ -5,7 +5,7 @@
 	
 	Saud Khalid Musafer
 	Steven Gourgue
-	Eric Rideough
+	Eric Rideough (eride)
 	Bobby Yit
 	Charles Chao Yang (snwfog)
 	Wais Kedri (waisk)
