@@ -3,7 +3,9 @@
 class Scrape extends CI_Controller {
 	public function index()
 	{
-          $data['row'] = $this->data_collection("COMP",232,4);
+          $return = $this->data_collection("COMP",232,4);
+          $data['course_lecture'] = $return[0];
+          $data['row'] = $return[1];
           $this->load->view('/scrape_views/scrape_view.php',$data);
 	}
 
@@ -13,10 +15,9 @@ class Scrape extends CI_Controller {
           $html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20114&course=ELEC&courno=275&campus=&type=U');
           $row = $html -> find('td');
 
+          //scraping cinformation
           $course_lecture = array();
-
           for($i=9; $i<=sizeOf($row)-1; $i++){
-          //trim only remove beginning and end white space, text() is used to get the text of html element
             if( strcasecmp(trim($row[$i]->text()), "ELEC 275") === 0){
                 $course_title = $row[$i+1]-> text();
                 $credit = $row[$i+2]-> text();
@@ -30,35 +31,7 @@ class Scrape extends CI_Controller {
               //print_r($course_lecture);
             }
           }
-
-         // JUST OUTPUT TESTING. DELETE AFTER DONE OR COMMENT OUT // FUCKEN BUNCH OF LOOPS
-         foreach($course_lecture as $title => $information){
-           echo "<br><br>Title: ".$title."<br>";
-           foreach($information as $type => $value){
-             if(strcmp($type,"Tutorials")===0){
-               foreach($value as $key => $value){
-                 echo "----------------------------------------------------<br>".$key."<br>";
-                  foreach($value as $key => $value){
-                    if(strcmp($key,"Labs")===0){
-                      foreach($value as $key => $value){
-                        echo "<br>".$key."<br>";
-                        foreach($value as $key => $value){
-                          echo $key.": ".$value."<br>";
-                        }
-                      }
-                    }
-                    echo $key.": ".$value."<br>";
-                  }
-               }
-             }else{
-               echo $type.": ".$value."<br>";
-             }
-
-           }
-         }
-         // END OF OUTPUT TESTING
-
-         return $html -> find('td');
+         return array( $course_lecture, $row);
         }
 
         
