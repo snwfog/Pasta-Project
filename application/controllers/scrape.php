@@ -4,7 +4,7 @@ class Scrape extends CI_Controller {
 	public function index()
 	{
           $data['row'] = $this->data_collection("COMP",232,4);
-          $this->load->view('scrape_view.php',$data);
+          $this->load->view('/scrape_views/scrape_view.php',$data);
 	}
 
         private function data_collection($course,$course_number,$season){
@@ -26,7 +26,7 @@ class Scrape extends CI_Controller {
               $lecture_title = trim($row[$i]->text());
               $tutorials = $this->get_tutorials($i+1, $row); // Call function to get lecture of each course
               $course_lecture[$lecture_title] = array("Time" => trim($row[$i+1]->text()), "Location" => trim($row[$i+2]->text()), "Teacher" => trim($row[$i+3]->text()), "Tutorials" => $tutorials);
-              
+
               //print_r($course_lecture);
             }
           }
