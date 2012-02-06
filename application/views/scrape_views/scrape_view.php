@@ -10,11 +10,7 @@
     <h1>Courses</h1>
 
     <?php
-<<<<<<< HEAD
-      // JUST OUTPUT TEaaaSTING. DELETE AFTER DONE OR COMMENT OUT // FUCKEN BUNCH OF LOOPS
-=======
       // JUST OUTPUT TESTING. DELETE AFTER DONE OR COMMENT OUT // FUCKEN BUNCH OF LOOPS
->>>>>>> 9724cd3f0a4a62cbec9fab2fa60fe1ca6c473558
       foreach($course_lecture as $title => $information){
         echo "<br><br>Title: ".$title."<br>";
         foreach($information as $type => $value){
