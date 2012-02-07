@@ -15,10 +15,10 @@ class Scrape extends CI_Controller {
           $html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20114&course=ELEC&courno=275&campus=&type=U');
           $row = $html -> find('td');
 
-          //scraping cinformation
+          //scraping information
           $course_lecture = array();
           for($i=9; $i<=sizeOf($row)-1; $i++){
-            if( strcasecmp(trim($row[$i]->text()), "ELEC 275") === 0){
+            if( strcasecmp(trim($row[$i]->text()), "COMM 315") === 0){
                 $course_title = $row[$i+1]-> text();
                 $credit = $row[$i+2]-> text();
                 echo "Course Title:".$course_title."<br>Credit:".$credit;
@@ -26,12 +26,15 @@ class Scrape extends CI_Controller {
             if (preg_match("/^Lect\s\w+/", $row[$i]->text(),$matches)){
               $lecture_title = trim($row[$i]->text());
               $tutorials = $this->get_tutorials($i+1, $row); // Call function to get lecture of each course
-              $course_lecture[$lecture_title] = array("Time" => trim($row[$i+1]->text()), "Location" => trim($row[$i+2]->text()), "Teacher" => trim($row[$i+3]->text()), "Tutorials" => $tutorials);
+              $time_location = $this -> time_location($i, $row);
+              $time_location["Teacher"] =  trim($row[$i+3]->text());
+              $time_location["Tutorials"] =  $tutorials;
 
+              $course_lecture[$lecture_title] = $time_location;
               //print_r($course_lecture);
             }
           }
-         return array( $course_lecture, $row);
+         return array($course_lecture, $row);
         }
 
         
@@ -45,10 +48,12 @@ class Scrape extends CI_Controller {
             }
             if(preg_match("/Tut\s\w+/",$text)){
               $labratory_info =  $this->get_labratory($index+3, $row);
-              $tutorial_info[$text] = array( "Time" => trim($row[$index+1]->text()), "Location" => trim($row[$index+2]->text()), "Labs" => $labratory_info );
+              $time_location = $this -> time_location($index,$row);
+              $time_location["Labs"] = $labratory_info;
+              $tutorial_info[$text] = $time_location;
             }
           }
-          print_r($tutorial_info);
+          //print_r($tutorial_info);
           return $tutorial_info;
         }
 
@@ -61,11 +66,18 @@ class Scrape extends CI_Controller {
               break;
             }
             if(preg_match("/Lab\s\w+/",$text)){
-              $labratory_info[$text] = array( "Time" => trim($row[$index+1]->text()), "Location" => trim($row[$index+2]->text()));
+              $labratory_info[$text] = $this -> time_location($index,$row);
             }
           }
           return $labratory_info;
         }
+        
+        private function time_location($index, $row){
+              $time = trim($row[$index+1]->text());
+              $location = trim($row[$index+2]->text());
+              return array("Time" => $time, "Location" => $location);
+        }
+
 }
 
 /* End of file test.php */

@@ -26,7 +26,9 @@
                      }
                    }
                  }
-                 echo $key.": ".$value."<br>";
+                 else{
+                   echo $key.": ".$value."<br>";
+                 }  
                }
             }
           }else{
