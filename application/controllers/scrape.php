@@ -1,24 +1,35 @@
 <?php
 
 class Scrape extends CI_Controller {
+        public function search(){
+          $this->load->helper('form');
+          $this->load-> view('/scrape_views/form.php');
+        }
 	public function index()
 	{
-          $return = $this->data_collection("COMP",232,4);
+          $course_code = strtoupper($this->input->post('course_code'));
+          $course_number = $this->input->post('course_number');
+          if($course_code && $course_number){
+          $return = $this->data_collection($course_code,$course_number,4);
           $data['course_lecture'] = $return[0];
           $data['row'] = $return[1];
           $this->load->view('/scrape_views/scrape_view.php',$data);
+          }
+          else{
+            $this -> search();
+          }
 	}
 
         private function data_collection($course,$course_number,$season){
           $this->load->library('simple_html_dom.php');
           //ENGR 201, COMP 348, COMP 346, SOEN 341
-          $html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20114&course=ELEC&courno=275&campus=&type=U');
+          $html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20114&course='.$course.'&courno='.$course_number.'&campus=&type=U');
           $row = $html -> find('td');
 
           //scraping information
           $course_lecture = array();
           for($i=9; $i<=sizeOf($row)-1; $i++){
-            if( strcasecmp(trim($row[$i]->text()), "COMM 315") === 0){
+            if( strcasecmp(trim($row[$i]->text()), $course." ".$course_number) === 0){
                 $course_title = $row[$i+1]-> text();
                 $credit = $row[$i+2]-> text();
                 echo "Course Title:".$course_title."<br>Credit:".$credit;
