@@ -68,7 +68,7 @@
 
 <div id="container">
 	<h1>mike Welcome to CodeIgniter!</h1>
-
+	<h2> Try My scrape here ->  <a href ='http://localhost/Pasta-Project/index.php/scrape'> CLICKATY CLICK </a> </h2>
 	<div id="body">
 		<p>Bobby The page you are looking at is being generated dynamically by CodeIgniter.</p>
 

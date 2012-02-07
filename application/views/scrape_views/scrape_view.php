@@ -7,9 +7,11 @@
   <body>
 
   <div id="container">
+    <? echo anchor(site_url("/scrape"), "NEW SEARCH", null); ?>
     <h1>Courses</h1>
 
     <?php
+
       // JUST OUTPUT TESTING. DELETE AFTER DONE OR COMMENT OUT // FUCKEN BUNCH OF LOOPS
       foreach($course_lecture as $title => $information){
         echo "<br><br>Title: ".$title."<br>";
@@ -28,7 +30,7 @@
                  }
                  else{
                    echo $key.": ".$value."<br>";
-                 }  
+                 }
                }
             }
           }else{

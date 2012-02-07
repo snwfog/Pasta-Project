@@ -1,12 +1,14 @@
 <?php
 
 class Scrape extends CI_Controller {
+
         public function search(){
           $this->load->helper('form');
           $this->load-> view('/scrape_views/form.php');
         }
 	public function index()
 	{
+          $this->load->helper('url');
           $course_code = strtoupper($this->input->post('course_code'));
           $course_number = $this->input->post('course_number');
           if($course_code && $course_number){
