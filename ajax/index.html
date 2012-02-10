@@ -1,0 +1,41 @@
+<html>
+	<head>
+		<title>Add a Course</title>
+		<script type="text/javascript">
+			
+			function ajaxSearch(query)
+			{
+				xhr = new XMLHttpRequest();
+				
+				xhr.onreadystatechange = function () {
+					
+					if(xhr.readyState == 4 && xhr.status == 200)
+					{
+						results = xhr.responseText;
+						document.getElementById('results').innerHTML = results;
+					}
+					
+				}
+				
+				xhr.open("POST","search.php",true);
+				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhr.send("query="+ query);
+			}
+		
+		</script>
+	</head>
+	<body>
+	<div style="text-align:center;">
+		<h1>Add a Course</h1>
+		
+		<form action="" method="GET">
+			<input type="text" size="60" onkeyup="ajaxSearch(this.value)" />
+		</form>
+		
+		<div id="results">
+			&nbsp;
+		</div>
+		
+	</div>
+	</body>
+</html>
