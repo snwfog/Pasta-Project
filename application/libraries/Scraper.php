@@ -1,31 +1,20 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
-class Scrape extends CI_Controller {
+    /**
+     * This is just a temp copy, to display details. This library will become obsolete
+     * when we scrape all course data and save it to a database.
+     */
 
-        public function search(){
-          $this->load->helper('form');
-          $this->load-> view('/scrape_views/form.php');
-        }
-	public function index()
-	{
-          $this->load->helper('url');
-          $course_code = strtoupper($this->input->post('course_code'));
-          $course_number = $this->input->post('course_number');
-          if($course_code && $course_number){
-          $return = $this->data_collection($course_code,$course_number,4);
-          $data['course_lecture'] = $return[0];
-          $data['row'] = $return[1];
-          $this->load->view('/scrape_views/scrape_view.php',$data);
-          }
-          else{
-            $this -> search();
-          }
-	}
+    class Scraper {
 
-        private function data_collection($course,$course_number,$season){
-          $this->load->library('simple_html_dom.php');
+        function data_collection($course,$course_number,$season){
+          $CI =& get_instance();
+        
+          $CI->load->library('simple_html_dom.php');
           //ENGR 201, COMP 348, COMP 346, SOEN 341
-          $html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20114&course='.$course.'&courno='.$course_number.'&campus=&type=U');
+          // Note that for yrsess 20114 is Winter, 20112 is Fall, 20113 is Fall AND Winter.
+          //$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20114&course='.$course.'&courno='.$course_number.'&campus=&type=U');
+          $html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20113&course='.$course.'&courno='.$course_number.'&campus=&type=U');
           $row = $html -> find('td');
 
           //scraping information
@@ -36,17 +25,10 @@ class Scrape extends CI_Controller {
                 $credit = $row[$i+2]-> text();
                 echo "Course Title:".$course_title."<br>Credit:".$credit;
             }
-            
-
-            if( strcasecmp(trim($row[$i]->text()), "Prerequisite:") === 0){
-                $preq = $row[$i+1]-> text();
-                echo "<br> Prerequisite:".$preq;
-            }
-            
             if (preg_match("/^Lect\s\w+/", $row[$i]->text(),$matches)){
               $lecture_title = trim($row[$i]->text());
               $tutorials = $this->get_tutorials($i+1, $row); // Call function to get lecture of each course
-              $time_location = $this -> time_location($i, $row);
+              $time_location = $this->time_location($i, $row);
               $time_location["Teacher"] =  trim($row[$i+3]->text());
               $time_location["Tutorials"] =  $tutorials;
 
@@ -58,7 +40,7 @@ class Scrape extends CI_Controller {
         }
 
         
-        private function get_tutorials($index, $row){
+        function get_tutorials($index, $row){
           $tutorial_info = array();
           for($index; $index<=sizeOf($row)-1; $index++){
             $text = trim($row[$index]->text());
@@ -67,8 +49,8 @@ class Scrape extends CI_Controller {
               break;
             }
             if(preg_match("/Tut\s\w+/",$text)){
-              $labratory_info =  $this->get_labratory($index+3, $row);
-              $time_location = $this -> time_location($index,$row);
+              $labratory_info = $this->get_labratory($index+3, $row);
+              $time_location = $this->time_location($index,$row);
               $time_location["Labs"] = $labratory_info;
               $tutorial_info[$text] = $time_location;
             }
@@ -77,7 +59,7 @@ class Scrape extends CI_Controller {
           return $tutorial_info;
         }
 
-        private function get_labratory($index,$row){
+        function get_labratory($index,$row){
           $labratory_info = array();
           for($index; $index<=sizeOf($row)-1; $index++){
             $text = trim($row[$index]->text());
@@ -86,19 +68,16 @@ class Scrape extends CI_Controller {
               break;
             }
             if(preg_match("/Lab\s\w+/",$text)){
-              $labratory_info[$text] = $this -> time_location($index,$row);
+              $labratory_info[$text] = $this->time_location($index,$row);
             }
           }
           return $labratory_info;
         }
         
-        private function time_location($index, $row){
+        function time_location($index, $row){
               $time = trim($row[$index+1]->text());
               $location = trim($row[$index+2]->text());
               return array("Time" => $time, "Location" => $location);
         }
-
-}
-
-/* End of file test.php */
-/* Location: ./application/controllers/test.php */
+    }
+?>

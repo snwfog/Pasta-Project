@@ -72,7 +72,7 @@
 	<div id="body">
         <?php foreach ( $courseList as $course ): ?>
 
-            <?=anchor(site_url("/courseInfo/" . $course[0] . '/' . $course[1] ), $course[0] . ' ' . $course[1] . ' - ' . $course[2] )?> <br />
+            <?=anchor(site_url("/courseInfo/details/" . $course[0] . '/' . $course[1] ), $course[0] . ' ' . $course[1] . ' - ' . $course[2] )?> <br />
 
         <?php endforeach; ?>
 
