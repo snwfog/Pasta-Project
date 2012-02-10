@@ -7,8 +7,16 @@
   <body>
 
   <div id="container">
-  
-    <h1><?=$name . ' ' . $number . ': ' . $title?></h1>
+    <h1>
+        <? if($season == 1){
+              echo "Fall Schedule";
+            }else{
+              echo "Winter Schedule";
+            }
+        ?>
+    </h1>
+    
+    <h2><?=$name . ' ' . $number . ': ' . $title?></h2>
 
     <? echo anchor(site_url("/scrape"), "NEW SEARCH", null); ?>
     <hr />

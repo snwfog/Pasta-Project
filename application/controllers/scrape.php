@@ -11,8 +11,9 @@ class Scrape extends CI_Controller {
           $this->load->helper('url');
           $course_code = strtoupper($this->input->post('course_code'));
           $course_number = $this->input->post('course_number');
-          if($course_code && $course_number){
-          $return = $this->data_collection($course_code,$course_number,4);
+          $season = $this->input->post("season");
+          if($course_code && $course_number && $season){
+          $return = $this->data_collection($course_code,$course_number,$season);
           $data['course_lecture'] = $return[0];
           $data['row'] = $return[1];
           
@@ -28,17 +29,17 @@ class Scrape extends CI_Controller {
 
         private function data_collection($course,$course_number,$season){
           $CI =& get_instance();
-        
           $CI->load->library('simple_html_dom.php');
           //ENGR 201, COMP 348, COMP 346, SOEN 341
           // Note that for yrsess 20114 is Winter, 20112 is Fall, 20113 is Fall AND Winter.
-          $html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20114&course='.$course.'&courno='.$course_number.'&campus=&type=U');
+          $html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=2011'.$season.'&course='.$course.'&courno='.$course_number.'&campus=&type=U');
           //$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20113&course='.$course.'&courno='.$course_number.'&campus=&type=U');
           $row = $html -> find('td');
 
           $courseDetails = array(
-              'name' => $course,
+              'name'   => $course,
               'number' => $course_number,
+              'season' => $season,
           );
           
           //scraping information

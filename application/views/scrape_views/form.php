@@ -13,6 +13,12 @@
 
 <h5>Course Number</h5>
 <input type="text" name="course_number" value="" size="50" />
+<br>
+
+<select name="season">
+<option value="1" >Fall</option>
+<option value="4" >Winter</option>
+</select>
 
 <div><input type="submit" value="Submit" /></div>
 
