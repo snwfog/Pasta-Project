@@ -17,9 +17,12 @@ class CourseInfo extends CI_Controller {
         $return = $this->scraper->data_collection($course_code,$course_number,4);
         $data['course_lecture'] = $return[0];
         $data['row'] = $return[1];
+        $data = array_merge( $data, $return[2] );
+        //$courseData = $return[2];
           
         $this->load->helper('url');
         $this->load->view('/course_details', $data);
+        //$this->load->view('/course_details', $courseData);
     }
 }
 

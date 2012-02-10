@@ -15,6 +15,10 @@ class Scrape extends CI_Controller {
           $return = $this->data_collection($course_code,$course_number,4);
           $data['course_lecture'] = $return[0];
           $data['row'] = $return[1];
+          
+          // return[2] contains core course information such as the code (ie: SOEN), number (228), prereqs (string; needs to be parsed more), and title (ie: "SYSTEM HARDWARE")
+          $data = array_merge( $data, $return[2] );
+          
           $this->load->view('/scrape_views/scrape_view.php',$data);
           }
           else{
@@ -23,30 +27,43 @@ class Scrape extends CI_Controller {
 	}
 
         private function data_collection($course,$course_number,$season){
-          $this->load->library('simple_html_dom.php');
+          $CI =& get_instance();
+        
+          $CI->load->library('simple_html_dom.php');
           //ENGR 201, COMP 348, COMP 346, SOEN 341
+          // Note that for yrsess 20114 is Winter, 20112 is Fall, 20113 is Fall AND Winter.
           $html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20114&course='.$course.'&courno='.$course_number.'&campus=&type=U');
+          //$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20113&course='.$course.'&courno='.$course_number.'&campus=&type=U');
           $row = $html -> find('td');
 
+          $courseDetails = array(
+              'name' => $course,
+              'number' => $course_number,
+          );
+          
           //scraping information
           $course_lecture = array();
           for($i=9; $i<=sizeOf($row)-1; $i++){
             if( strcasecmp(trim($row[$i]->text()), $course." ".$course_number) === 0){
                 $course_title = $row[$i+1]-> text();
                 $credit = $row[$i+2]-> text();
-                echo "Course Title:".$course_title."<br>Credit:".$credit;
+                //echo "Course Title:".$course_title."<br>Credit:".$credit;
+                
+                $courseDetails['title'] = $course_title;
+                $courseDetails['credit'] = $credit;
             }
             
-
+            
             if( strcasecmp(trim($row[$i]->text()), "Prerequisite:") === 0){
                 $preq = $row[$i+1]-> text();
-                echo "<br> Prerequisite:".$preq;
+                //echo "<br> Prerequisite:".$preq;
+                $courseDetails['prerequisites'] = $preq; // TOOD: This should be parsed further into course name and numbers.
             }
             
             if (preg_match("/^Lect\s\w+/", $row[$i]->text(),$matches)){
               $lecture_title = trim($row[$i]->text());
               $tutorials = $this->get_tutorials($i+1, $row); // Call function to get lecture of each course
-              $time_location = $this -> time_location($i, $row);
+              $time_location = $this->time_location($i, $row);
               $time_location["Teacher"] =  trim($row[$i+3]->text());
               $time_location["Tutorials"] =  $tutorials;
 
@@ -54,7 +71,7 @@ class Scrape extends CI_Controller {
               //print_r($course_lecture);
             }
           }
-         return array($course_lecture, $row);
+         return array($course_lecture, $row, $courseDetails);
         }
 
         
