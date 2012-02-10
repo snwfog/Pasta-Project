@@ -32,3 +32,5 @@ Third line and plus: The detail message of your commit.
 
 Please make sure that the commit message body and subject should not be wider than 80 characters wide. Its just a convention.
 
+# Code Styling Standard
+http://framework.zend.com/manual/en/coding-standard.coding-style.html
