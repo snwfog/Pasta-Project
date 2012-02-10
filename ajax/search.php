@@ -5,12 +5,12 @@ if(isset($_POST['query']))
 	$query = $_POST['query'];
 	
 	$results = array(
-		"<a href='#'>SOEN 341</a><br />SOFTWARE PROCESS ",
+		"<a href='#'><strong>SOEN 341</strong></a><br />SOFTWARE PROCESS ",
 		"<a href='#'>SOEN 287</a><br />WEB PROGRAMMING ",
 		"<a href='#'>SOEN 341</a><br />SOFTWARE PROCESS ",
 		"<a href='#'>SOEN 331</a><br />INTRO TO FML MTHDS FOR SOEN ",
-		"<a href='#'>SOEN 343</a><br />S.W. ARCHITECURE & DESIGN I ",
-		"<a href='#'>SOEN 344</a><br />S.W. ARCHITECURE & DESIGN II ",
+		"<a href='#'>SOEN 343</a><br />S.W. ARCHITECTURE & DESIGN I ",
+		"<a href='#'>SOEN 344</a><br />S.W. ARCHITECTURE & DESIGN II ",
 		"<a href='#'>SOEN 345</a><br />S.W. TESTING, VERIF & QA ",
 		"<a href='#'>SOEN 357</a><br />USER INTERFACE DESIGN ",
 		"<a href='#'>SOEN 384</a><br />MGMT+QUALITY CTRL./SW DEV. ",
