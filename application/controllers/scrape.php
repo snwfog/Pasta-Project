@@ -36,6 +36,13 @@ class Scrape extends CI_Controller {
                 $credit = $row[$i+2]-> text();
                 echo "Course Title:".$course_title."<br>Credit:".$credit;
             }
+            
+
+            if( strcasecmp(trim($row[$i]->text()), "Prerequisite:") === 0){
+                $preq = $row[$i+1]-> text();
+                echo "<br> Prerequisite:".$preq;
+            }
+            
             if (preg_match("/^Lect\s\w+/", $row[$i]->text(),$matches)){
               $lecture_title = trim($row[$i]->text());
               $tutorials = $this->get_tutorials($i+1, $row); // Call function to get lecture of each course
