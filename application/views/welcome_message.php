@@ -67,11 +67,11 @@
 <body>
 <?php  $this->load->helper('url'); ?>
 <div id="container">
-	<h1>mike Welcome to CodeIgniter!</h1>
-	<h2> Try My scrape here ->  <?php echo anchor(site_url("/scrape"), "CLICKATY CLICK"); ?></h2>
-    <h2> <?php echo anchor(site_url("/courseInfo"), "Comp Sci and SOEN courses"); ?></h2>
+	<h1>SOEN 341 P.A.S.T.A.</h1>
+	<h1><?php echo anchor(site_url("/scrape"), "Mike's Scrape"); ?></h1>
+    <h1><?php echo anchor(site_url("/courseInfo"), "Eric's Scrape"); ?></h1>
 	<div id="body">
-		<p>Bobby The page you are looking at is being generated dynamically by CodeIgniter.</p>
+		<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
 
 		<p>If you would like to edit this page you'll find it located at:</p>
 		<code>application/views/welcome_message.php</code>
