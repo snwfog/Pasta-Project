@@ -3,7 +3,7 @@ class Scrape extends CI_Controller {
 
     public function search(){
       	$this->load->helper('form');
-      	$this->load-> view('/scrape_views/form.php');
+      	$this->load->view('/scrape_views/form.php');
     }
     
 	public function index()
