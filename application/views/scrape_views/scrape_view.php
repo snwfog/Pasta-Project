@@ -14,7 +14,7 @@
     <br />
     
     <?php
-        foreach ( $course_lecture as $lectureSection => $lectureInfo ) {
+        foreach ( $course_lecture as $lectureSection => $lectureInfo ){
             echo "Section: "  . $lectureSection 		 . '<br />' .
                  "Teacher: "  . $lectureInfo['Teacher']  . '<br />' .
                  "Location: " . $lectureInfo['Location'] . '<br />' .
@@ -44,6 +44,7 @@
                          echo '</div>';
                      }
                  }
+          }
 
     /*
       foreach( $course_lecture as $title => $information ) {
