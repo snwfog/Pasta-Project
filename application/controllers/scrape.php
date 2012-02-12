@@ -12,10 +12,10 @@ class Scrape extends CI_Controller {
 		$course_code = strtoupper($this->input->post('course_code'));
 		$course_number = $this->input->post('course_number');
 		/*
-                $season = $this->input->post("season");
-                if ($course_code && $course_number && $season){
-+                       $return = $this->data_collection($course_code,$course_number,$season);
-                */
+        $season = $this->input->post("season");
+        if ($course_code && $course_number && $season){
+                $return = $this->data_collection($course_code,$course_number,$season);
+        */
 		if ($course_code && $course_number) {
 			$return = $this->data_collection($course_code,$course_number,4);
 			$data['course_lecture'] = $return[0];
@@ -41,7 +41,7 @@ class Scrape extends CI_Controller {
 		$row = $html -> find('td');
 		
 		$courseDetails = array(
-                  'name' => $course,
+          'name' => $course,
 		  'number' => $course_number,
 		);
 	  
@@ -68,11 +68,11 @@ class Scrape extends CI_Controller {
 				$time_location = $this->time_location($i, $row);
 				$time_location["Teacher"] =  trim($row[$i+3]->text());
 				if( empty($tutorials)){
-                                    $time_location["Labs"] = $this -> get_labratory($i+1, $row);
-                                }else{
-                                    $time_location["Tutorials"] =  $tutorials;
-                                }
-				
+                    $time_location["Labs"] = $this -> get_labratory($i+1, $row);
+                }else{
+                      $time_location["Tutorials"] =  $tutorials;
+                }
+
 				$course_lecture[$lecture_title] = $time_location;
 				//print_r($course_lecture);
 			}
