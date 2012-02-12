@@ -8,19 +8,19 @@
 
 <?php echo form_open('scrape'); ?>
 
-<h5>Course Code</h5>
-<input type="text" name="course_code" value="" size="50" />
-
-<h5>Course Number</h5>
-<input type="text" name="course_number" value="" size="50" />
-<br>
-
-<select name="season">
-<option value="1" >Fall</option>
-<option value="4" >Winter</option>
-</select>
-
-<div><input type="submit" value="Submit" /></div>
+    <h5>Course Code</h5>
+    <input type="text" name="course_code" value="" size="50" />
+    
+    <h5>Course Number</h5>
+    <input type="text" name="course_number" value="" size="50" />
+    <br>
+    
+    <select name="season">
+        <option value="1" >Fall</option>
+        <option value="4" >Winter</option>
+    </select>
+    
+    <div><input type="submit" value="Submit" /></div>
 
 </form>
 
