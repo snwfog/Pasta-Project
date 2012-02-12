@@ -20,40 +20,31 @@
                  "Location: " . $lectureInfo['Location'] . '<br />' .
                  "Time: " 	  . $lectureInfo['Time'] 	 . '<br />';
 			// TODO: Move in-line CSS into a CSS file.
-			foreach ( $lectureInfo['Tutorials'] as $tutorialSection => $tutorialInfo ) {
-			    echo '<div style="margin-left:50px; border:1px; border-style:solid;">';
-			    echo "Tutorial section: " . $tutorialSection 		  . '<br />' .
-			         "Location: " 		  . $tutorialInfo['Location'] . '<br />' .
-			         "Time: " 			  . $tutorialInfo['Time'];
-			         
-				foreach( $tutorialInfo['Labs'] as $labSection => $labInfo ) {
-					echo '<div style="margin-left:50px; border:1px; border-style:solid;">';
-					echo "Lab section: " . $labSection          . '<br />' .
-		                 "Location: "    . $labInfo['Location'] . '<br />' .
-		                     "Time: "    . $labInfo['Time']     . '<br />';
-					echo '</div>';
-				}
-				echo '</div>';
-			}
+	         if(!empty($lectureInfo['Tutorials'])){
+                     foreach ( $lectureInfo['Tutorials'] as $tutorialSection => $tutorialInfo ){
+                         echo '<div style="margin-left:50px; border:1px; border-style:solid;">';
+                              echo "Tutorial section: " . $tutorialSection 		  . '<br />' .
+                                   "Location: " 		  . $tutorialInfo['Location'] . '<br />' .
+                                   "Time: " 			  . $tutorialInfo['Time'];
+                             foreach( $tutorialInfo['Labs'] as $labSection => $labInfo ) {
+                                      echo '<div style="margin-left:50px; border:1px; border-style:solid;">';
+	                                   echo "Lab section: " . $labSection          . '<br />' .
+       		                                "Location: "    . $labInfo['Location'] . '<br />' .
+       		                                "Time: "    . $labInfo['Time']     . '<br />';
+                                      echo '</div>';
+                             }
+                         echo '</div>';
+                     }
+                 }else if(!empty($lectureInfo["Labs"])){
+                     foreach ( $lectureInfo['Labs'] as $tutorialSection => $tutorialInfo ){
+                         echo '<div style="margin-left:50px; border:1px; border-style:solid;">';
+                             echo "Lab section: " . $tutorialSection .
+                                  "<br> Location: " . $tutorialInfo['Location'] .
+                                  "<br> Time: " . $tutorialInfo['Time'];
+                         echo '</div>';
+                     }
+                 }
 
-	    // This is only called if there are labs with no tutorials. (See: COMP 476)
-	    // FIXME: The scraper currently doesn't pick that up.
-	    /*
-	    if ( in_array( 'Labs', $lectureInfo ) ) {
-	        foreach ( $lectureInfo['Labs'] as $tutorialSection => $tutorialInfo ) {
-	            echo '<div style="margin-left:50px;">';
-	            
-	            echo "Lab section: " . $tutorialSection .
-	                 "Location: " . $tutorialInfo['Location'] .
-	                 "Time: " . $tutorialInfo['time'];
-	                 
-	             echo '</div>';
-	        }
-	    }
-	    */
-            
-        }
-    
     /*
       foreach( $course_lecture as $title => $information ) {
         echo "<h1>Derp " . $title . "</h1><br>";
