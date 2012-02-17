@@ -1,3 +1,4 @@
+Deny from all
 # Name: .htaccess Rewrite
 # Purpose: 	This following code will basically rewrite the user's URL 
 # 			by _hiding_ the 'index.php' in the URL.

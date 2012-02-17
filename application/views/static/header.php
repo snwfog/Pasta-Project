@@ -10,7 +10,7 @@
 	<style type="text/css" src="../../assets/css/style.css"></style>
 	
 	<!-- script -->
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
 	<script type="text/javascript" src="../../assets/js/script.js"></script>
 </head>
 <body>

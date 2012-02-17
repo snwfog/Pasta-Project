@@ -31,9 +31,11 @@ class Scrape extends CI_Controller {
 
 		$CI->load->library('simple_html_dom.php');
 		// Note that for yrsess 20114 is Winter, 20112 is Fall, 20113 is Fall AND Winter.
-		$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=2011'.$season.'&course='.$course.'&courno='.$course_number.'&campus=&type=U');
-		$row = $html -> find('td');
-
+		
+		$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20114&course='.$course.'&courno='.$course_number);
+		//$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20113&course='.$course.'&courno='.$course_number.'&campus=&type=U');
+		$row = $html->find('td');
+		
 		$courseDetails = array(
           'name' => $course,
 		  'number' => $course_number,
