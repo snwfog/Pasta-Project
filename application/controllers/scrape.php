@@ -1,19 +1,16 @@
 <?php
 class Scrape extends CI_Controller {
-
-    public function search(){
-      	$this->load->helper('form');
-      	$this->load->view('/scrape_views/form.php');
-    }
-    
 	public function index()
 	{
 		$this->load->helper('url');
-		$course_code = strtoupper($this->input->post('course_code'));
-		$course_number = $this->input->post('course_number');
-        $season = $this->input->post("season");
-        if ($course_code && $course_number && $season){
-            $return = $this->data_collection($course_code,$course_number,$season);
+		$course_code = trim(strtoupper($this->input->post('course_code')));
+		$course_number = trim($this->input->post('course_number'));
+        $season = trim($this->input->post("season"));
+      
+        if ($course_code && $course_number && $season) {
+        	// if the course information can be retrieved from the POST data
+        	// then scrape the desired information
+            $return = $this->data_collection($course_code, $course_number, $season);
 			$data['course_lecture'] = $return[0];
 			$data['row'] = $return[1];
 			// return[2] contains core course information such as the code (ie: SOEN), number (228), prereqs (string; needs to be parsed more), and title (ie: "SYSTEM HARDWARE")
@@ -21,18 +18,31 @@ class Scrape extends CI_Controller {
 
 			$this->load->view('/scrape_views/scrape_view.php',$data);
 		}
-		else{
-			$this -> search();
+		else {
+			// else there are no information entered into POST, then load the page
+			// to display the information form
+			$this->search();
 		}
 	}
-
-	private function data_collection($course,$course_number,$season){
+	
+	/**
+	 * Method to load the search form
+	 */
+	public function search(){
+	  	$this->load->helper('form');
+	  	$this->load->view('/scrape_views/form.php');
+	}
+	
+	/**
+	 * Method to get the course information data
+	 */
+	private function data_collection($course, $course_number, $season){
 		$CI =& get_instance();
 
 		$CI->load->library('simple_html_dom.php');
-		// Note that for yrsess 20114 is Winter, 20112 is Fall, 20113 is Fall AND Winter.
 		
-		$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20114&course='.$course.'&courno='.$course_number);
+		// Note that for yrsess 4 is Winter, 2 is Fall, 3 is Fall & Winter, 1 is Summer.
+		$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=2011'.$season.'&course='.$course.'&courno='.$course_number);
 		//$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20113&course='.$course.'&courno='.$course_number.'&campus=&type=U');
 		$row = $html->find('td');
 		

@@ -6,52 +6,53 @@
 </head>
 <body>
 	<div id="container">
-        <?php if(isset($title)){ ?>
-            <h1><?php echo $name . ' ' . $number . ': ' . $title ?></h1>
+        <?php if(isset($title)): ?>
+        	<h1><?php echo $name . ' ' . $number . ': ' . $title ?></h1>
             <?php echo anchor(site_url("/scrape"), "NEW SEARCH", null); ?>
             <hr />
     
             Prerequisites: <?php echo $prerequisites ?><br />
             <br />
-        <?php }else{
-          echo "<h2>Sorry, ".$name." ".$number." is not available for this semester</h1>";
-          }?>
+        <?php else: ?>
+         	<h2>Sorry, <?php echo $name." ".$number ?> is not available for this semester</h1>
+        <?php endif; ?>
 
-        
         <?php
-            if(!empty($course_lecture)){
-                foreach ( $course_lecture as $lectureSection => $lectureInfo ){
+            if(!empty($course_lecture)) {
+                foreach ( $course_lecture as $lectureSection => $lectureInfo ) {
                     echo "Section: "  . $lectureSection 		 . '<br />' .
                          "Teacher: "  . $lectureInfo['Teacher']  . '<br />' .
                          "Location: " . $lectureInfo['Location'] . '<br />' .
                          "Time: " 	  . $lectureInfo['Time'] 	 . '<br />';
         			// TODO: Move in-line CSS into a CSS file.
-        	         if(!empty($lectureInfo['Tutorials'])){
-                             foreach ( $lectureInfo['Tutorials'] as $tutorialSection => $tutorialInfo ){
-                                 echo '<div style="margin-left:50px; border:1px; border-style:solid;">';
-                                      echo "Tutorial section: " . $tutorialSection 		  . '<br />' .
-                                           "Location: " 		  . $tutorialInfo['Location'] . '<br />' .
-                                           "Time: " 			  . $tutorialInfo['Time'];
-                                     foreach( $tutorialInfo['Labs'] as $labSection => $labInfo ) {
-                                              echo '<div style="margin-left:50px; border:1px; border-style:solid;">';
-        	                                   echo "Lab section: " . $labSection          . '<br />' .
-               		                                "Location: "    . $labInfo['Location'] . '<br />' .
-               		                                "Time: "    . $labInfo['Time']     . '<br />';
-                                              echo '</div>';
-                                     }
-                                 echo '</div>';
-                             }
-                         }else if(!empty($lectureInfo["Labs"])){
-                             foreach ( $lectureInfo['Labs'] as $tutorialSection => $tutorialInfo ){
-                                 echo '<div style="margin-left:50px; border:1px; border-style:solid;">';
-                                     echo "Lab section: " . $tutorialSection .
-                                          "<br> Location: " . $tutorialInfo['Location'] .
-                                          "<br> Time: " . $tutorialInfo['Time'];
-                                 echo '</div>';
-                             }
+        	        if(!empty($lectureInfo['Tutorials'])){
+                    	foreach ( $lectureInfo['Tutorials'] as $tutorialSection => $tutorialInfo ) {
+                        	echo '<div style="margin-left:50px; border:1px; border-style:solid;">';
+                        	echo "Tutorial section: " . $tutorialSection 		  . '<br />' .
+                                 "Location: " 		  . $tutorialInfo['Location'] . '<br />' .
+                                 "Time: " 			  . $tutorialInfo['Time'];
+                            
+                            foreach( $tutorialInfo['Labs'] as $labSection => $labInfo ) {
+                            	echo '<div style="margin-left:50px; border:1px; border-style:solid;">';
+        	                    echo "Lab section: " . $labSection          . '<br />' .
+               		                 "Location: "    . $labInfo['Location'] . '<br />' .
+               		                 "Time: "    . $labInfo['Time']     . '<br />';
+                                echo '</div>';
+                            }
+                           	
+                           	echo '</div>';
                          }
-                  }
-              }
+                    } else if(!empty($lectureInfo["Labs"])) {
+                    	foreach ( $lectureInfo['Labs'] as $tutorialSection => $tutorialInfo ){
+                        	echo '<div style="margin-left:50px; border:1px; border-style:solid;">';
+                            echo "Lab section: " . $tutorialSection .
+                                 "<br> Location: " . $tutorialInfo['Location'] .
+                                 "<br> Time: " . $tutorialInfo['Time'];
+                            echo '</div>';
+                        }
+                    }
+                }
+            }
     
         /*
           foreach( $course_lecture as $title => $information ) {
