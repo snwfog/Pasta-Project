@@ -40,9 +40,8 @@ class Scrape extends CI_Controller {
 		);
 
 		//scraping information
-        // TO DO: WHAT IF THERE IS NO COURSE IN THAT SEASON 
 		$course_lecture = array();
-		for ($i=0; $i<=sizeOf($row)-1; $i++) {
+		for ($i=9; $i<=sizeOf($row)-1; $i++) {
 			if(strcasecmp(trim($row[$i]->text()), $course." ".$course_number) === 0){
 			    $course_title = $row[$i+1]-> text();
 			    $credit = $row[$i+2]-> text();
