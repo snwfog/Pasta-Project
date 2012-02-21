@@ -40,6 +40,8 @@ class Scrape extends CI_Controller {
 		);
 
 		//scraping information
+
+        // BUG: SOME COURSES IS ALL YEAR LONG ONLY SHOW UP IN OPTION 3: FALL&WINTER. However OPTION 3 will show fall, winter, and fall&winter courses.
 		$course_lecture = array();
 		for ($i=9; $i<=sizeOf($row)-1; $i++) {
 			if(strcasecmp(trim($row[$i]->text()), $course." ".$course_number) === 0){
@@ -48,6 +50,8 @@ class Scrape extends CI_Controller {
 
 			    $courseDetails['title'] = $course_title;
 			    $courseDetails['credit'] = $credit;
+                $courseDetails['prerequisites'] = null;
+
 			}
 
 
@@ -62,13 +66,16 @@ class Scrape extends CI_Controller {
 				$time_location = $this->time_location($i, $row);
 				$time_location["Teacher"] =  trim($row[$i+3]->text());
 				if(empty($tutorials)){
-                    $time_location["Labs"] = $this -> get_labratory($i+1, $row);
+                    $lab = $this -> get_labratory($i+1, $row);
+                    if(!empty($lab)){
+                        $tutorials_info = array( "Time" => null, "Location" => null, "Labs" => $lab );
+                        $tutorials = array( "Null" => $tutorials_info);
+                        $time_location["Tutorials"] = $tutorials;
+                    }
                 }else{
-                      $time_location["Tutorials"] =  $tutorials;
+                    $time_location["Tutorials"] =  $tutorials;
                 }
-
 				$course_lecture[$lecture_title] = $time_location;
-				//print_r($course_lecture);
 			}
 		}
 	 	return array($course_lecture, $row, $courseDetails);
@@ -90,7 +97,6 @@ class Scrape extends CI_Controller {
 				$tutorial_info[$text] = $time_location;
 			}
 		}
-		//print_r($tutorial_info);
 		return $tutorial_info;
 	}
 

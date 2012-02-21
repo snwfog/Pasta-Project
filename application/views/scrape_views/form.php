@@ -16,7 +16,7 @@
     <br>
     
     <select name="season">
-        <option value="1" >Fall</option>
+        <option value="2" >Fall</option>
         <option value="4" >Winter</option>
     </select>
     
