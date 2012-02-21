@@ -1,29 +1,41 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php 
 
+/**
+ * Script to prevent direct URL access to this file.
+ * Should include at every beginning of file.
+ */
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+
+/**
+ * Pasta main controller
+ * Author: Charles
+ */
 class Pasta extends CI_Controller {
-
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
 	function Pasta() {
-		parent::__construct();		
+		parent::__construct();	
+		
+		// Loading helper function
+		$this->load->helper(array('url', 'form'));	
 	}	
 	
 	public function index()
-	{
-		$this->load->view('pasta_welcome');
+	{	
+		$data['title'] = 'Welcome to P.A.S.T.A.';
+		
+		// display the main view
+		$this->put('main', $data);
+	}
+	
+	/**
+	 * Basic page display, $content should be the main content page,
+	 * $static_content should hosts things like footer note, or
+	 * page title (header/footer content).
+	 */
+	public function put($content, $data) {
+		$this->load->view('static/header', $data);
+		$this->load->view($content, $data);
+		$this->load->view('static/footer', $data);
 	}
 }
 
