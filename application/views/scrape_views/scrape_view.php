@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Test Page</title>
+    <title><?php echo "$course_code $course_title</title>
 </head>
 <body>
 	<div id="container">

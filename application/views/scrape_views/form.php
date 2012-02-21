@@ -4,19 +4,22 @@
 </head>
 <body>
 
-<?php echo validation_errors(); ?>
+<!-- return form validator error if there is any -->
+<!-- <?php echo validation_errors(); ?> -->
+
 
 <?php echo form_open('scrape'); ?>
-
-    <h5>Course Code</h5>
-    <input type="text" name="course_code" value="" size="50" />
+    <h2>Course Code</h2>
+    <?php echo form_error('course_code'); ?>
+    <input type="text" name="course_code" value="" size="10" maxlength="4" />
     
-    <h5>Course Number</h5>
-    <input type="text" name="course_number" value="" size="50" />
+    <h2>Course Number</h2>
+    <?php echo form_error('course_number'); ?>
+    <input type="text" name="course_number" value="" size="10" maxlength="3" />
     <br>
-    
-    <select name="season">
-        <option value="2" >Fall</option>
+ 
+    <select name="session">
+        <option value="1" >Fall</option>
         <option value="4" >Winter</option>
     </select>
     

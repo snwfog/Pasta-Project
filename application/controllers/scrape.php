@@ -1,139 +1,188 @@
 <?php
 class Scrape extends CI_Controller {
+//	public __constructor() {
+//		
+//	}
+//	
 	public function index()
 	{
-		$this->load->helper('url');
-		$course_code = trim(strtoupper($this->input->post('course_code')));
-		$course_number = trim($this->input->post('course_number'));
-        $season = trim($this->input->post("season"));
-      
-        if ($course_code && $course_number && $season) {
-        	// if the course information can be retrieved from the POST data
-        	// then scrape the desired information
-            $return = $this->data_collection($course_code, $course_number, $season);
-			$data['course_lecture'] = $return[0];
-			$data['row'] = $return[1];
-			// return[2] contains core course information such as the code (ie: SOEN), number (228), prereqs (string; needs to be parsed more), and title (ie: "SYSTEM HARDWARE")
-			$data = array_merge( $data, $return[2] );
-
-			$this->load->view('/scrape_views/scrape_view.php',$data);
+		$this->load->helper(array('url', 'form'));
+		
+		// setup form validation
+		$this->load->library('form_validation');	
+		$this->form_validation->set_rules('course_code', 'Course Code', 'required|trim|xss_clean|exact_length[4]|alpha');
+		$this->form_validation->set_rules('course_number', 'Course Number', 'required|trim|xss_clean|exact_length[3]|numeric');
+		
+		// validate form from POST data
+		if ($this->form_validation->run() == FALSE) {
+			$this->load->view('/scrape_views/form');
+		} else {
+			// scrape course information
+			$this->load->view(
+				'/scrape_views/scrape_view', 
+				$this->scrape(
+					strtoupper($this->input->post('course_code')), 
+					$this->input->post('course_number'), 
+					$this->input->post("session")););
 		}
-		else {
-			// else there are no information entered into POST, then load the page
-			// to display the information form
-			$this->search();
-		}
-	}
-	
-	/**
-	 * Method to load the search form
-	 */
-	public function search(){
-	  	$this->load->helper('form');
-	  	$this->load->view('/scrape_views/form.php');
 	}
 	
 	/**
 	 * Method to get the course information data
 	 */
-	private function data_collection($course, $course_number, $season){
+	private function scrape($course_code, $course_number, $session) {
 		$CI =& get_instance();
 
 		$CI->load->library('simple_html_dom.php');
 		
 		// Note that for yrsess 4 is Winter, 2 is Fall, 3 is Fall & Winter, 1 is Summer.
-		$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=2011'.$season.'&course='.$course.'&courno='.$course_number);
+		$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=2011'.$session.'&course='.$course_code.'&courno='.$course_number);
 		//$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20113&course='.$course.'&courno='.$course_number.'&campus=&type=U');
-		$row = $html->find('td');
 		
-		$courseDetails = array(
-          'name' => $course,
-		  'number' => $course_number,
-		);
-
-		//scraping information
-
-        // BUG: SOME COURSES IS ALL YEAR LONG ONLY SHOW UP IN OPTION 3: FALL&WINTER. However OPTION 3 will show fall, winter, and fall&winter courses.
-		$course_lecture = array();
-		for ($i=9; $i<=sizeOf($row)-1; $i++) {
-			if(strcasecmp(trim($row[$i]->text()), $course." ".$course_number) === 0){
-			    $course_title = $row[$i+1]-> text();
-			    $credit = $row[$i+2]-> text();
-
-			    $courseDetails['title'] = $course_title;
-			    $courseDetails['credit'] = $credit;
-                $courseDetails['prerequisites'] = null;
-
-			}
-
-
-		    if (strcasecmp(trim($row[$i]->text()), "Prerequisite:") === 0) {
-		        $preq = $row[$i+1]-> text();
-		        $courseDetails['prerequisites'] = $preq; // TOOD: This should be parsed further into course name and numbers.
-		    }
+		$all_rows = $html->find('tr');
+			
+		//--------------------------------------------------------
+		// Course array, containing all course related information
+		//--------------------------------------------------------
+		$course = array();
 		
-			if (preg_match("/^Lect\s\w+/", $row[$i]->text(),$matches)) {
-				$lecture_title = trim($row[$i]->text());
-				$tutorials = $this->get_tutorials($i+1, $row); // Call function to get lecture of each course
-				$time_location = $this->time_location($i, $row);
-				$time_location["Teacher"] =  trim($row[$i+3]->text());
-				if(empty($tutorials)){
-                    $lab = $this -> get_labratory($i+1, $row);
-                    if(!empty($lab)){
-                        $tutorials_info = array( "Time" => null, "Location" => null, "Labs" => $lab );
-                        $tutorials = array( "Null" => $tutorials_info);
-                        $time_location["Tutorials"] = $tutorials;
-                    }
-                }else{
-                    $time_location["Tutorials"] =  $tutorials;
-                }
-				$course_lecture[$lecture_title] = $time_location;
+		// matching the course_id e.g. SOEN 321 in different capture group
+		preg_match("/([\w]{4})\s([\d]{3})/", $all_rows[9]->children(1)->plaintext, $course_id);
+		$course['code'] = $course_id[1];
+		$course['number'] = $course_id[2];
+		$course['title'] = $all_rows[9]->children(2)->plaintext;
+		
+		// matching the course_id e.g. SOEN 321 in different capture group
+		preg_match("/[\d]/", $all_rows[9]->children(3)->plaintext, $credit);
+		$course['credit'] = $credit[0];
+		
+		preg_match("/([\w]{4}\s[\d]{3})+/", $all_rows[10]->children(2)->plaintext, $prerequisites);
+		 $course['prerequisites'] = $prerequisites[0];
+
+		$course['section'] = array(); // assume that there is at least one lecture
+
+		// individual course information starts at table row 13
+		for ($i = 13; $i < sizeof($all_rows); $i++) {
+			// if row contains a lecture information
+			if (preg_match("/Lect/", $all_rows[$i]->children(2)->plaintext)) {
+				// create section name
+				$section_name = scrape_name($all_rows[$i]->children(2)->plaintext);
+				
+				// scrape the lecture for this section
+				$course['section'][$section_name] = scrape_lecture($all_rows[$i]);
+					
+			} else if (preg_match("/Tut/", $all_rows[$i]->children(2)->plaintext)) {
+			// if row contains a tutorial information
+				$tutorial_section = scrape_tutorial_name($all_rows[$i]->children(2)->plaintext, $section_name);
+				// create a new section tutorial array to contain the different
+				// tutorial sections
+				if (!isset($course['section'][$section_name]['tutorial']))
+					$course['section'][$section_name]['tutorial'] = array();
+				
+				// create a new section tutorial section information array
+				$course['section'][$section_name]['tutorial'][$tutorial_section] =
+					scrape_tutorial($all_rows[$i]);
+				
 			}
 		}
-	 	return array($course_lecture, $row, $courseDetails);
-    }
-
-	private function get_tutorials($index, $row){
-		$tutorial_info = array();
-		for ($index; $index<=sizeOf($row)-1; $index++) {
-			$text = trim($row[$index]->text());
-			$text = preg_replace('/&nbsp;/','',$text);
-			if (preg_match("/^Lect\s\w+/", $row[$index]->text(),$matches)) {
-				break;
-			}
-			
-			if (preg_match("/Tut\s\w+/",$text)) {
-				$labratory_info =  $this->get_labratory($index+3, $row);
-				$time_location = $this -> time_location($index,$row);
-				$time_location["Labs"] = $labratory_info;
-				$tutorial_info[$text] = $time_location;
-			}
-		}
-		return $tutorial_info;
+		
+		return $course;
 	}
-
-	private function get_labratory($index,$row){
-		$labratory_info = array();
-		for ($index; $index<=sizeOf($row)-1; $index++) {
-			$text = trim($row[$index]->text());
-			$text = preg_replace('/&nbsp;/','',$text);
-			if (preg_match("/Tut\s\w+/", $row[$index]->text(),$matches) || preg_match("/^Lect\s\w+/", $row[$index]->text(),$matches)) {
-				break;
-			}
-			
-			if (preg_match("/Lab\s\w+/",$text)) {
-				$labratory_info[$text] = $this -> time_location($index,$row);
-			}
-		}
-		return $labratory_info;
+		
+	//-------------------------------------------------------------
+	// Scrape the lecture information providing the row information
+	//-------------------------------------------------------------
+	function scrape_lecture($row) {
+		$lecture = array();
+	
+		// set section name
+		$lecture['name'] = $section_name;
+	
+		// set section days
+		$lecture['day'] = 
+			scrape_day($row->children(3)->plaintext);
+		
+		// set section times
+		$lecture['time'] = 
+			scrape_time($row->children(3)->plaintext);
+	
+		// set section campus
+		$lecture['campus'] = 
+			scrape_campus($row->children(4)->plaintext);
+		
+		// set section room
+		$lecture['room'] = 
+			scrape_room($row->children(4)->plaintext);
+		
+		// set section professor
+		$lecture['professor'] = 
+			$row->children(5)->plaintext;
+	
+		return $lecture;
 	}
-        
-	private function time_location($index, $row){
-		$time = trim($row[$index+1]->text());
-		$location = trim($row[$index+2]->text());
-		return array("Time" => $time, "Location" => $location);
+	
+	
+	//-------------------------------------------------------------
+	// Scrape the tutorial information providing the row information
+	//-------------------------------------------------------------		
+	function scrape_tutorial($row) {
+		$tutorial = array();
+	
+		// set section days
+		$tutorial['day'] = 
+			scrape_day($row->children(3)->plaintext);
+		
+		// set section times
+		$tutorial['time'] = 
+			scrape_time($row->children(3)->plaintext);
+	
+		// set section campus
+		$tutorial['campus'] = 
+			scrape_campus($row->children(4)->plaintext);
+		
+		// set section room
+		$tutorial['room'] = 
+			scrape_room($row->children(4)->plaintext);
+	
+		return $tutorial;
 	}
-
+	    
+	//------------------------
+	// Regex helper functions
+	//------------------------
+	function scrape_name($str) {
+		preg_match("/\b[\w]\b/", $str, $name);
+		return $name[0];
+	}
+	
+	function scrape_tutorial_name($str) {
+		preg_match("/[^$section_name]\$/", $str, $name);
+		return $name[0];
+	}
+	
+	function scrape_day($str) {
+		preg_match_all('/[A-Z]/', $str, $day);
+		return $day[0];
+	}
+	
+	function scrape_time($str) {
+		preg_match_all('/[\d]{2}:[\d]{2}/', $str, $time);
+		return $time[0];
+	}
+	
+	function scrape_campus($str) {
+		preg_match('/[\w]{3}/', $str, $campus);
+		return $campus[0];
+	}
+	
+	function scrape_room($str) {
+		preg_match('/[\w\d]+-[\w\d]+/', $str, $room);
+		return $room[0];
+	}
+	
+	//------------------------------
+	// End of regex helper functions
+	//------------------------------
 }
 
 /* End of file test.php */
