@@ -56,31 +56,36 @@ class Scrape extends CI_Controller {
 		$course['credit'] = $credit[0];
 		
 		preg_match("/([\w]{4}\s[\d]{3})+/", $all_rows[10]->children(2)->plaintext, $prerequisites);
-		$course['prerequisites'] = $prerequisites[0];
+		$course['prerequisites'] = $prerequisites[0]; // BUG NEED TO FIX
 
 		$course['section'] = array(); // assume that there is at least one lecture
-
+		
 		// individual course information starts at table row 13
-		for ($i = 13; $i < sizeof($all_rows); $i++) {
+		for ($i = 13; $i < sizeof($all_rows)-1; $i++) {
 			// if row contains a lecture information
 			if (preg_match("/Lect/", $all_rows[$i]->children(2)->plaintext)) {
 				// create section name
-				$section_name = scrape_name($all_rows[$i]->children(2)->plaintext);
-				
+				$section_name = $this->scrape_name($all_rows[$i]->children(2)->plaintext);
+			
 				// scrape the lecture for this section
-				$course['section'][$section_name] = scrape_lecture($all_rows[$i]);
+				$course['section'][$section_name] = $this->scrape_lecture($all_rows[$i]);
 					
 			} else if (preg_match("/Tut/", $all_rows[$i]->children(2)->plaintext)) {
-			// if row contains a tutorial information
-				$tutorial_section = scrape_tutorial_name($all_rows[$i]->children(2)->plaintext, $section_name);
+				// if row contains a tutorial information
+				$tutorial_section = 
+					$this->scrape_tutorial_name(
+						$all_rows[$i]->children(2)->plaintext, 
+						$section_name
+					);
+					
 				// create a new section tutorial array to contain the different
 				// tutorial sections
 				if (!isset($course['section'][$section_name]['tutorial']))
 					$course['section'][$section_name]['tutorial'] = array();
-				
+			
 				// create a new section tutorial section information array
 				$course['section'][$section_name]['tutorial'][$tutorial_section] =
-					scrape_tutorial($all_rows[$i]);
+					$this->scrape_tutorial($all_rows[$i]);
 				
 			}
 		}
@@ -91,55 +96,57 @@ class Scrape extends CI_Controller {
 	//-------------------------------------------------------------
 	// Scrape the lecture information providing the row information
 	//-------------------------------------------------------------
-	private function scrape_lecture($row) {
+	function scrape_lecture($row) {
 		$lecture = array();
 	
-		// set section name
-		$lecture['name'] = $section_name;
+		$lecture['name'] = 
+			$this->scrape_name($row->children(2)->plaintext);;
 	
 		// set section days
 		$lecture['day'] = 
-			scrape_day($row->children(3)->plaintext);
-		
+			$this->scrape_day($row->children(3)->plaintext);
+	
 		// set section times
 		$lecture['time'] = 
-			scrape_time($row->children(3)->plaintext);
+			$this->scrape_time($row->children(3)->plaintext);
 	
 		// set section campus
 		$lecture['campus'] = 
-			scrape_campus($row->children(4)->plaintext);
-		
+			$this->scrape_campus($row->children(4)->plaintext);
+	
 		// set section room
 		$lecture['room'] = 
-			scrape_room($row->children(4)->plaintext);
-		
+			$this->scrape_room($row->children(4)->plaintext);
+	
 		// set section professor
-		$lecture['professor'] = $row->children(5)->plaintext;
+		$lecture['professor'] = 
+			$row->children(5)->plaintext;
 	
 		return $lecture;
 	}
 	
-	//-------------------------------------------------------------
+	//--------------------------------------------------------------
 	// Scrape the tutorial information providing the row information
-	//-------------------------------------------------------------		
-	private function scrape_tutorial($row) {
+	//--------------------------------------------------------------
+	// BUG TO BE CONSOLIDATED	
+	function scrape_tutorial($row) {
 		$tutorial = array();
 	
 		// set section days
 		$tutorial['day'] = 
-			scrape_day($row->children(3)->plaintext);
+			$this->scrape_day($row->children(3)->plaintext);
 		
 		// set section times
 		$tutorial['time'] = 
-			scrape_time($row->children(3)->plaintext);
+			$this->scrape_time($row->children(3)->plaintext);
 	
 		// set section campus
 		$tutorial['campus'] = 
-			scrape_campus($row->children(4)->plaintext);
+			$this->scrape_campus($row->children(4)->plaintext);
 		
 		// set section room
 		$tutorial['room'] = 
-			scrape_room($row->children(4)->plaintext);
+			$this->scrape_room($row->children(4)->plaintext);
 	
 		return $tutorial;
 	}
@@ -147,33 +154,33 @@ class Scrape extends CI_Controller {
 	//------------------------
 	// Regex helper functions
 	//------------------------
-	private function scrape_name($str) {
+	function scrape_name($str) {
 		preg_match("/\b[\w]{1,2}\b/", $str, $name);
 		return $name[0];
 	}
 	
-	private function scrape_tutorial_name($str) {
+	function scrape_tutorial_name($str, $section_name) {
 		preg_match("/[^$section_name]\$/", $str, $name);
 		return $name[0];
 	}
 	
-	private function scrape_day($str) {
+	function scrape_day($str) {
 		preg_match_all('/[A-Z]/', $str, $day);
 		return $day[0];
 	}
 	
-	private function scrape_time($str) {
+	function scrape_time($str) {
 		preg_match_all('/[\d]{2}:[\d]{2}/', $str, $time);
 		return $time[0];
 	}
 	
-	private function scrape_campus($str) {
+	function scrape_campus($str) {
 		preg_match('/[\w]{3}/', $str, $campus);
 		return $campus[0];
 	}
 	
-	private function scrape_room($str) {
-		preg_match('/[\w\d]+-[\w\d]+/', $str, $room);
+	function scrape_room($str) {
+		preg_match('/[\w\d]+-[\w\d\.]+/', $str, $room);
 		return $room[0];
 	}
 	

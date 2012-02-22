@@ -5,6 +5,7 @@
     <title><?php echo "$code $number $title" ?></title>
 </head>
 <body>
+	<?php print_r($section); ?>
 	<!--<div id="container">
         <?php if(isset($title)): ?>
         	<h1><?php echo $name . ' ' . $number . ': ' . $title ?></h1>
