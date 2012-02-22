@@ -20,24 +20,23 @@ class Scrape extends CI_Controller {
 			// scrape course information
 			$this->load->view(
 				'/scrape_views/scrape_view', 
-				$this->scrape(
+				$this->scrape_site(
 					strtoupper($this->input->post('course_code')), 
 					$this->input->post('course_number'), 
-					$this->input->post("session")););
+					$this->input->post("session")));
 		}
 	}
 	
 	/**
 	 * Method to get the course information data
 	 */
-	private function scrape($course_code, $course_number, $session) {
+	private function scrape_site($course_code, $course_number, $session) {
 		$CI =& get_instance();
 
 		$CI->load->library('simple_html_dom.php');
 		
 		// Note that for yrsess 4 is Winter, 2 is Fall, 3 is Fall & Winter, 1 is Summer.
 		$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=2011'.$session.'&course='.$course_code.'&courno='.$course_number);
-		//$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=20113&course='.$course.'&courno='.$course_number.'&campus=&type=U');
 		
 		$all_rows = $html->find('tr');
 			
@@ -45,7 +44,7 @@ class Scrape extends CI_Controller {
 		// Course array, containing all course related information
 		//--------------------------------------------------------
 		$course = array();
-		
+	
 		// matching the course_id e.g. SOEN 321 in different capture group
 		preg_match("/([\w]{4})\s([\d]{3})/", $all_rows[9]->children(1)->plaintext, $course_id);
 		$course['code'] = $course_id[1];
@@ -57,7 +56,7 @@ class Scrape extends CI_Controller {
 		$course['credit'] = $credit[0];
 		
 		preg_match("/([\w]{4}\s[\d]{3})+/", $all_rows[10]->children(2)->plaintext, $prerequisites);
-		 $course['prerequisites'] = $prerequisites[0];
+		$course['prerequisites'] = $prerequisites[0];
 
 		$course['section'] = array(); // assume that there is at least one lecture
 
@@ -92,7 +91,7 @@ class Scrape extends CI_Controller {
 	//-------------------------------------------------------------
 	// Scrape the lecture information providing the row information
 	//-------------------------------------------------------------
-	function scrape_lecture($row) {
+	private function scrape_lecture($row) {
 		$lecture = array();
 	
 		// set section name
@@ -115,17 +114,15 @@ class Scrape extends CI_Controller {
 			scrape_room($row->children(4)->plaintext);
 		
 		// set section professor
-		$lecture['professor'] = 
-			$row->children(5)->plaintext;
+		$lecture['professor'] = $row->children(5)->plaintext;
 	
 		return $lecture;
 	}
 	
-	
 	//-------------------------------------------------------------
 	// Scrape the tutorial information providing the row information
 	//-------------------------------------------------------------		
-	function scrape_tutorial($row) {
+	private function scrape_tutorial($row) {
 		$tutorial = array();
 	
 		// set section days
@@ -150,32 +147,32 @@ class Scrape extends CI_Controller {
 	//------------------------
 	// Regex helper functions
 	//------------------------
-	function scrape_name($str) {
-		preg_match("/\b[\w]\b/", $str, $name);
+	private function scrape_name($str) {
+		preg_match("/\b[\w]{1,2}\b/", $str, $name);
 		return $name[0];
 	}
 	
-	function scrape_tutorial_name($str) {
+	private function scrape_tutorial_name($str) {
 		preg_match("/[^$section_name]\$/", $str, $name);
 		return $name[0];
 	}
 	
-	function scrape_day($str) {
+	private function scrape_day($str) {
 		preg_match_all('/[A-Z]/', $str, $day);
 		return $day[0];
 	}
 	
-	function scrape_time($str) {
+	private function scrape_time($str) {
 		preg_match_all('/[\d]{2}:[\d]{2}/', $str, $time);
 		return $time[0];
 	}
 	
-	function scrape_campus($str) {
+	private function scrape_campus($str) {
 		preg_match('/[\w]{3}/', $str, $campus);
 		return $campus[0];
 	}
 	
-	function scrape_room($str) {
+	private function scrape_room($str) {
 		preg_match('/[\w\d]+-[\w\d]+/', $str, $room);
 		return $room[0];
 	}
