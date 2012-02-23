@@ -2,7 +2,7 @@
 
 The scraping information are obtained by running the scrape.php controller with the corresponding course code and course number. The course information result will be scraped, and the information is stored inside of a tree structure (i.e. array of arrays) shown by the following diagram.
 
-![Tree Struture](assets/img/readme/tree-struct.png)
+![Tree Struture](https://github.com/Concordia-Pasta/Pasta-Project/raw/master/assets/img/readme/tree-struct.png)
 
 When the scraping function is called, it can be passed as an argument directly to the view page, in which every key will become a valid variable which can be displayed. __Remember that you do not need to call `$data`__. You use the key directly as the variable to echo, e.g. `$session`, or `$prerequisite`. 
 
