@@ -55,23 +55,25 @@ class Scrape extends CI_Controller {
 		preg_match("/[\d]/", $all_rows[9]->children(3)->plaintext, $credit);
 		$course['credit'] = $credit[0];
 		
-		preg_match("/([\w]{4}\s[\d]{3})+/", $all_rows[10]->children(2)->plaintext, $prerequisites);
-		$course['prerequisites'] = $prerequisites[0]; // BUG NEED TO FIX
-
+		$course['prerequisite'] = 
+			$this->scrape_prerequisite($all_rows[10]->children(2)->plaintext);
+		
 		$course['section'] = array(); // assume that there is at least one lecture
 		
 		// individual course information starts at table row 13
 		for ($i = 13; $i < sizeof($all_rows)-1; $i++) {
-			// if row contains a lecture information
-			if (preg_match("/Lect/", $all_rows[$i]->children(2)->plaintext)) {
+			// if row contains a lecture information, and lecture is not canceled
+			if (preg_match("/Lect/", $all_rows[$i]->children(2)->plaintext) &&
+				!preg_match("/Canceled/", $all_rows[$i]->children(2)->plaintext)) {
 				// create section name
 				$section_name = $this->scrape_name($all_rows[$i]->children(2)->plaintext);
 			
 				// scrape the lecture for this section
 				$course['section'][$section_name] = $this->scrape_lecture($all_rows[$i]);
 					
-			} else if (preg_match("/Tut/", $all_rows[$i]->children(2)->plaintext)) {
-				// if row contains a tutorial information
+			} else if (preg_match("/Tut/", $all_rows[$i]->children(2)->plaintext) &&
+				!preg_match("/Canceled/", $all_rows[$i]->children(2)->plaintext)) {
+				// if row contains a tutorial information, and tutorial is not canceled
 				$tutorial_section = 
 					$this->scrape_tutorial_name(
 						$all_rows[$i]->children(2)->plaintext, 
@@ -96,7 +98,7 @@ class Scrape extends CI_Controller {
 	//-------------------------------------------------------------
 	// Scrape the lecture information providing the row information
 	//-------------------------------------------------------------
-	function scrape_lecture($row) {
+	private function scrape_lecture($row) {
 		$lecture = array();
 	
 		$lecture['name'] = 
@@ -127,9 +129,8 @@ class Scrape extends CI_Controller {
 	
 	//--------------------------------------------------------------
 	// Scrape the tutorial information providing the row information
-	//--------------------------------------------------------------
-	// BUG TO BE CONSOLIDATED	
-	function scrape_tutorial($row) {
+	//--------------------------------------------------------------	
+	private function scrape_tutorial($row) {
 		$tutorial = array();
 	
 		// set section days
@@ -154,32 +155,57 @@ class Scrape extends CI_Controller {
 	//------------------------
 	// Regex helper functions
 	//------------------------
-	function scrape_name($str) {
+	private function scrape_prerequisite($str) {
+		$prerequisite = array();
+		
+		preg_match_all("/(\b[\w]{4}\s[\d]{3}([\sor]+)?)+/", $str, $capture);
+	
+		$i = 0;
+		foreach ($capture[0] as $prerequisite_group) {
+			preg_match_all(
+				"/(\b[\w]{4})\s([\d]{3})/", 
+				$prerequisite_group, 
+				$prerequisite_course
+			);
+			//print_r($prerequisite_course);
+			$prerequisite[$i] = array();
+			for($j = 0; $j < sizeof($prerequisite_course[1]); $j++) {
+				$prerequisite[$i][$j]['code'] = $prerequisite_course[1][$j];
+				$prerequisite[$i][$j]['number'] = $prerequisite_course[2][$j];
+			}
+	
+			$i++;
+		}
+	
+		return $prerequisite;
+	}
+	
+	private function scrape_name($str) {
 		preg_match("/\b[\w]{1,2}\b/", $str, $name);
 		return $name[0];
 	}
 	
-	function scrape_tutorial_name($str, $section_name) {
+	private function scrape_tutorial_name($str, $section_name) {
 		preg_match("/[^$section_name]\$/", $str, $name);
 		return $name[0];
 	}
 	
-	function scrape_day($str) {
+	private function scrape_day($str) {
 		preg_match_all('/[A-Z]/', $str, $day);
 		return $day[0];
 	}
 	
-	function scrape_time($str) {
+	private function scrape_time($str) {
 		preg_match_all('/[\d]{2}:[\d]{2}/', $str, $time);
 		return $time[0];
 	}
 	
-	function scrape_campus($str) {
+	private function scrape_campus($str) {
 		preg_match('/[\w]{3}/', $str, $campus);
 		return $campus[0];
 	}
 	
-	function scrape_room($str) {
+	private function scrape_room($str) {
 		preg_match('/[\w\d]+-[\w\d\.]+/', $str, $room);
 		return $room[0];
 	}

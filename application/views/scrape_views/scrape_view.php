@@ -6,6 +6,8 @@
 </head>
 <body>
 	<?php print_r($section); ?>
+	<br />
+	<?php print_r($prerequisite); ?>
 	<!--<div id="container">
         <?php if(isset($title)): ?>
         	<h1><?php echo $name . ' ' . $number . ': ' . $title ?></h1>
