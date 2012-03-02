@@ -60,8 +60,13 @@ class Scrape extends CI_Controller {
 		
 		$course['section'] = array(); // assume that there is at least one lecture
 		
+		$start_row = 13;
 		// individual course information starts at table row 13
-		for ($i = 13; $i < sizeof($all_rows)-1; $i++) {
+		// unless there is not a "Special Note" at row 11, children 1
+		if (!preg_match("/Special\sNote/", $all_rows[11]->children(1)->plaintext))
+			$start_row = 12;
+			
+		for ($i = $start_row; $i < sizeof($all_rows)-1; $i++) {
 			// if row contains a lecture information, and lecture is not canceled
 			if (preg_match("/Lect/", $all_rows[$i]->children(2)->plaintext) &&
 				!preg_match("/Canceled/", $all_rows[$i]->children(2)->plaintext)) {
