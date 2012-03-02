@@ -4,8 +4,7 @@ class Scrape extends CI_Controller {
 //		
 //	}
 //	
-	public function index()
-	{
+	public function index() {
 		$this->load->helper(array('url', 'form'));
 		
 		// setup form validation
