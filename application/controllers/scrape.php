@@ -1,4 +1,34 @@
 <?php
+
+/*
+ * A quick and dirty error handler to mass-test the scraper.
+ * For simple tests, this is much easier than extending CI's exception handler, which we may do in the future.
+ */
+function scrapeTestErrorHandler($errorNo, $errorMessage, $errorFile, $errorLine) {
+    $exception = new CustomException( $errorMessage, $errorNo );
+    
+    $exception->setLine($errorLine);
+    $exception->setFile($errorFile);
+    
+    throw $exception; 
+    
+    return true; // Don't go through the default exception handling.
+}
+
+/*
+ * And a custom exception handler that currectly reports the line and file.
+ * This class was provided by "errd" on the PHP documentation page for set_error_handler().
+ */
+class CustomException extends Exception { 
+    public function setLine( $exceptionLine ) {
+        $this->line = $exceptionLine;
+    } 
+     
+    public function setFile( $exceptionFile ) {
+        $this->file = $exceptionFile;
+    }
+}
+
 class Scrape extends CI_Controller {
 //	public __constructor() {
 //		
@@ -25,6 +55,56 @@ class Scrape extends CI_Controller {
 					$this->input->post("session")));
 		}
 	}
+    
+    /*
+     * A debug function that tests all courses to see how well
+     * WARNING: This func is VERY slow, since it fetches each course from the Concordia servers 1 at a time.
+     * Writes out directly to the browser, and uses deprecated HTML, but that's ok because it's purely for debugging.
+     */
+    public function testAll() {
+        // Override CI's exception handling, so we can easily output which parameters caused the scraper to fail, and procede to the next call to test.
+        $old_error_handler = set_error_handler( "scrapeTestErrorHandler", E_ALL );
+        
+        $this->config->load('pasta_constants/course_list');
+        
+        // COURSE_LIST has the format Name, Number, Title.
+        foreach ( $this->config->item('COURSE_LIST') as $courseDetails ) {
+            // With every course we have two possibilites: Fall (2) and Winter(4). Try both of them.
+            foreach ( array(2, 4) as $semester ) {
+                $exceptionsThrown = false;
+                try {
+                    $this->scrape_site( $courseDetails[0], $courseDetails[1], $semester );
+                }
+                catch ( Exception $e ) {
+                    /*
+                     * To print the exception use $e->getMessage();
+                     * We're not going to do this with this view because it would clog up the test list.
+                     * Instead, our view can provide a link to the error-generating page.
+                     */
+                    $exceptionsThrown = true;
+                    // Undefined offset 9 happens when the parser attempts to read course data for a course that isn't available that semester.
+                    if ( $e->getMessage() == "Undefined offset: 9" ) {
+                        echo '<b><font color="gray">Warning</font></b>: Course isn\'t available this semester. Parameters: ' .
+                        $courseDetails[2] . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
+                        echo "<br />\n";   
+                    }
+                    else {
+                        echo '<b><font color="red">ERROR</font></b>: "' . $e->getMessage() . '" Parameters: ' .
+                            $courseDetails[2] . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
+                        echo "<br />\n";
+                    }
+                }
+                
+                /*
+                 * If no exceptions were thrown, then we passed the test without error.
+                 */
+                if ( ! $exceptionsThrown ) {
+                    echo '<b><font color="green">PASS</font></b>: ' . $courseDetails[2] . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ') <br />' . "\n";
+                }
+            }
+        }
+        echo "<b>All courses have been tested.</b>";
+    }
 	
 	/**
 	 * Method to get the course information data
