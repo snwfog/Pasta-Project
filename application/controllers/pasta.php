@@ -32,9 +32,9 @@ class Pasta extends CI_Controller {
 	 * $static_content should hosts things like footer note, or
 	 * page title (header/footer content). - Charles
 	 */
-	public function put($content, $data) {
+	public function put($content_view, $data) {
 		$this->load->view('static/header', $data);
-		$this->load->view($content, $data);
+		$this->load->view($content_view, $data);
 		$this->load->view('static/footer', $data);
 	}
 }
