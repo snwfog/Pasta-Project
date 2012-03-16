@@ -6,7 +6,7 @@
 
 <?php echo form_open('SchedulerBuilder/listAllCourses'); ?>
     <?php foreach ($courseList as $course ):
-        echo "<input type='checkbox' name=''value=''/>".$course[2]."<br/>";
+        echo "<input type='checkbox' name=''value=''/>".$course["code"]."<br/>";
     endforeach;
     ?>
     <div><input type="submit" value="Submit" /></div>
