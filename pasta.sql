@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 15, 2012 at 07:58 PM
+-- Generation Time: Mar 15, 2012 at 08:48 PM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -66,7 +66,21 @@ CREATE TABLE IF NOT EXISTS `lab` (
   `tutorial_id` int(11) NOT NULL,
   `time_location_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `lab`
+--
+
+INSERT INTO `lab` (`id`, `section`, `tutorial_id`, `time_location_id`) VALUES
+(1, 'AC', 1, 1),
+(2, 'AC', 1, 1),
+(3, 'JC', 2, 2),
+(4, 'JC', 3, 3),
+(5, 'WC', 4, 4),
+(6, 'LC', 5, 5),
+(7, 'MC', 6, 6),
+(8, 'IC', 7, 7);
 
 -- --------------------------------------------------------
 
@@ -149,7 +163,20 @@ CREATE TABLE IF NOT EXISTS `tutorial` (
   `lecture_id` int(11) NOT NULL,
   `time_location_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `tutorial`
+--
+
+INSERT INTO `tutorial` (`id`, `section`, `lecture_id`, `time_location_id`) VALUES
+(1, 'AB', 3, 1),
+(2, 'AB', 3, 1),
+(3, 'JB', 4, 7),
+(4, 'WB', 5, 6),
+(5, 'LB', 6, 5),
+(6, 'MB', 7, 4),
+(7, 'IB', 8, 3);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
