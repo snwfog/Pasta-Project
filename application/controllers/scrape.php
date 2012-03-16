@@ -57,15 +57,27 @@ class Scrape extends CI_Controller {
 	}
     
     /*
+     * Call the scraper tester in a special mode to write out the course data as a serialized array.
+     * (super slow!)
+     */
+    public function serializeAll () {
+        $this->testAll( true, 'serialize' );
+    }
+        
+    /*
      * A debug function that tests all courses to see how well
      * WARNING: This func is VERY slow, since it fetches each course from the Concordia servers 1 at a time.
      * Writes out directly to the browser, and uses deprecated HTML, but that's ok because it's purely for debugging.
      */
-    public function testAll() {
+    public function testAll( $saveData = false, $saveFormat = 'serialize' ) {
         // Override CI's exception handling, so we can easily output which parameters caused the scraper to fail, and procede to the next call to test.
         $old_error_handler = set_error_handler( "scrapeTestErrorHandler", E_ALL );
         
         $this->config->load('pasta_constants/course_list');
+        
+        if ( $saveData && $saveFormat == 'serialize' ) {
+            $allScrapedCourses = array( );
+        }
         
         // COURSE_LIST has the format Name, Number, Title.
         foreach ( $this->config->item('COURSE_LIST') as $courseDetails ) {
@@ -73,7 +85,7 @@ class Scrape extends CI_Controller {
             foreach ( array(2, 4) as $semester ) {
                 $exceptionsThrown = false;
                 try {
-                    $this->scrape_site( $courseDetails[0], $courseDetails[1], $semester );
+                    $scrapedCourse = $this->scrape_site( $courseDetails[0], $courseDetails[1], $semester );
                 }
                 catch ( Exception $e ) {
                     /*
@@ -99,11 +111,47 @@ class Scrape extends CI_Controller {
                  * If no exceptions were thrown, then we passed the test without error.
                  */
                 if ( ! $exceptionsThrown ) {
-                    echo '<b><font color="green">PASS</font></b>: ' . $courseDetails[2] . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ') <br />' . "\n";
+                    echo '<b><font color="green">Pass</font></b>: ' . $courseDetails[2] . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ') <br />' . "\n";
+                    
+                    // Save the data. This is only called if this method was called through a different save method.
+                    if ( $saveData ) {
+                        // Later on we'll have a db format, so we can store directly to the DB.
+                        if ( $saveFormat == 'serialize' ) {
+                            if ( $semester == 2 ) {
+                                $allScrapedCourses['FALL'][] = $scrapedCourse;
+                            }
+                            else {
+                                $allScrapedCourses['WINTER'][] = $scrapedCourse;
+                            }
+                        }
+                    }
                 }
             }
         }
         echo "<b>All courses have been tested.</b>";
+        
+        // Serialized data is written out to the client
+        if ( $saveData && $saveFormat == 'serialize' ) {
+            echo "<br />\n";
+            echo "============================= <br />\n";
+            echo "Serialized scraped courses: <br />\n";
+            echo serialize( $allScrapedCourses ) . "\n";
+            echo "============================= <br />\n";
+        }
+        
+    }
+    
+    /*
+     * Read in the text file of serialized courses, unserialize it, and print it out.
+     */
+    public function showAllSerializedCourses() {
+        $this->load->helper('file');
+        
+        $s_serializedCourses = read_file('SERIALIZED_COURSES.TXT');
+        
+        $allScrapedCourses = unserialize( $s_serializedCourses );
+        
+        print_r( $allScrapedCourses );
     }
 	
 	/**
