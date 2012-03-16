@@ -42,7 +42,7 @@ ul#nav li {
 
 #footer {
 	width: 100%;
-	background-color: #fae295;
+	font-family: "Times";
 	padding: 5px;
 }
 
@@ -60,6 +60,7 @@ ul#nav li {
 
 #signup {
 	float: right;
+	font-size: 0.8em;
 }
 
 /*****************/

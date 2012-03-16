@@ -2,26 +2,44 @@
 <!-- P.A.S.T.A. main content -->
 <h1><?php echo anchor(site_url("/scrape"), "Mike's Scrape"); ?></h1>
 <h1><?php echo anchor(site_url("/courseInfo"), "Eric's Scrape"); ?></h1>
+
 <h1><?php echo anchor(site_url("/scrape/testAll"), "Scrape test all courses"); ?>. WARNING: This is takes a while!</h1>
 <h1><?php echo anchor(site_url("/scrape/showAllSerializedCourses"), "View all courses as an array"); ?> (fast!). Pro-tip: View -> source.</h1>
 
 <?php 
-	echo form_open('signup', array('id' => 'signup')); 
-	echo form_label('Student ID:', 'student_id');
-	echo form_input('student_id')."<br />";
+	echo form_open('pasta/register', array('id' => 'signup')); 
 	
+	echo form_error('student_id');
+	echo form_label('Student ID:', 'student_id');
+	echo form_input(
+			array(
+					'name' => 'student_id', 
+					'maxlength' => '7', 
+					'size' => '7',
+					'value' => set_value('student_id')))."<br />";
+
+	echo form_error('password');	
 	echo form_label('Password:', 'password');
 	echo form_password('password')."<br />";
-	
+
+	echo form_error('password_confirm');	
 	echo form_label('Confirm Password:', 'password_confirm');
 	echo form_password('password_confirm')."<br />";
 
-
+	echo form_error('first_name');
 	echo form_label('First Name:', 'first_name');
-	echo form_input('first_name')."<br />";
+	echo form_input(
+			array(
+					'name' => 'first_name',
+					'value' => set_value('first_name')))."<br />";
 
+	echo form_error('last_name');
 	echo form_label('Last Name:', 'last_name');
-	echo form_input('last_name')."<br />";
+	echo form_input(
+			array(
+					'name' => 'last_name',
+					'value' => set_value('last_name')))."<br />";
+
 
 	echo form_label('Program:', 'program');
 	echo form_dropdown('program', array(

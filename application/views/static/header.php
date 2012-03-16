@@ -23,7 +23,7 @@
 		<h1 id="top">Welcome to P.A.S.T.A.</h1>
 		<h5 id="caption">Personal Academic Schedule Timetable Arranger</h5>
 		<ul id="nav">
-			<li><a href="">login</a></li>
+			<li><?php echo anchor(site_url("/login"), "login"); ?></li>
 			<li><a href="">stats</a></li>
 		</ul>
 	</div>
