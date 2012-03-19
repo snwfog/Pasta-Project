@@ -16,7 +16,7 @@ class Course extends CI_Model{
         trigger_error('setInteger expected Argument 1 to be Integer', E_USER_WARNING);
       }
       $query = $this->db->get_where('course', array('id' => $id));
-      return $query->result_array();
+      return $query->row_array(); //row_array returns a single result in a pure array. Better for generating single results.
     }
 
     function find_by_code($code)
@@ -25,7 +25,7 @@ class Course extends CI_Model{
         trigger_error('setString expected Argument 1 to be String', E_USER_WARNING);
       }
       $query = $this->db->get_where('course', array('code' => $code));
-      return $query->result_array();
+      return $query->result_array(); //result_array() return multiple result in a pure array.
     }
 
     function find_by_code_number($code, $number)
@@ -37,7 +37,7 @@ class Course extends CI_Model{
         trigger_error('setString expected Argument 2 to be Integer', E_USER_WARNING);
       }
       $query = $this->db->get_where('course', array('code' => $code, 'number' => $number));
-      return $query->result_array();
+      return $query->row_array(); // used row_array() because there is no two record with same code and number.
     }
 }
 ?>
