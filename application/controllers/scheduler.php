@@ -8,3 +8,5 @@ class Scheduler extends CI_Controller {
 	}
 
 }
+
+?>
