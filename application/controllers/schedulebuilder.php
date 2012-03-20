@@ -1,6 +1,6 @@
 <?php
 
-class SchedulerBuilder extends CI_Controller{
+class ScheduleBuilder extends CI_Controller{
 
 
 	public function listAllCourses()
@@ -36,19 +36,19 @@ class SchedulerBuilder extends CI_Controller{
       $courses = array(2,4,5,8,9); //TEMPORARY: dummy entry of courses id.
       foreach($courses as $course):
         $course_detail[$i] = $this->course_model->find_by_id($course);
-        //$course_detail[$i]["lecture"]= $this->get_lecture($course);
+        $course_detail[$i]["lecture"]= $this->get_lecture($course);
         $i++;
-        print_r($course_detail);
       endforeach;
+      print_r($course_detail);
     }
 
     private function get_lecture($course_id)
     {
-      //$this->load->model('lecture', 'lecture_model');
-      //$lectures = $this->lecture_model->find_by_course_id($course_id);
+      $this->load->model('lecture', 'lecture_model');
+      return $lectures = $this->lecture_model->find_by_course_id($course_id);
       //foreach($lectures as $lecture):
-      //    $lecture["tutorials"] = $this->get_tutorials($lecture["id"]);
-      //endforeach
+          //$lecture["tutorials"] = $this->get_tutorials($lecture["id"]);
+      //endforeach;
     }
 
     private function get_tutorial($lecture_id)
