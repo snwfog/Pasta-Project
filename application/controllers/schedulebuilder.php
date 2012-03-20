@@ -5,11 +5,13 @@ class ScheduleBuilder extends CI_Controller{
 
 	public function listAllCourses()
 	{
-        $this->load->helper('form');
+		$this->load->helper(array('form', 'url'));
+		$this->load->helper('form');
         $this->load->model('course', 'course_model');
         $data = array('courseList' => $this->course_model->get_all_courses());
         $this->load->view('listAllCourses.php', $data);
 	}
+
 
     public function list_all_allowed_courses()
     {
@@ -19,11 +21,11 @@ class ScheduleBuilder extends CI_Controller{
       //4. Function returns an array of courses that student meets the requirement.
     }
 
-
     
     public function generate_schedule(/*array of course id*/)
     {
-     $course_data = $this->get_course_detail();
+     $courses = $this->input->post("course");
+     $course_data = $this->get_course_detail($courses);
      //use $course_data to call another function that build an array of all possible course combination
      //load view to display combination of courses
     }

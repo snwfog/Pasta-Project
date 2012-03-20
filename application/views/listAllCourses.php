@@ -4,11 +4,11 @@
 </head>
 <body>
 
-<?php echo form_open('SchedulerBuilder/listAllCourses'); ?>
-    <?php foreach ($courseList as $course ):
-        echo "<input type='checkbox' name=''value=''/>".$course["code"]."<br/>";
-    endforeach;
-    ?>
+<?php echo form_open('ScheduleBuilder/generate_schedule'); ?>
+    <?php foreach ($courseList as $course ): ?>
+        <!-- course[] will keep an array of all values that are checked --!>
+        <input type='checkbox' name='course[]' value=<?php echo $course["id"];?> /> <?php echo $course["code"]?> <br/>
+    <?php endforeach; ?>
     <div><input type="submit" value="Submit" /></div>
 </form>
 
