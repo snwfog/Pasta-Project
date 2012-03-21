@@ -31,15 +31,16 @@ class ScheduleBuilder extends CI_Controller{
     }
 
 
-    private function get_course_detail(/*$courses*/)
+    private function get_course_detail($courses)
     {
-      $i=0;
       $this->load->model('course', 'course_model');
-      $courses = array(2,4,5,8,9); //TEMPORARY: dummy entry of courses id.
+      $course_detail = array();
       foreach($courses as $course):
-        $course_detail[$i] = $this->course_model->find_by_id($course);
-        $course_detail[$i]["lecture"]= $this->get_lecture($course);
-        $i++;
+        settype($course, 'integer');
+        $the_course = $this->course_model->find_by_id($course);
+        $the_course['lectures'] = $this->get_lecture($course);
+        array_push($course_detail,$the_course);
+
       endforeach;
       print_r($course_detail);
     }
