@@ -1,10 +1,17 @@
 <div id="content">
 <!-- P.A.S.T.A. main content -->
-<h1><?php echo anchor(site_url("/scrape"), "Mike's Scrape"); ?></h1>
-<h1><?php echo anchor(site_url("/courseInfo"), "Eric's Scrape"); ?></h1>
+<h1><?php echo anchor(site_url("/scrape"), "Scrape Course Form"); ?></h1>
+<h1><?php echo anchor(site_url("/courseInfo"), "Scraped Course List"); ?></h1>
 
-<h1><?php echo anchor(site_url("/scrape/testAll"), "Scrape test all courses"); ?>. WARNING: This is takes a while!</h1>
-<h1><?php echo anchor(site_url("/scrape/showAllSerializedCourses"), "View all courses as an array"); ?> (fast!). Pro-tip: View -> source.</h1>
+<h1><?php echo anchor(
+		site_url("/scrape/testAll"), 
+		"Test scrape on all courses"); 
+	?>. WARNING: This is takes a while!</h1>
+
+<h1><?php echo anchor(
+		site_url("/scrape/showAllSerializedCourses"), 
+		"View all courses as an array"); 
+	?> (fast!). Pro-tip: Right Click -> View Source Code (for a formatted array view).</h1>
 
 <?php 
 	echo form_open('pasta/register', array('id' => 'signup')); 
@@ -12,11 +19,13 @@
 	echo form_error('student_id');
 	echo form_label('Student ID:', 'student_id');
 	echo form_input(
-			array(
-					'name' => 'student_id', 
-					'maxlength' => '7', 
-					'size' => '7',
-					'value' => set_value('student_id')))."<br />";
+		array(
+			'name' => 'student_id', 
+			'maxlength' => '7', 
+			'size' => '7',
+			'value' => set_value('student_id')
+		)
+	) . "<br />";
 
 	echo form_error('password');	
 	echo form_label('Password:', 'password');

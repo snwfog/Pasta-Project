@@ -6,7 +6,6 @@
  */
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-
 /**
  * Pasta main controller
  * Author: Charles

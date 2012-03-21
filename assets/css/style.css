@@ -46,6 +46,14 @@ ul#nav li {
 	padding: 5px;
 }
 
+#footer hr {
+	border-right: medium none;
+	border-top: #9a1729 1px dashed;
+	border-left: medium none;
+	border-bottom: medium none; 
+	height: 1px;
+}
+
 
 #content {
 	position: relative;
