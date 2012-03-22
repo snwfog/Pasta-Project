@@ -15,7 +15,7 @@ class Pasta extends CI_Controller {
 		parent::__construct();	
 		
 		// load helper function
-		$this->load->helper(array('url', 'form'));	
+		$this->load->helper(array('url', 'form', 'date'));	
 		// load form validation
 		$this->load->library('form_validation');	
 	}	
