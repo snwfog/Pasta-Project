@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 22, 2012 at 05:42 PM
+-- Generation Time: Mar 22, 2012 at 06:39 PM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `completed_courses` (
   `student_id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `completed_courses`
@@ -44,7 +44,8 @@ INSERT INTO `completed_courses` (`id`, `student_id`, `course_id`) VALUES
 (4, 3, 7),
 (5, 3, 9),
 (6, 3, 10),
-(7, 3, 11);
+(7, 3, 11),
+(8, 4, 3);
 
 -- --------------------------------------------------------
 
@@ -176,7 +177,17 @@ CREATE TABLE IF NOT EXISTS `prerequisites` (
   `course_id` int(11) NOT NULL,
   `required_course_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `prerequisites`
+--
+
+INSERT INTO `prerequisites` (`id`, `course_id`, `required_course_id`) VALUES
+(1, 2, 9),
+(2, 10, 12),
+(3, 13, 8),
+(4, 13, 1);
 
 -- --------------------------------------------------------
 
