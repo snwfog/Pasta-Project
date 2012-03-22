@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 22, 2012 at 06:42 PM
+-- Generation Time: Mar 22, 2012 at 06:59 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -144,6 +144,7 @@ CREATE TABLE IF NOT EXISTS `prerequisite` (
 
 CREATE TABLE IF NOT EXISTS `schedule` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `student_id` int(11) NOT NULL,
   `season` int(11) NOT NULL,
   `year` int(11) NOT NULL,
   `course_id` int(11) NOT NULL,
