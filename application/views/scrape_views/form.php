@@ -8,7 +8,7 @@
 <!-- <?php echo validation_errors(); ?> -->
 
 
-<?php echo form_open('scrape'); ?>
+<?php echo form_open('SchedulerBuilder/listAllCourses'); ?>
     <h2>Course Code</h2>
     <?php echo form_error('course_code'); ?>
     <input type="text" name="course_code" value="" size="10" maxlength="4" />

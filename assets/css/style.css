@@ -1,7 +1,85 @@
-/**
- * This style page should be the main styling area.
- */
+* {
+	font-family: "Helvetica Neue", "Helvetica";
+}
 
-h1 {
-	font-size: 20pt;
+h1#top {
+	font-size: 2em;
+	font-weight: bold;
+	color: #9a1729;
+	text-shadow: 2px 2px rgba(255, 255, 255, 1);
+}
+
+h5#caption {
+	font-size: 1em;
+	color: #9a1729;
+	text-shadow: 1px 1px rgba(255, 255, 255, 1);
+}
+
+#outter {
+	max-width: 780px;
+	margin: 0px auto;
+}
+
+#header {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	padding: 5px;
+	background-color: #fae295;
+}
+
+ul#nav {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+}
+
+ul#nav li {
+	float: left;
+	list-style: none;
+	margin: 0px 5px;
+}
+
+#footer {
+	width: 100%;
+	font-family: "Times";
+	padding: 5px;
+}
+
+#footer hr {
+	border-right: medium none;
+	border-top: #9a1729 1px dashed;
+	border-left: medium none;
+	border-bottom: medium none; 
+	height: 1px;
+}
+
+
+#content {
+	position: relative;
+	overflow: hidden;
+	padding: 5px;
+}
+
+#description {
+	width: 65%;
+	float: left;
+}
+
+#signup {
+	float: right;
+	font-size: 0.8em;
+}
+
+/*****************/
+/* Media Queries */
+/*****************/
+@media screen and (max-width: 780px) {
+	#description {
+		width: 100%;
+	}
+	
+	#signup {
+		float: left;
+	}
 }

@@ -52,7 +52,11 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database');
+// database is automatically loaded, hence you do not need to call
+// $this->load->database() whenever you need to access to the database
+// which its configuration files are stored inside of the the
+// config/database.php. - Charles
+$autoload['libraries'] = array('database', 'datamapper', 'encrypt');
 
 
 /*
@@ -109,7 +113,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array();
+// $autoload['model'] = array();
 
 
 /* End of file autoload.php */
