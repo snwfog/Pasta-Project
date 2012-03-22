@@ -342,6 +342,12 @@ class Scrape extends CI_Controller {
 		return $room[0];
 	}
 	
+	private function testAddtoDB(){
+	echo "dfasdfdsafdsfadsafdsafdsafds";
+	}
+	
+	
+	
 	//------------------------------
 	// End of regex helper functions
 	//------------------------------

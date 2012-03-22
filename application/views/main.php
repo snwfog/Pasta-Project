@@ -12,6 +12,14 @@
 		site_url("/scrape/showAllSerializedCourses"), 
 		"View all courses as an array"); 
 	?> (fast!). Pro-tip: Right Click -> View Source Code (for a formatted array view).</h1>
+<!--
+
+<h1><?php echo anchor(
+		site_url("/scrape/testAddtoDB"), 
+		"test"); 
+	?> sup.</h1>-->
+
+
 
 <?php 
 	echo form_open('pasta/register', array('id' => 'signup')); 
