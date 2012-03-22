@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 22, 2012 at 06:59 PM
+-- Generation Time: Mar 22, 2012 at 07:44 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -162,10 +162,11 @@ CREATE TABLE IF NOT EXISTS `schedule` (
 
 CREATE TABLE IF NOT EXISTS `time_location` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `time` varchar(255) NOT NULL,
+  `start_time` int(11) NOT NULL,
+  `end_time` int(11) NOT NULL,
   `campus` varchar(6) NOT NULL,
   `room` varchar(10) NOT NULL,
-  `day` varchar(5) NOT NULL,
+  `day` set('M','T','W','J','F') NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
@@ -173,14 +174,14 @@ CREATE TABLE IF NOT EXISTS `time_location` (
 -- Dumping data for table `time_location`
 --
 
-INSERT INTO `time_location` (`id`, `time`, `campus`, `room`, `day`) VALUES
-(1, '1345-1430', 'SGW', 'H-400', 'M-W--'),
-(2, '0845-1015', 'sgw', 'H-626', '-T-T-'),
-(3, '0845-1015', 'sgw', 'H-626', '-T-T-'),
-(4, '0915-1145', 'SGW', 'MB-11.55', '-T-T-'),
-(5, '1215-1330', 'sgw', 'H-110', 'MT---'),
-(6, '1745-2015', 'SGW', 'H-820', '-T-J-'),
-(7, '1545-1700', 'SGW', 'EV-15.100', '--W-J');
+INSERT INTO `time_location` (`id`, `start_time`, `end_time`, `campus`, `room`, `day`) VALUES
+(1, 1345, 1430, 'SGW', 'H-400', 'M,W'),
+(2, 845, 1015, 'sgw', 'H-626', 'T,J'),
+(3, 845, 1015, 'sgw', 'H-626', 'T,J'),
+(4, 915, 1145, 'SGW', 'MB-11.55', 'T,J'),
+(5, 1215, 1330, 'sgw', 'H-110', 'M,T'),
+(6, 1745, 2015, 'SGW', 'H-820', 'T,J'),
+(7, 1545, 1700, 'SGW', 'EV-15.100', 'W,J');
 
 -- --------------------------------------------------------
 
