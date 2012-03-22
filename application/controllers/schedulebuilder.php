@@ -1,12 +1,15 @@
 <?php
 
 class ScheduleBuilder extends CI_Controller{
+    
+    function __constructor(){
+      parent::__contructor();
+    }
 
 
 	public function listAllCourses()
 	{
 		$this->load->helper(array('form', 'url'));
-		$this->load->helper('form');
         $this->load->model('course', 'course_model');
         $data = array('courseList' => $this->course_model->get_all_courses());
         $this->load->view('listAllCourses.php', $data);
@@ -16,7 +19,11 @@ class ScheduleBuilder extends CI_Controller{
     public function list_all_allowed_courses()
     {
       //1. Get student id from session, query the student record for completed courses or from global variable.
-      //2. Retrieve all courses id with its pre-requisite.
+      $id = 3;
+      $this->load->model('CompletedCourse', 'completed_courses');
+      $this->load->model('course', 'course_model');
+      $student_completed_courses = $this->completed_courses->find_by_student_id($id);
+      $all_courses = $this->course_model->get_all_courses();
       //3. Check each courses pre-requisites against student completed courses. If not met, remove course from array.
       //4. Function returns an array of courses that student meets the requirement.
     }

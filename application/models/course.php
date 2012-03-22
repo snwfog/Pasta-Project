@@ -5,7 +5,7 @@ class Course extends CI_Model{
     function get_all_courses()
     {
       $this->db->select("id, code, number, credit");
-      $query = $this->db->get('course');
+      $query = $this->db->get('courses');
       return $query->result_array();
 
     }
@@ -15,7 +15,7 @@ class Course extends CI_Model{
       if (FALSE === is_int($id)) { // only allow id of type integer
         trigger_error('setInteger expected Argument 1 to be Integer', E_USER_WARNING);
       }
-      $query = $this->db->get_where('course', array('id' => $id));
+      $query = $this->db->get_where('courses', array('id' => $id));
       return $query->row_array(); //row_array returns a single result in a pure array. Better for generating single results.
     }
 
@@ -24,7 +24,7 @@ class Course extends CI_Model{
       if (FALSE === is_string($code)) {
         trigger_error('setString expected Argument 1 to be String', E_USER_WARNING);
       }
-      $query = $this->db->get_where('course', array('code' => $code));
+      $query = $this->db->get_where('courses', array('code' => $code));
       return $query->result_array(); //result_array() return multiple result in a pure array.
     }
 
@@ -36,7 +36,7 @@ class Course extends CI_Model{
       if (FALSE === is_int($number)) {
         trigger_error('setString expected Argument 2 to be Integer', E_USER_WARNING);
       }
-      $query = $this->db->get_where('course', array('code' => $code, 'number' => $number));
+      $query = $this->db->get_where('courses', array('code' => $code, 'number' => $number));
       return $query->row_array(); // used row_array() because there is no two record with same code and number.
     }
 }
