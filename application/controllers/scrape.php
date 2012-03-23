@@ -342,11 +342,43 @@ class Scrape extends CI_Controller {
 		return $room[0];
 	}
 	
-	private function testAddtoDB(){
-	echo "dfasdfdsafdsfadsafdsafdsafds";
-	}
-	
-	
+        //------------------------
+	// add courses to the database
+	//------------------------
+        public function addCoursetoDatabase(){     
+            $con = mysql_connect("localhost","root","root");
+            if (!$con){
+                die('Could not connect: ' . mysql_error());
+            }
+            mysql_select_db("my_db", $con);
+
+            $course = 'COMP';
+            $code = '777';
+            $credit = '6';
+
+            mysql_query("INSERT INTO pasta.courses (`id`, `code`, `number`, `credit`)
+                VALUES (NULL, '".$course."','".$code."', '".$credit."')");
+
+            mysql_close($con);
+            print_r($course.' '.$code." has been added to the table of courses.");
+        }
+        
+        
+        public function viewTableCourses(){
+            $query = $this->db->query("select * from pasta.courses");
+
+if ($query->num_rows() > 0)
+{
+   foreach ($query->result() as $row)
+   {
+      echo $row->id;echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ";
+      echo $row->code;echo "  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+      echo $row->number;echo " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ";
+      echo $row->credit;echo " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ";
+      echo "<br/>";
+   }
+}
+        }
 	
 	//------------------------------
 	// End of regex helper functions
