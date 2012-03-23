@@ -10,6 +10,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * Login controller
  * Author: Charles
  */
+
 class Login extends CI_Controller {
 
 	/**
@@ -17,7 +18,7 @@ class Login extends CI_Controller {
 	 * http://stackoverflow.com/questions/
 	 * 247304/mysql-what-data-type-to-use-for-hashed-password-field-and-what-length
 	 */
-	function Login() {
+	function __construct() {
 		parent::__construct();	
 		
 		// load helper library
@@ -40,11 +41,14 @@ class Login extends CI_Controller {
 		$this->form_validation->set_rules(
 			'student_id', 
 			'Student ID', 
-			'required|trim|xss_clean|exact_length[7]|numeric'); 
+			'required|trim|xss_clean|exact_length[7]|numeric'
+		); 
+
 		$this->form_validation->set_rules(
 			'password', 
 			'Password', 
-			'required|trim|xss_clean|required|min_length[6]|alpha_numeric');
+			'required|trim|xss_clean|required|min_length[6]|alpha_numeric'
+		);
 
 		if ($this->form_validation->run() == FALSE) {
 			$this->index();
@@ -54,7 +58,7 @@ class Login extends CI_Controller {
 			$this->db->where('password', 
 				$this->encrypt->sha1($this->input->post('password')));
 			// perform mysql query
-			$query = $this->db->get('login');
+			$query = $this->db->get('logins');
 			if ($query->num_rows() == 1) {
 				echo "SUCCESFUL LOGIN";
 				// ------------------------------------

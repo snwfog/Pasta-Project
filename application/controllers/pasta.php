@@ -50,7 +50,7 @@ class Pasta extends CI_Controller {
 		} else {
 			// query the database to check if there 
 			// is an user with this POST student id
-			$query = $this->db->get_where('login', 
+			$query = $this->db->get_where('logins', 
 							array('student_id' => $this->input->post('student_id')));
 			// echo $query->num_rows();
 
@@ -59,7 +59,7 @@ class Pasta extends CI_Controller {
 				redirect('login', 'refresh');
 			} else {
 				echo "USER SUCCESFULLY REGISTERED";
-				$this->db->insert('login', 
+				$this->db->insert('logins', 
 							array(
 								'student_id' => $this->input->post('student_id'),
 								// store user password in sha1

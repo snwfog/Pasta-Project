@@ -6,8 +6,8 @@
 	<title><?php echo $title; ?></title>
 	
 	<!-- style -->
-	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/reset.css" />
-	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/style.css" />
+	<link rel='stylesheet' href='<?php echo base_url(); ?>assets/css/reset.css' />
+	<link rel='stylesheet' href='<?php echo base_url(); ?>assets/css/style.css' />
 
 	<!-- script -->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
