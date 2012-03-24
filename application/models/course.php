@@ -31,7 +31,7 @@ class Course extends CI_Model{
       }
       $query = $this->db->get_where('courses', array('code' => $code));
 
-      //result_array() return multiple result in a pure array.
+      // result_array() return multiple result in a pure array.
       return $query->result_array(); 
     }
 
@@ -42,6 +42,18 @@ class Course extends CI_Model{
       // use row_array() because there 
       // is no two record with same code and number.
       return $query->row_array(); 
+    }
+
+    // Overload find_by_code_number function taking course code 
+    // and number as an array
+    function find_by_code_number_array($course) {
+      // If $course array has "code" and "number" key, search for that
+      // Else assume "0" is code and "1" is number.
+      if (array_key_exists('code', $course) &&
+         array_key_exists('number', $course))
+        return $this->find_by_code_number($course['code'], $course['number']);
+      else
+        return $this->find_by_code_number($course['0'], $course['1']);
     }
 }
 ?>
