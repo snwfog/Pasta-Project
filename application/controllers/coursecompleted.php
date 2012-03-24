@@ -11,12 +11,6 @@ class CourseCompleted extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		
-		// load helper library
-		$this->load->helper(array('url', 'form'));
-
-		// load form validation
-		$this->load->library('form_validation');
-
 		// load all of the course constants
 		$this->config->load('pasta_constants/soft_eng_courses');
 	}
@@ -24,6 +18,9 @@ class CourseCompleted extends CI_Controller {
 	public function index() {
 
 		$data['title'] = "Course Registration Form";
+		// $data['soft_eng_courses'] = $this->config->item('soft_eng_courses');
+		//$data['soft_eng_courses'] = $this->table->generate(
+		//				 	$this->db->query("SELECT * FROM courses"));
 		
 		$this->put('courseCompleted', $data);
 	}

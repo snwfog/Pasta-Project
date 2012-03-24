@@ -5,7 +5,7 @@
 * beginning his semester in September.
 */
 	
-$config['course_sequence'] = array(
+$config['soft_eng_courses'] = array(
 	// Year 1
 	"1" => array(
 		// Fall
