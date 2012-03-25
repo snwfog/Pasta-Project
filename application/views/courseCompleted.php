@@ -2,4 +2,6 @@
 
 <p>Please select the course that you have completed.</p>
 
+<?php print_r($SOEN); ?>
+
 </div>

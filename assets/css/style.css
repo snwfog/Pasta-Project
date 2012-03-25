@@ -71,6 +71,18 @@ ul#nav li {
 	font-size: 0.8em;
 }
 
+/**
+ * Course Selection Page Table
+ * See: application/controller/coursecompleted
+ */
+
+#course_selection_table, 
+#course_selection_table tr,
+#course_selection_table td {
+	border: 1px solid black;
+}
+
+
 /*****************/
 /* Media Queries */
 /*****************/

@@ -55,5 +55,28 @@ class Course extends CI_Model{
       else
         return $this->find_by_code_number($course['0'], $course['1']);
     }
+
+    /*------------------------------------------------------*/
+    /* Insert course information functions
+    /*------------------------------------------------------*/
+    function insert_course($course) {
+        // initialize course variables
+        $course_variables = array(
+            'code'    => NULL,
+            'number'  => NULL,
+            'title'   => NULL,
+            'credit'  => NULL
+        );
+
+        // since the course is assumed to be fed as an array, we check if particular
+        // array key exists, if not, the value remains null
+        foreach ($course as $variable => $value)
+            if (array_key_exists($variable, $course)) 
+                $course_variables[$variable] = $course[$variable];
+
+        // insert the value into the table
+        $this->db->insert('courses', $course_variables);
+    }
+
 }
 ?>

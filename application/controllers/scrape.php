@@ -62,9 +62,12 @@ class Scrape extends CI_Controller {
 //		
 //	}
 //	
+
+
+
 	public function index() {
 		$this->load->helper(array('url', 'form'));
-		
+
 		// setup form validation
 		$this->load->library('form_validation');	
 		$this->form_validation->set_rules('course_code', 'Course Code', 'required|trim|xss_clean|exact_length[4]|alpha');
@@ -181,6 +184,25 @@ class Scrape extends CI_Controller {
         
         print_r( $allScrapedCourses );
     }
+
+
+    // TESTING METHOD
+    public function dummy_insert() {
+        $this->load->helper('file');
+        $all_courses = unserialize(read_file('SERIALIZED_COURSES.TXT'));
+        $this->load->model('TimeLocation', 'time_locations_table');
+
+        $this->time_locations_table->insert_time_location($all_courses['FALL']['3']['section']['F']);
+
+        // $this->load->model('Course', 'courses_table');
+
+        // $dummy_course = array(
+        //     'code'  => 'DUMM',
+        //     'number' => '111',
+        // );
+
+        // $this->courses_table->insert_course($dummy_course);
+    }
     
     // TODO: Remember to parse the time; just remvoe ':'.
     public function generateInsertStatements() {
@@ -221,9 +243,11 @@ class Scrape extends CI_Controller {
                 $newWinterCourse = true;
                 if ( $seasonID == 4 ) {
                     //$seasonID = 4; // DO NOTHING. TODO: Check the FALL array for the course.
-                    // Check if the course is already in the fall list, and if it is, use that one's primary key.
+                    // Check if the course is already in the fall list
+                    // and if it is, use that one's primary key.
                     foreach ( $allScrapedCourses['FALL'] as $fallCourse ) {
-                        if ( ($course['code'] == $fallCourse['code']) && ($course['number'] == $fallCourse['number']) ) {
+                        if ( ($course['code'] == $fallCourse['code']) && 
+                             ($course['number'] == $fallCourse['number']) ) {
                             // The course is already listed.
                             $newWinterCourse = false;
                             //$coursePrimaryKey = $COURSE_PRIM_KEYS[$course['code']][$course['number']];
@@ -237,17 +261,23 @@ class Scrape extends CI_Controller {
                     $courseQryData = array(
                         'code' => $course['code'],
                         'number' => $course['number'],
+                        'title' => $course['title'],
                         'credit' => $course['credit'],
                     );
                     $this->db->insert( 'courses', $courseQryData );
                     
                     $coursePrimaryKey = $this->db->insert_id();
-                    $COURSE_PRIM_KEYS[$course['code']][$course['number']] = $coursePrimaryKey; // Save the primary key to the associative array, so it can be re-used during the Winter iteration.
-                    echo "Inserted " . $course['code'] . ' ' . $course['number'] . '. It has the unique id "' . $coursePrimaryKey . "\"<br />\n";
+                    // Save the primary key to the associative array 
+                    // so it can be re-used during the Winter iteration.
+                    $COURSE_PRIM_KEYS[$course['code']][$course['number']] = $coursePrimaryKey; 
+                    echo 'Inserted ' . $course['code'] .' ' . $course['number']
+                         . '. It has the unique id "' . $coursePrimaryKey . "\"<br />\n";
                 }
                 
                 if ( ! $newWinterCourse ) {
-                    echo "This course already existed: " . $course['code'] . ' ' . $course['number'] . '. It had the unique id "' . $COURSE_PRIM_KEYS[$course['code']][$course['number']] . "\"<br />\n";
+                    echo 'This course already existed: ' . $course['code']
+                         . ' ' . $course['number'] . '. It had the unique id \"'
+                         . $COURSE_PRIM_KEYS[$course['code']][$course['number']] . "\"<br />\n";
                 }                
             }
         }        
@@ -258,7 +288,8 @@ class Scrape extends CI_Controller {
         foreach ( $allScrapedCourses as $season => $semesterList ) {         
             foreach ( $semesterList as $course ) {
                 
-                $coursePrimaryKey = $COURSE_PRIM_KEYS[$course['code']][$course['number']]; // Fetch the primary key that was generate from the previous giant loop.
+                // Fetch the primary key that was generate from the previous giant loop.
+                $coursePrimaryKey = $COURSE_PRIM_KEYS[$course['code']][$course['number']]; 
                 
                 if ( $season == 'FALL' ) {
                     $seasonID = 2;
@@ -275,15 +306,19 @@ class Scrape extends CI_Controller {
                          * Course requirements only needs to be added once.
                          * If the keys are listed in REQS_INSERTED, then we've already done it.
                          */
-                        if ( ! ( array_key_exists($course['code'], $REQS_INSERTED) && array_key_exists($course['number'], $REQS_INSERTED) ) ) {
+                        if ( ! ( array_key_exists($course['code'], $REQS_INSERTED) && 
+                                 array_key_exists($course['number'], $REQS_INSERTED) ) ) {
 
                             echo "====> Requires: " . $prereq['code'] . ' ' . $prereq['number'];
-print_r( $DUMMY_COURSES );
+                            print_r( $DUMMY_COURSES );
                             // TODO: If the course is not in the DB, then create a dummy record in the DB
-                            if ( ( array_key_exists( $prereq['code'], $COURSE_PRIM_KEYS ) && array_key_exists( $prereq['number'], $COURSE_PRIM_KEYS[$prereq['code']] ) ) ||
-                                 ( array_key_exists( $prereq['code'], $DUMMY_COURSES ) && ( array_key_exists( $prereq['number'], $DUMMY_COURSES[$prereq['code']] ) ) ) ) {
+                            if ( (array_key_exists( $prereq['code'], $COURSE_PRIM_KEYS ) && 
+                                  array_key_exists( $prereq['number'], $COURSE_PRIM_KEYS[$prereq['code']])) ||
+                                 (array_key_exists( $prereq['code'], $DUMMY_COURSES ) && 
+                                 (array_key_exists( $prereq['number'], $DUMMY_COURSES[$prereq['code']])))) {
                                 
-                                if ( array_key_exists( $prereq['code'], $COURSE_PRIM_KEYS ) && array_key_exists( $prereq['number'], $COURSE_PRIM_KEYS[$prereq['code']] ) ) {
+                                if (array_key_exists( $prereq['code'], $COURSE_PRIM_KEYS ) && 
+                                    array_key_exists( $prereq['number'], $COURSE_PRIM_KEYS[$prereq['code']])) {
                                     $prereqId = $COURSE_PRIM_KEYS[$prereq['code']][$prereq['number']];
                                 }
                                 else {
@@ -298,13 +333,17 @@ print_r( $DUMMY_COURSES );
                                 $this->db->insert( 'prerequisites', $prereqQryParam );
                             }
                             else {
-                                // The prereq is a course we don't track, such as MATH 201. We need to create a dummy course record.
+                                // The prereq is a course we don't track, such as MATH 201. 
+                                // We need to create a dummy course record.
                                 echo " which is not in the db. Creating a record for it... <br />\n";
                                 
                                 $courseQryData = array(
                                     'code' => $prereq['code'],
                                     'number' => $prereq['number'],
-                                    'credit' => -1, /* -1 indicates that it is a dummy record. We don't have full info on that course. */
+                                    // 'credit' => NULL, /* -1 indicates that it is a dummy record. 
+                                    // We don't have full info on that course.
+                                    // untracked courses (credit && title) auto NULL in mysql data
+                                    // instead of -1 - Charles
                                 );
                                 $this->db->insert( 'courses', $courseQryData );
                                 // And add it to DUMMY_COURSES, so we can re-use it.
@@ -354,7 +393,8 @@ print_r( $DUMMY_COURSES );
                     
                     if ( array_key_exists( 'tutorial', $sectionDetails ) ) {
                         foreach ( $sectionDetails['tutorial'] as $tutSection => $tutDetails ) {
-                            // Create the time location qry parameters for this tut, and then insert it into the db.
+                            // Create the time location qry parameters for this tut, 
+                            // and then insert it into the db.
                             $tutTimeLocQryData = createTimeLocQryParams( $tutDetails );
                             $this->db->insert( 'time_locations', $tutTimeLocQryData );
                             $tutTimeLocPrimaryKey = $this->db->insert_id();
