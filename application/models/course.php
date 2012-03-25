@@ -47,6 +47,7 @@ class Course extends CI_Model{
     // Overload find_by_code_number function taking course code 
     // and number as an array
     function find_by_code_number_array($course) {
+      
       // If $course array has "code" and "number" key, search for that
       // Else assume "0" is code and "1" is number.
       if (array_key_exists('code', $course) &&
@@ -60,13 +61,14 @@ class Course extends CI_Model{
     /* Insert course information functions
     /*------------------------------------------------------*/
     function insert_course($course) {
-        // initialize course variables
-        $course_variables = array(
-            'code'    => NULL,
-            'number'  => NULL,
-            'title'   => NULL,
-            'credit'  => NULL
-        );
+        // Deprecated - They are defaulted in MySQL as NULL -- Charles
+        // // initialize course variables
+        // $course_variables = array(
+        //     'code'    => NULL,
+        //     'number'  => NULL,
+        //     'title'   => NULL,
+        //     'credit'  => NULL
+        // );
 
         // since the course is assumed to be fed as an array, we check if particular
         // array key exists, if not, the value remains null

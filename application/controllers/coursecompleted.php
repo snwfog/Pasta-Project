@@ -14,19 +14,37 @@ class CourseCompleted extends CI_Controller {
 		$this->config->load('pasta_constants/soft_eng_courses');
 
 		// load the model for doing queries on the courses table
-		$this->load->model('Course');
+		$this->load->model('Course', 'courses_table');
 	}
 
 	public function index() {
 		// assign constant to an attribute variable
-		$soft_eng_courses = $this->config->item('soft_eng_courses');
+		$soft_eng_courses = $this->config->item('SOFT_ENG_COURSES');
 
 		$data['title'] = "Course Registration Form";
-		
-		$data['SOEN'] = $this->Course->find_by_code_number_array(
-			$soft_eng_courses["1"]["2"]["2"]);
+
+		/*
+		 * Setting up the software engineering courses array with information
+		 */
+		foreach ($soft_eng_courses as $years => $semesters)
+			foreach($semesters as $semester => $course_lists)
+				$data['soft_eng_courses'] = 
+					$this->_get_course_information($course_lists);
 
 		$this->put('courseCompleted', $data);
+	}
+
+	/**
+	 * Get all the courses information from the `SOFT_ENG_COURSES` array
+	 */
+	private function _get_course_information($semester_or_category_list) {
+		$information_array = array();
+
+		foreach ($semester_or_category_list as $index => $course)
+			$information_array[$index] =
+				$this->courses_table->find_by_code_number_array($course);
+
+		return $information_array;
 	}
 
 	/**
@@ -34,9 +52,22 @@ class CourseCompleted extends CI_Controller {
 	 * with the "soft_eng_courses" constants file.
 	 */
 
-	//private function _query_course_information($course) {
-	//	$course_title = 
-	//}
+	// private function _query_course_information($course) {
+	// 	$course_information = array(
+	// 		"id" 		=> NULL,
+	// 		"code" 		=> NULL,
+	// 		"number" 	=> NULL,
+	// 		"title" 	=> NULL,
+	// 		"credit" 	=> NULL
+	// 	);
+
+	// 	// Do query to database
+	// 	foreach ($this->courses_table->find_by_code_number_array($course) as
+	// 			 $key => $value)
+	// 		if (isset($value))
+	// 			$course_information
+
+	// }
 
 	/**
 	 * Basic page display, $content should be the main content page,
