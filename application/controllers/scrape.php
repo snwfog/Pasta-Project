@@ -105,13 +105,44 @@ class Scrape extends CI_Controller {
         $old_error_handler = set_error_handler( "scrapeTestErrorHandler", E_ALL );
         
         $this->config->load('pasta_constants/course_list');
+        $this->config->load('pasta_constants/option_courses');
         
         if ( $saveData && $saveFormat == 'serialize' ) {
             $allScrapedCourses = array( );
         }
         
+        $ALL_COURSES = $this->config->item('COURSE_LIST');
+        
+        // Merge option courses
+        // option_courses has a different format from course_list.
+        // It is grouped by subjects, such as "Basic Science", "General Electives", etc.
+        // There are even sub groups, such as "Technical Electives" => "Computer Games (CG)" => course list.
+        foreach ( $this->config->item('OPTION_COURSES') as $groupName => $groupCourses ) {
+            // Check the first element in the group course list.
+            // If that element is an array containing 2 items, then it is a course.
+            // If it isn't, then our groupCourseList has sub-groups that contain course lists.
+            if ( (array_key_exists(0, $groupCourses)) && (count( $groupCourses[0] ) == 2) ) {
+                echo "Merging $groupName into the course list.<br />\n";
+                $ALL_COURSES = array_merge( $ALL_COURSES, $groupCourses );
+            }
+            else {
+                foreach ( $groupCourses as $subGroup => $subGroupCourses ) {
+                    echo "Merging $groupName/$subGroup into the course list.<br />\n";
+                    $ALL_COURSES = array_merge( $ALL_COURSES, $subGroupCourses );
+                }
+            }
+        }
+        
         // COURSE_LIST has the format Name, Number, Title.
-        foreach ( $this->config->item('COURSE_LIST') as $courseDetails ) {
+        foreach ( $ALL_COURSES as $courseDetails ) {
+        
+            if ( array_key_exists(2, $courseDetails) ) {
+                $courseTitle = $courseDetails[2];
+            }
+            else {
+                $courseTitle = "N/A (OTHER_COURSES)";
+            }
+        
             // With every course we have two possibilites: Fall (2) and Winter(4). Try both of them.
             foreach ( array(2, 4) as $semester ) {
                 $exceptionsThrown = false;
@@ -128,12 +159,12 @@ class Scrape extends CI_Controller {
                     // Undefined offset 9 happens when the parser attempts to read course data for a course that isn't available that semester.
                     if ( $e->getMessage() == "Undefined offset: 9" ) {
                         echo '<b><font color="gray">Warning</font></b>: Course isn\'t available this semester. Parameters: ' .
-                        $courseDetails[2] . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
+                        $courseTitle . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
                         echo "<br />\n";   
                     }
                     else {
                         echo '<b><font color="red">ERROR</font></b>: "' . $e->getMessage() . '" Parameters: ' .
-                            $courseDetails[2] . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
+                            $courseTitle . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
                         echo "<br />\n";
                     }
                 }
@@ -142,7 +173,7 @@ class Scrape extends CI_Controller {
                  * If no exceptions were thrown, then we passed the test without error.
                  */
                 if ( ! $exceptionsThrown ) {
-                    echo '<b><font color="green">Pass</font></b>: ' . $courseDetails[2] . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ') <br />' . "\n";
+                    echo '<b><font color="green">Pass</font></b>: ' . $courseTitle . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ') <br />' . "\n";
                     
                     // Save the data. This is only called if this method was called through a different save method.
                     if ( $saveData ) {

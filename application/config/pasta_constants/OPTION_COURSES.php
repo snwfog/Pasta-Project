@@ -149,5 +149,5 @@ $config['OPTION_COURSES'] = array(
 			array('ENGR', '411'),
 		),	
 	),
-),
+);
 ?>
