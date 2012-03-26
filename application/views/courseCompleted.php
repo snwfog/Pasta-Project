@@ -1,34 +1,44 @@
-<html>
-<head>
-<title> P.A.S.T.A. </title>
-</head>
-<body>
+<div id="content">
 
-<?php
+<p>Please select the course that you have completed.</p>
 
-	$sql = "SELECT * FROM Courses";
-	$result = mysql_query($sql, $connection);
-?>
-<table>
-<tr><td>Course Number</td><td>Course Name</td><td>Credits</td></tr>
-<?php
+<?php echo form_open('coursecompleted/submit'); ?>
 
-	while($row = mysql_fetch_assoc($result)) {
-?>
-		<tr>
-		<td><? echo $row["courseNum"]; ?></td>
-		<td><? echo $row["courseName"]; ?></td>
-		<td><? echo $row["credits"]; ?></td>
-		<td><form><input type="checkbox" name="<? echo $row["courseNum"];?>" value="<? echo $row["courseNum"];?>" /></form></td>
-		</tr>
-<?php
-
-};
-?>
-</table>		
+	<table id="course_selection_table">
+	<?php foreach($soft_eng_courses as $year => $semesters): ?>
+		<tr><td colspan='5'><h1><?="Year " . $year?></h1></td></tr>
+		<?php foreach($semesters as $semester => $course_list): ?>
+			<tr><td colspan='5'><h2><?=$semester?></h2></td></tr>
+			<?php foreach($course_list as $course): ?>
+				<tr>
+					<td><?php echo (isset($course['code']) ? 
+										$course['code'] : "Unknown")?></td>
+					<td><?php echo (isset($course['number']) ? 
+										$course['number'] : "Unknown")?></td>
+					<td><?php echo (isset($course['title']) ? 
+										$course['title'] : "Unknown")?></td>
+					<td><?php echo (isset($course['credit']) ? 
+										$course['credit'] : "Unknown")?></td>
+					<td><?php echo form_checkbox(
+									'completed_courses[]', 
+									(isset($course['id']) ? $course['id'] : "-1"), 
+									FALSE); ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		<?php endforeach; ?>	
+	<?php endforeach; ?>
 	
-					
-
-</body>
-</html>
+	<tr>
+		<td colspan="4" style="text-align: right">
+			<?=form_reset('reset', 'Clear');?>
+		</td>
+		<td><?=form_submit('submit', 'Continue');?></td>
+	</tr>
+	</table>
 	
+	
+	
+</form>
+
+</div>

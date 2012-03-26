@@ -29,14 +29,45 @@ class CustomException extends Exception {
     }
 }
 
+function createTimeLocQryParams( $details ) {
+    /*
+     * Get the Date/Time/Location details and add them to the db.
+     */
+     $dayStr = '';
+    foreach ( $details['day'] as $day ) {
+        echo "====> Occurs on " . $day . "<br />\n";
+        $dayStr .= $day . ',';
+    }
+    
+    $startTime = str_replace( ':','', $details['time'][0] );
+    $endTime = str_replace( ':','', $details['time'][1] );
+    
+    echo "====> Start: " . $startTime . "<br />\n";
+    echo "====> End: " . $endTime . "<br />\n";
+    
+    $timeLocQryData = array(
+        'start_time' => $startTime,
+        'end_time' => $endTime,
+        'campus' => $details['campus'],
+        'room' => $details['room'],
+        'day' => $dayStr,
+    );
+    
+    return $timeLocQryData;
+}
+
+
 class Scrape extends CI_Controller {
 //	public __constructor() {
 //		
 //	}
 //	
+
+
+
 	public function index() {
 		$this->load->helper(array('url', 'form'));
-		
+
 		// setup form validation
 		$this->load->library('form_validation');	
 		$this->form_validation->set_rules('course_code', 'Course Code', 'required|trim|xss_clean|exact_length[4]|alpha');
@@ -56,6 +87,10 @@ class Scrape extends CI_Controller {
 		}
 	}
     
+    public function debug( $courseCode, $courseName, $session ) {
+        $this->load->view( '/scrape_views/scrape_view', $this->scrape_site($courseCode, $courseName, $session) );
+    }
+    
     /*
      * Call the scraper tester in a special mode to write out the course data as a serialized array.
      * (super slow!)
@@ -74,13 +109,56 @@ class Scrape extends CI_Controller {
         $old_error_handler = set_error_handler( "scrapeTestErrorHandler", E_ALL );
         
         $this->config->load('pasta_constants/course_list');
+        $this->config->load('pasta_constants/option_courses');
+        $this->config->load('pasta_constants/soft_eng_courses');
         
         if ( $saveData && $saveFormat == 'serialize' ) {
             $allScrapedCourses = array( );
         }
         
+        $ALL_COURSES = $this->config->item('COURSE_LIST');
+        
+        // Merge option courses
+        // option_courses has a different format from course_list.
+        // It is grouped by subjects, such as "Basic Science", "General Electives", etc.
+        // There are even sub groups, such as "Technical Electives" => "Computer Games (CG)" => course list.
+        foreach ( $this->config->item('OPTION_COURSES') as $groupName => $groupCourses ) {
+            // Check the first element in the group course list.
+            // If that element is an array containing 2 items, then it is a course.
+            // If it isn't, then our groupCourseList has sub-groups that contain course lists.
+            if ( (array_key_exists(0, $groupCourses)) && (count( $groupCourses[0] ) == 2) ) {
+                echo "Merging $groupName into the course list.<br />\n";
+                $ALL_COURSES = array_merge( $ALL_COURSES, $groupCourses );
+            }
+            else {
+                foreach ( $groupCourses as $subGroup => $subGroupCourses ) {
+                    echo "Merging $groupName/$subGroup into the course list.<br />\n";
+                    $ALL_COURSES = array_merge( $ALL_COURSES, $subGroupCourses );
+                }
+            }
+        }
+        
+        /*
+         * Merge soft_eng_courses into the course list.
+         * Soft eng courses is grouped by year, then semester, then an array of courses.
+         */
+        echo "Merging SOFT_ENG_COURSES into the course list.<br />\n";
+        foreach ( $this->config->item('SOFT_ENG_COURSES') as $year => $seasons ) {
+            foreach ( $seasons as $season => $courseList ) {
+                $ALL_COURSES = array_merge( $ALL_COURSES, $courseList );
+            }
+        }
+        
         // COURSE_LIST has the format Name, Number, Title.
-        foreach ( $this->config->item('COURSE_LIST') as $courseDetails ) {
+        foreach ( $ALL_COURSES as $courseDetails ) {
+        
+            if ( array_key_exists(2, $courseDetails) ) {
+                $courseTitle = $courseDetails[2];
+            }
+            else {
+                $courseTitle = "N/A (OTHER_COURSES)";
+            }
+        
             // With every course we have two possibilites: Fall (2) and Winter(4). Try both of them.
             foreach ( array(2, 4) as $semester ) {
                 $exceptionsThrown = false;
@@ -97,12 +175,12 @@ class Scrape extends CI_Controller {
                     // Undefined offset 9 happens when the parser attempts to read course data for a course that isn't available that semester.
                     if ( $e->getMessage() == "Undefined offset: 9" ) {
                         echo '<b><font color="gray">Warning</font></b>: Course isn\'t available this semester. Parameters: ' .
-                        $courseDetails[2] . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
+                        $courseTitle . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
                         echo "<br />\n";   
                     }
                     else {
                         echo '<b><font color="red">ERROR</font></b>: "' . $e->getMessage() . '" Parameters: ' .
-                            $courseDetails[2] . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
+                            $courseTitle . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
                         echo "<br />\n";
                     }
                 }
@@ -111,7 +189,7 @@ class Scrape extends CI_Controller {
                  * If no exceptions were thrown, then we passed the test without error.
                  */
                 if ( ! $exceptionsThrown ) {
-                    echo '<b><font color="green">Pass</font></b>: ' . $courseDetails[2] . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ') <br />' . "\n";
+                    echo '<b><font color="green">Pass</font></b>: ' . $courseTitle . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ') <br />' . "\n";
                     
                     // Save the data. This is only called if this method was called through a different save method.
                     if ( $saveData ) {
@@ -132,11 +210,15 @@ class Scrape extends CI_Controller {
         
         // Serialized data is written out to the client
         if ( $saveData && $saveFormat == 'serialize' ) {
-            echo "<br />\n";
+            $this->load->helper('file');
+            /*echo "<br />\n";
             echo "============================= <br />\n";
             echo "Serialized scraped courses: <br />\n";
             echo serialize( $allScrapedCourses ) . "\n";
-            echo "============================= <br />\n";
+            echo "============================= <br />\n";*/
+            $serializedCoursed = serialize( $allScrapedCourses );
+            write_file('SERIALIZED_COURSES.TXT', $serializedCoursed);
+            echo "Data saved to SERIALIZED_COURSES.TXT.<br />";
         }
         
     }
@@ -152,6 +234,244 @@ class Scrape extends CI_Controller {
         $allScrapedCourses = unserialize( $s_serializedCourses );
         
         print_r( $allScrapedCourses );
+    }
+
+
+    // TESTING METHOD
+    public function dummy_insert() {
+        $this->load->helper('file');
+        $all_courses = unserialize(read_file('SERIALIZED_COURSES.TXT'));
+        $this->load->model('TimeLocation', 'time_locations_table');
+
+        $this->time_locations_table->insert_time_location($all_courses['FALL']['3']['section']['F']);
+
+        // $this->load->model('Course', 'courses_table');
+
+        // $dummy_course = array(
+        //     'code'  => 'DUMM',
+        //     'number' => '111',
+        // );
+
+        // $this->courses_table->insert_course($dummy_course);
+    }
+    
+    // TODO: Remember to parse the time; just remvoe ':'.
+    public function save() {
+        $this->load->helper('file');
+        $this->load->database();
+        
+        $s_serializedCourses = read_file('SERIALIZED_COURSES.TXT');
+        
+        $allScrapedCourses = unserialize( $s_serializedCourses );
+
+        $COURSE_PRIM_KEYS = array();
+        $REQS_INSERTED = array();
+        $DUMMY_COURSES = array();
+        
+        foreach ( $allScrapedCourses as $season => $semesterList ) {
+        
+            //echo $semester . "<br />\n";
+            if ( $season == 'FALL' ) {
+                $seasonID = 2;
+            }
+            
+            if ( $season == 'WINTER' ) {
+                $seasonID = 4;
+            }
+            
+            /*
+             * Course contains two iterable items: prerequisite and section.
+             * Winter is parsed second. A course can be offered in both Fall and Winter.
+             * We don't want duplicate course names, so we should check if it already exists.
+             *   We don't need to query the database, we can check the FALL array.
+             */
+            /*
+             * First, iterate through all courses and add them to the DB.
+             * We do a second pass over all courses because we need them entered in case
+             * they are prerequisites for other courses.
+             */
+            foreach ( $semesterList as $course ) {
+                $newWinterCourse = true;
+                if ( $seasonID == 4 ) {
+                    //$seasonID = 4; // DO NOTHING. TODO: Check the FALL array for the course.
+                    // Check if the course is already in the fall list
+                    // and if it is, use that one's primary key.
+                    foreach ( $allScrapedCourses['FALL'] as $fallCourse ) {
+                        if ( ($course['code'] == $fallCourse['code']) && 
+                             ($course['number'] == $fallCourse['number']) ) {
+                            // The course is already listed.
+                            $newWinterCourse = false;
+                            //$coursePrimaryKey = $COURSE_PRIM_KEYS[$course['code']][$course['number']];
+                            break; // Stop the foreach on fall courses.
+                        }
+                    }
+                }
+                
+                if ( $seasonID == 2 || $newWinterCourse ) {
+                    // TODO: Should add the title of the course to the DB and insert it here.
+                    $courseQryData = array(
+                        'code' => $course['code'],
+                        'number' => $course['number'],
+                        'title' => $course['title'],
+                        'credit' => $course['credit'],
+                    );
+                    $this->db->insert( 'courses', $courseQryData );
+                    
+                    $coursePrimaryKey = $this->db->insert_id();
+                    // Save the primary key to the associative array 
+                    // so it can be re-used during the Winter iteration.
+                    $COURSE_PRIM_KEYS[$course['code']][$course['number']] = $coursePrimaryKey; 
+                    echo 'Inserted ' . $course['code'] .' ' . $course['number']
+                         . '. It has the unique id "' . $coursePrimaryKey . "\"<br />\n";
+                }
+                
+                if ( ! $newWinterCourse ) {
+                    echo 'This course already existed: ' . $course['code']
+                         . ' ' . $course['number'] . '. It had the unique id \"'
+                         . $COURSE_PRIM_KEYS[$course['code']][$course['number']] . "\"<br />\n";
+                }                
+            }
+        }        
+                
+        /*
+         * And now go through the courses and add all their details.
+         */
+        foreach ( $allScrapedCourses as $season => $semesterList ) {         
+            foreach ( $semesterList as $course ) {
+                
+                // Fetch the primary key that was generate from the previous giant loop.
+                $coursePrimaryKey = $COURSE_PRIM_KEYS[$course['code']][$course['number']]; 
+                
+                if ( $season == 'FALL' ) {
+                    $seasonID = 2;
+                }
+            
+                if ( $season == 'WINTER' ) {
+                    $seasonID = 4;
+                }
+                
+                echo $course['code'] . ' ' . $course['number'] . "<br />\n";
+                foreach ( $course['prerequisite'] as $prereqGroup ) {
+                    foreach ( $prereqGroup as $prereq ) {
+                        /*
+                         * Course requirements only needs to be added once.
+                         * If the keys are listed in REQS_INSERTED, then we've already done it.
+                         */
+                        if ( ! ( array_key_exists($course['code'], $REQS_INSERTED) && 
+                                 array_key_exists($course['number'], $REQS_INSERTED) ) ) {
+
+                            echo "====> Requires: " . $prereq['code'] . ' ' . $prereq['number'];
+                            print_r( $DUMMY_COURSES );
+                            // TODO: If the course is not in the DB, then create a dummy record in the DB
+                            if ( (array_key_exists( $prereq['code'], $COURSE_PRIM_KEYS ) && 
+                                  array_key_exists( $prereq['number'], $COURSE_PRIM_KEYS[$prereq['code']])) ||
+                                 (array_key_exists( $prereq['code'], $DUMMY_COURSES ) && 
+                                 (array_key_exists( $prereq['number'], $DUMMY_COURSES[$prereq['code']])))) {
+                                
+                                if (array_key_exists( $prereq['code'], $COURSE_PRIM_KEYS ) && 
+                                    array_key_exists( $prereq['number'], $COURSE_PRIM_KEYS[$prereq['code']])) {
+                                    $prereqId = $COURSE_PRIM_KEYS[$prereq['code']][$prereq['number']];
+                                }
+                                else {
+                                    $prereqId = $DUMMY_COURSES[$prereq['code']][$prereq['number']];
+                                }
+                                echo ' which is primary key ' . $prereqId . "<br />\n";
+                                
+                                $prereqQryParam = array(
+                                    'course_id' => $coursePrimaryKey,
+                                    'required_course_id' => $prereqId,
+                                );
+                                $this->db->insert( 'prerequisites', $prereqQryParam );
+                            }
+                            else {
+                                // The prereq is a course we don't track, such as MATH 201. 
+                                // We need to create a dummy course record.
+                                echo " which is not in the db. Creating a record for it... <br />\n";
+                                
+                                $courseQryData = array(
+                                    'code' => $prereq['code'],
+                                    'number' => $prereq['number'],
+                                    // 'credit' => NULL, /* -1 indicates that it is a dummy record. 
+                                    // We don't have full info on that course.
+                                    // untracked courses (credit && title) auto NULL in mysql data
+                                    // instead of -1 - Charles
+                                );
+                                $this->db->insert( 'courses', $courseQryData );
+                                // And add it to DUMMY_COURSES, so we can re-use it.
+                                $DUMMY_COURSES[$prereq['code']][$prereq['number']] = $this->db->insert_id();
+                                
+                            }
+                            
+                            $REQS_INSERTED[$course['code']][$course['number']] = true;
+                        }
+                        else {
+                            echo "====> It's prereqs have already been handled.<br />\n";
+                        }
+                    }
+                }
+                
+                foreach ( $course['section'] as $courseSection => $sectionDetails ) {
+                    /*
+                     * Create the lecture record and lecture time-loc.
+                     */
+                    echo "====> Section: " . $courseSection . "<br />\n";
+                    echo "Details: ";
+                    print_r( $sectionDetails );
+                    echo "<br />\n";
+                    
+                    $timeLocQryData = createTimeLocQryParams( $sectionDetails );
+                    
+                    echo "***** QRY: *****<br />\n";
+                    print_r( $timeLocQryData );
+                    
+                    $this->db->insert( 'time_locations', $timeLocQryData );
+                    
+                    $timeLocPrimaryKey = $this->db->insert_id();
+                                        
+                    $lectureQryData = array(
+                        'section' => $courseSection,
+                        'professor' => $sectionDetails['professor'],
+                        'season' => $seasonID,
+                        'course_id' => $coursePrimaryKey,
+                        'time_location_id' => $timeLocPrimaryKey,
+                    );
+                
+                    $this->db->insert( 'lectures', $lectureQryData );
+                    $lecturePrimaryKey = $this->db->insert_id();
+                    /*
+                     * End of lecture and lecture time-loc.
+                     */
+                    
+                    if ( array_key_exists( 'tutorial', $sectionDetails ) ) {
+                        foreach ( $sectionDetails['tutorial'] as $tutSection => $tutDetails ) {
+                            // Create the time location qry parameters for this tut, 
+                            // and then insert it into the db.
+                            $tutTimeLocQryData = createTimeLocQryParams( $tutDetails );
+                            $this->db->insert( 'time_locations', $tutTimeLocQryData );
+                            $tutTimeLocPrimaryKey = $this->db->insert_id();
+                            
+                            // Create tutorial parameters with that time-loc id.
+                            $tutQryData = array(
+                                'section' => $tutSection,
+                                'lecture_id' => $lecturePrimaryKey,
+                                'time_location_id' => $tutTimeLocPrimaryKey
+                            );
+                            $this->db->insert( 'tutorials', $tutQryData );
+                            $tutPrimaryKey = $this->db->insert_id();
+                            
+                            /*
+                             * At this point we should check for the existence of a lab key,
+                             * and create a time-loc record and lab record similar to tutorials.
+                             * However, the scraper didn't return any records with labs...
+                             */
+                        }
+                    }
+                    
+                }
+            }
+        }
+
+        
     }
 	
 	/**
@@ -342,11 +662,43 @@ class Scrape extends CI_Controller {
 		return $room[0];
 	}
 	
-	private function testAddtoDB(){
-	echo "dfasdfdsafdsfadsafdsafdsafds";
-	}
-	
-	
+        //------------------------
+	// add courses to the database
+	//------------------------
+        public function addCoursetoDatabase(){     
+            $con = mysql_connect("localhost","root","root");
+            if (!$con){
+                die('Could not connect: ' . mysql_error());
+            }
+            mysql_select_db("my_db", $con);
+
+            $course = 'COMP';
+            $code = '777';
+            $credit = '6';
+
+            mysql_query("INSERT INTO pasta.courses (`id`, `code`, `number`, `credit`)
+                VALUES (NULL, '".$course."','".$code."', '".$credit."')");
+
+            mysql_close($con);
+            print_r($course.' '.$code." has been added to the table of courses.");
+        }
+        
+        
+        public function viewTableCourses(){
+            $query = $this->db->query("select * from pasta.courses");
+
+if ($query->num_rows() > 0)
+{
+   foreach ($query->result() as $row)
+   {
+      echo $row->id;echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ";
+      echo $row->code;echo "  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+      echo $row->number;echo " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ";
+      echo $row->credit;echo " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ";
+      echo "<br/>";
+   }
+}
+        }
 	
 	//------------------------------
 	// End of regex helper functions

@@ -56,7 +56,14 @@ $autoload['packages'] = array();
 // $this->load->database() whenever you need to access to the database
 // which its configuration files are stored inside of the the
 // config/database.php. - Charles
-$autoload['libraries'] = array('database', 'datamapper', 'encrypt');
+$autoload['libraries'] = array(
+	'database', 		// handle database query
+	'datamapper', 		// so far not used yet
+	'encrypt', 			// encrypt user password
+	'form_validation', 	// validate forms
+	'table', 			// generate HTML tables
+	'session'			// autload and manage user session
+);
 
 
 /*
@@ -68,7 +75,8 @@ $autoload['libraries'] = array('database', 'datamapper', 'encrypt');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array();
+$autoload['helper'] = array(
+	'url', 'form');
 
 
 /*
