@@ -14,7 +14,7 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/script.js"></script>
 
 	<!-- webfont -->
-	<link href='http://fonts.googleapis.com/css?family=Seaweed+Script' rel='stylesheet' type='text/css'>
+	<!-- <link href='http://fonts.googleapis.com/css?family=Seaweed+Script' rel='stylesheet' type='text/css'> -->
 	
 </head>
 <body>

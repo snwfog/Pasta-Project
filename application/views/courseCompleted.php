@@ -6,7 +6,7 @@
 
 	<table id="course_selection_table">
 	<?php foreach($soft_eng_courses as $year => $semesters): ?>
-		<tr><td colspan='5'><h1><?=$year?></h1></td></tr>
+		<tr><td colspan='5'><h1><?="Year " . $year?></h1></td></tr>
 		<?php foreach($semesters as $semester => $course_list): ?>
 			<tr><td colspan='5'><h2><?=$semester?></h2></td></tr>
 			<?php foreach($course_list as $course): ?>

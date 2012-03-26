@@ -25,14 +25,23 @@ class Login extends CI_Controller {
 		$this->load->helper(array('url', 'form'));	
 		
 		// load form validation
-		$this->load->library('form_validation');	
+		$this->load->library('form_validation');
+
+		// load the login model
+		$this->load->model('User', 'logins_table');
 	}	
 	
-	public function index() {	
+	public function index() {
 		$data['title'] = 'Login';
 		
-		// display the main view
-		$this->put('login', $data);
+		// check if the user is already logged in
+		if ($this->session->userdata('logged_in')) {
+			// if user is already logged in, do an immediate redirect
+			redirect('pasta', 'refresh');
+		} else {
+			// display the main view
+			$this->put('login', $data);
+		}
 	}
 	
 
@@ -54,18 +63,31 @@ class Login extends CI_Controller {
 			$this->index();
 		} else {
 			// from http://www.haughin.com/2008/02/handling-passwords-in-codeigniter/
-			$this->db->where('student_id', $this->input->post('student_id'));
-			$this->db->where('password', 
-				$this->encrypt->sha1($this->input->post('password')));
-			// perform mysql query
-			$query = $this->db->get('logins');
-			if ($query->num_rows() == 1) {
-				echo "SUCCESFUL LOGIN";
+			if ($this->logins_table->find_by_login_info(
+					$this->input->post('student_id'),
+					$this->encrypt->sha1($this->input->post('password')))) {
+
 				// ------------------------------------
-				// initialize cookies and sessions here
+				// initialize sessions
 				// ------------------------------------
+
+				$user_data = $this->logins_table->find_by_student_id(
+					$this->input->post('student_id'));
+
+				$this->session->set_userdata(array(
+					'student_id' => $user_data['student_id'],
+					'first_name' => $user_data['first_name'],
+					'last_name'  => $user_data['last_name'],
+					'logged_in'  => true
+				));
+
+				// redirect to homepage
+				redirect('pasta', 'redirect');
 			} else {
-				echo "FUCK MY LIFE";
+				echo "Sorry, we could not find you in our records. "
+				 	 . "Perhaps, should you "
+				 	 . anchor(site_url('pasta'), 'register first')
+					 . "?";
 			}
 		}
 	}

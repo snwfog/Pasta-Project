@@ -62,7 +62,7 @@ $autoload['libraries'] = array(
 	'encrypt', 			// encrypt user password
 	'form_validation', 	// validate forms
 	'table', 			// generate HTML tables
-	'session'			// manage user session
+	'session'			// autload and manage user session
 );
 
 

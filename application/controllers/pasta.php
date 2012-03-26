@@ -21,9 +21,26 @@ class Pasta extends CI_Controller {
 	}	
 	
 	public function index() {			
+		/*
+		 * Managing user session
+		 */
+		// generate custom session data
+		$session_data = array(
+			'student_id' => NULL,
+			'first_name' => NULL,
+			'last_name'  => NULL,
+			'logged_in'  => false,
+		);
+
+		// instantiate the session with new session data
+		$this->session->set_userdata($session_data);
+		/*------------------------------------------------*/
+
 		$data['title'] = 'Welcome to P.A.S.T.A.';
 		// display the main view
 		$this->put('main', $data);
+
+
 	}
 	
 	// Registration function
@@ -69,6 +86,15 @@ class Pasta extends CI_Controller {
 								'last_name' => $this->input->post('last_name'),
 								'program' => $this->input->post('program')
 								));
+				
+				// update session with appropriate information and
+				// set user to be logged in
+				$this->session->set_userdata(array(
+					'student_id' => $this->input->post('student_id'),
+					'first_name' => $this->input->post('first_name'),
+					'last_name'  => $this->input->post('last_name'),
+					'logged_in'  => true
+				));
 			}
 		}
 	}
