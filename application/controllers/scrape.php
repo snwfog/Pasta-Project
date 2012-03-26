@@ -87,6 +87,10 @@ class Scrape extends CI_Controller {
 		}
 	}
     
+    public function debug( $courseCode, $courseName, $session ) {
+        $this->load->view( '/scrape_views/scrape_view', $this->scrape_site($courseCode, $courseName, $session) );
+    }
+    
     /*
      * Call the scraper tester in a special mode to write out the course data as a serialized array.
      * (super slow!)
@@ -106,6 +110,7 @@ class Scrape extends CI_Controller {
         
         $this->config->load('pasta_constants/course_list');
         $this->config->load('pasta_constants/option_courses');
+        $this->config->load('pasta_constants/soft_eng_courses');
         
         if ( $saveData && $saveFormat == 'serialize' ) {
             $allScrapedCourses = array( );
@@ -130,6 +135,17 @@ class Scrape extends CI_Controller {
                     echo "Merging $groupName/$subGroup into the course list.<br />\n";
                     $ALL_COURSES = array_merge( $ALL_COURSES, $subGroupCourses );
                 }
+            }
+        }
+        
+        /*
+         * Merge soft_eng_courses into the course list.
+         * Soft eng courses is grouped by year, then semester, then an array of courses.
+         */
+        echo "Merging SOFT_ENG_COURSES into the course list.<br />\n";
+        foreach ( $this->config->item('SOFT_ENG_COURSES') as $year => $seasons ) {
+            foreach ( $seasons as $season => $courseList ) {
+                $ALL_COURSES = array_merge( $ALL_COURSES, $courseList );
             }
         }
         
@@ -194,11 +210,15 @@ class Scrape extends CI_Controller {
         
         // Serialized data is written out to the client
         if ( $saveData && $saveFormat == 'serialize' ) {
-            echo "<br />\n";
+            $this->load->helper('file');
+            /*echo "<br />\n";
             echo "============================= <br />\n";
             echo "Serialized scraped courses: <br />\n";
             echo serialize( $allScrapedCourses ) . "\n";
-            echo "============================= <br />\n";
+            echo "============================= <br />\n";*/
+            $serializedCoursed = serialize( $allScrapedCourses );
+            write_file('SERIALIZED_COURSES.TXT', $serializedCoursed);
+            echo "Data saved to SERIALIZED_COURSES.TXT.<br />";
         }
         
     }
@@ -236,7 +256,7 @@ class Scrape extends CI_Controller {
     }
     
     // TODO: Remember to parse the time; just remvoe ':'.
-    public function generateInsertStatements() {
+    public function save() {
         $this->load->helper('file');
         $this->load->database();
         
