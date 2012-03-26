@@ -57,7 +57,13 @@ $autoload['packages'] = array();
 // which its configuration files are stored inside of the the
 // config/database.php. - Charles
 $autoload['libraries'] = array(
-	'database', 'datamapper', 'encrypt', 'form_validation', 'table');
+	'database', 		// handle database query
+	'datamapper', 		// so far not used yet
+	'encrypt', 			// encrypt user password
+	'form_validation', 	// validate forms
+	'table', 			// generate HTML tables
+	'session'			// manage user session
+);
 
 
 /*
