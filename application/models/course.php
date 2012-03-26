@@ -9,7 +9,7 @@ class Course extends CI_Model{
       return $query->result_array();
 
     }
-    
+
     function find_by_id($id)
     {
       if (FALSE === is_int($id)) { // only allow id of type integer
@@ -39,5 +39,7 @@ class Course extends CI_Model{
       $query = $this->db->get_where('courses', array('code' => $code, 'number' => $number));
       return $query->row_array(); // used row_array() because there is no two record with same code and number.
     }
+    
+
 }
 ?>

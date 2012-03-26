@@ -23,7 +23,7 @@ class ScheduleBuilder extends CI_Controller{
       $this->load->model('CompletedCourse', 'completed_courses');
       $this->load->model('course', 'course_model');
       $student_completed_courses = $this->completed_courses->find_by_student_id($id);
-      $all_courses = $this->course_model->get_all_courses();
+      $all_courses_allowed = $this->course_model->get_all_courses_allowed($student_completed_courses);
       //3. Check each courses pre-requisites against student completed courses. If not met, remove course from array.
       //4. Function returns an array of courses that student meets the requirement.
     }
