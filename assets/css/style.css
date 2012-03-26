@@ -80,6 +80,16 @@ ul#nav li {
 #course_selection_table tr,
 #course_selection_table td {
 	border: 1px solid black;
+	padding: 5px;
+	margin: 0px auto;
+}
+
+#course_selection_table h1 {
+	font-size: 15pt;
+}
+
+#course_selection_table h2 {
+	font-size: 12pt;
 }
 
 

@@ -1,11 +1,18 @@
 <?php
-
 /**
  * Script to prevent direct URL access to this file.
  * Should include at every beginning of file.
  */
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * PASTA
+ *
+ * Controller for registration of courses that have been already taken.
+ *
+ * @package		PASTA
+ * @author		Charles Yang
+ */
 class CourseCompleted extends CI_Controller {
 
 	function __construct() {
@@ -28,14 +35,15 @@ class CourseCompleted extends CI_Controller {
 		 */
 		foreach ($soft_eng_courses as $years => $semesters)
 			foreach($semesters as $semester => $course_lists)
-				$data['soft_eng_courses'] = 
+				$data['soft_eng_courses'][$years][$semester] = 
 					$this->_get_course_information($course_lists);
 
 		$this->put('courseCompleted', $data);
 	}
 
 	/**
-	 * Get all the courses information from the `SOFT_ENG_COURSES` array
+	 * Get array of course information from an array of course list
+	 * input as an array.
 	 */
 	private function _get_course_information($semester_or_category_list) {
 		$information_array = array();
@@ -48,26 +56,12 @@ class CourseCompleted extends CI_Controller {
 	}
 
 	/**
-	 * Private function to query all the courses information from the database
-	 * with the "soft_eng_courses" constants file.
+	 * Store the core courses that this student has taken in 
+	 * completed courses table
 	 */
-
-	// private function _query_course_information($course) {
-	// 	$course_information = array(
-	// 		"id" 		=> NULL,
-	// 		"code" 		=> NULL,
-	// 		"number" 	=> NULL,
-	// 		"title" 	=> NULL,
-	// 		"credit" 	=> NULL
-	// 	);
-
-	// 	// Do query to database
-	// 	foreach ($this->courses_table->find_by_code_number_array($course) as
-	// 			 $key => $value)
-	// 		if (isset($value))
-	// 			$course_information
-
-	// }
+	public function submit() {
+		print_r($this->input->post('completed_courses'));
+	}
 
 	/**
 	 * Basic page display, $content should be the main content page,
