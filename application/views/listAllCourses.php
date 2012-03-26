@@ -7,7 +7,7 @@
 <?php echo form_open('ScheduleBuilder/generate_schedule'); ?>
     <?php foreach ($courseList as $course ): ?>
         <!-- course[] will keep an array of all values that are checked --!>
-        <input type='checkbox' name='course[]' value=<?php echo $course["id"];?> /> <?php echo $course["code"]?> <br/>
+        <input type='checkbox' name='course[]' value=<?php echo $course["id"];?> /> <?php echo $course["code"]." ".$course["number"]?> <br/>
     <?php endforeach; ?>
     <div><input type="submit" value="Submit" /></div>
 </form>

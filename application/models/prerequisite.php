@@ -1,7 +1,6 @@
 <?php
 class Prerequisite extends CI_Model{
-  //NOTE: ADD TITLE COLUMN FOR COURSE TABLE
-
+  
     function find_by_course_id($id)
     {
       if (FALSE === is_int($id)) { // only allow id of type integer

@@ -80,5 +80,38 @@ class Course extends CI_Model{
         $this->db->insert('courses', $course_variables);
     }
 
+    function get_all_courses_allowed($student_record)
+    {
+
+      $this->db->select("id, code, number, credit");
+      $courses = $this->db->get('courses')->result_array();
+      $this->load->model("prerequisite","prerequisite_model");
+      $completedCourses = $this->map_course_id($student_record);
+      foreach($courses as $key=>$course){
+        //Retrieve prerequisite for each course
+        $prerequisites = $this->prerequisite_model->find_by_course_id((int)$course["id"]);
+        foreach($prerequisites as $prerequisite){
+            //Loops through the array of prequisites for each course
+            if(isset($prerequisite["required_course_id"])){
+             //Check against student completed courses. If course does not exist in completedCourses, remove course from courses array.
+                if(!in_array($prerequisite["required_course_id"],$completedCourses)){
+                  unset($courses[$key]);
+                }
+            }
+        }
+      }
+      $courses = array_values($courses);// reindex them
+      return $courses;
+
+    }
+
+    private function map_course_id($array){
+      function return_course_id($record){ // Function within a Function: A hack for array_map callback problem with  models
+        return $record["course_id"];
+      }
+      return $courseCompleted = array_map("return_course_id", $array);
+    }
+
+
 }
 ?>
