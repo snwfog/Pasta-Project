@@ -80,13 +80,13 @@ class Course extends CI_Model{
         $this->db->insert('courses', $course_variables);
     }
 
-    function get_all_courses_allowed($student_record)
+    function get_all_courses_allowed($student_id)
     {
-
-      $this->db->select("id, code, number, credit");
-      $courses = $this->db->get('courses')->result_array();
       $this->load->model("prerequisite","prerequisite_model");
-      $completedCourses = $this->map_course_id($student_record);
+      $this->load->model('CompletedCourse', 'completed_courses');
+      $courses = $this->db->get('courses')->result_array();
+      $completedCourses = $this->completed_courses->find_by_student_id($student_id);
+      $completedCourses = $this->map_course_id($completedCourses);
       foreach($courses as $key=>$course){
         //Retrieve prerequisite for each course
         $prerequisites = $this->prerequisite_model->find_by_course_id((int)$course["id"]);

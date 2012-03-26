@@ -20,10 +20,8 @@ class ScheduleBuilder extends CI_Controller{
     {
       //1. Get student id from session, query the student record for completed courses or from global variable.
       $id = 3;
-      $this->load->model('CompletedCourse', 'completed_courses');
       $this->load->model('course', 'course_model');
-      $student_completed_courses = $this->completed_courses->find_by_student_id($id);
-      $data["courseList"] = $this->course_model->get_all_courses_allowed($student_completed_courses);
+      $data["courseList"] = $this->course_model->get_all_courses_allowed($id);
       $this->load->view('listAllCourses.php',  $data);
       //4. Function returns an array of courses that student meets the requirement.
     }
