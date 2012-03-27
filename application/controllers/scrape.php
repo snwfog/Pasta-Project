@@ -469,9 +469,7 @@ class Scrape extends CI_Controller {
                     
                 }
             }
-        }
-
-        
+        }    
     }
 	
 	/**

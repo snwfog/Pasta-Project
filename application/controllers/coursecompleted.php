@@ -22,6 +22,9 @@ class CourseCompleted extends CI_Controller {
 
 		// load the model for doing queries on the courses table
 		$this->load->model('Course', 'courses_table');
+
+		// load the model for doing queries on the completed courses table
+		$this->load->model('CompletedCourse', 'completed_courses_table');
 	}
 
 	public function index() {
@@ -44,14 +47,24 @@ class CourseCompleted extends CI_Controller {
 	/**
 	 * Get array of course information from an array of course list
 	 * input as an array.
+	 * @param: semseter_or_category_list
+	 *		   Semester is an array of courses taken in one semester.
+	 * 		   Category list is optional courses list, and electives.
 	 */
 	private function _get_course_information($semester_or_category_list) {
 		$information_array = array();
 
-		foreach ($semester_or_category_list as $index => $course)
+		foreach ($semester_or_category_list as $index => $course) {
 			$information_array[$index] =
 				$this->courses_table->find_by_code_number_array($course);
-
+			// query the database check if this course is already taken
+			// if taken then we need to put a checked box to indicate
+			// that this course is already present in the database
+			$information_array[$index]["has_taken"] = 
+				$this->completed_courses_table->has_taken(3, // DUMMY USER SESSION HERE <=======
+					$this->courses_table->get_course_id($course));
+		}
+		
 		return $information_array;
 	}
 
@@ -60,7 +73,23 @@ class CourseCompleted extends CI_Controller {
 	 * completed courses table
 	 */
 	public function submit() {
-		print_r($this->input->post('completed_courses'));
+		$updated_completed = $this->input->post('completed_courses');
+
+		// database completed courses
+		$database_completed = $this->completed_courses_table->find_by_student_id(3 // DUMMY USER SESSION HERE <=====
+			);
+
+		// // delete all values in database
+		foreach ($database_completed as $database_relations => $value) {
+			$this->completed_courses_table->delete_by_student_id(3, // DUMMY SESSION HERE AGAIN
+				$value['course_id']);
+		}
+
+		// // insert new values
+		foreach ($updated_completed as $database_relations => $value) {
+			$this->completed_courses_table->insert_by_student_id(3, // DUMMY SESSION HERE
+				$value);
+		}
 	}
 
 	/**

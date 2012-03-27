@@ -51,10 +51,20 @@ class Course extends CI_Model{
       // If $course array has "code" and "number" key, search for that
       // Else assume "0" is code and "1" is number.
       if (array_key_exists('code', $course) &&
-         array_key_exists('number', $course))
-        return $this->find_by_code_number($course['code'], $course['number']);
+          array_key_exists('number', $course))
+          return $this->find_by_code_number($course['code'], $course['number']);
       else
-        return $this->find_by_code_number($course['0'], $course['1']);
+          return $this->find_by_code_number($course['0'], $course['1']);
+    }
+
+    /**
+     *
+     * @param: course - Course information as array 'code' and 'number'
+     * @return: course_id
+     */
+    function get_course_id($course) {
+        $result = $this->find_by_code_number_array($course);
+        return (isset($result['id']) ? $result['id'] : FALSE);
     }
 
     /*------------------------------------------------------*/

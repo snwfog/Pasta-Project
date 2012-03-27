@@ -21,23 +21,27 @@ class CompletedCourse extends CI_Model{
 					array('id' => $id))->result_array();
     }
 
+    function has_taken($student_id, $course_id) {
+        return ($this->db->get_where('completed_courses', array(
+                    'student_id' => $student_id,
+                    'course_id' => $course_id))->num_rows() > 0);
+    }
+
     /**
      * Insert in the `completed_courses` database by student_id
      * @param: 	$student_it - The student id.
-     *			$course_id - An array of all the course_id that
+     *			$course_id - course_id that
 	 *						 this student has taken so far.
 	 */
-    function insert_by_student_id($student_id, $course_id_array) {
+    function insert_by_student_id($student_id, $course_id) {
 		// for every course id check if student_id / course_id 
 		// combination already exist in the database
-		foreach ($course_id_array as $course_id) {
-			$query_param = array('student_id'	=> $student_id, 
-								 'course_id' 	=> $course_id);
-			// if not exist
-			if (!($this->db->get_where('completed_courses',
-					$query_param)->num_rows() > 0))
-				$this->db->insert('completed_courses', $query_params);
-		}
+		$query_param = array('student_id'	=> $student_id, 
+							 'course_id' 	=> $course_id);
+        // if not exist
+		if (!($this->db->get_where('completed_courses',
+				$query_param)->num_rows() > 0))
+			$this->db->insert('completed_courses', $query_param);
     }
 
     /**
