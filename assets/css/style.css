@@ -93,6 +93,28 @@ ul#nav li {
 }
 
 
+/**
+ * User Schedule Table
+ * See: application/controller/profile
+ */
+
+#user_schedule_table, 
+#user_schedule_table tr,
+#user_schedule_table td {
+	border: 1px solid black;
+	padding: 5px;
+	margin: 0px auto;
+}
+
+#user_schedule_table h1 {
+	font-size: 15pt;
+}
+
+#user_schedule_table h2 {
+	font-size: 12pt;
+}
+
+
 /*****************/
 /* Media Queries */
 /*****************/
