@@ -30,10 +30,7 @@
 	<?php endforeach; ?>
 	
 	<tr>
-		<td colspan="4" style="text-align: right">
-			<?=form_reset('reset', 'Clear');?>
-		</td>
-		<td><?=form_submit('submit', 'Continue');?></td>
+		<td colspan="5" style="text-align: right"><?=form_submit('submit', 'Continue');?></td>
 	</tr>
 	</table>
 	
