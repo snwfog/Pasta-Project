@@ -13,7 +13,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * @package		PASTA
  * @author		Charles Yang
  */
-class CourseCompleted extends CI_Controller {
+class CourseCompleted extends MY_Controller {
 
 	function __construct() {
 		parent::__construct();
@@ -90,17 +90,6 @@ class CourseCompleted extends CI_Controller {
 			$this->completed_courses_table->insert_by_student_id(3, // DUMMY SESSION HERE
 				$value);
 		}
-	}
-
-	/**
-	 * Basic page display, $content should be the main content page,
-	 * $static_content should hosts things like footer note, or
-	 * page title (header/footer content). - Charles
-	 */
-	public function put($content_view, $data) {
-		$this->load->view('static/header', $data);
-		$this->load->view($content_view, $data);
-		$this->load->view('static/footer', $data);
 	}
 }
 

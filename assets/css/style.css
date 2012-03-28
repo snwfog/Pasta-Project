@@ -82,6 +82,9 @@ ul#nav li {
 	border: 1px solid black;
 	padding: 5px;
 	margin: 0px auto;
+	
+	/* transition setting */
+	-webkit-transition: background-color 0.1s ease-in;
 }
 
 #course_selection_table h1 {
@@ -92,6 +95,9 @@ ul#nav li {
 	font-size: 12pt;
 }
 
+#course_selection_table tr:hover {
+	background-color: #e9f4fd;
+}
 
 /**
  * User Schedule Table
@@ -104,6 +110,7 @@ ul#nav li {
 	border: 1px solid black;
 	padding: 5px;
 	margin: 0px auto;
+	background-color: #ffffff;
 }
 
 #user_schedule_table h1 {

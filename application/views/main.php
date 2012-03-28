@@ -24,7 +24,7 @@
 		site_url("scrape/viewTableCourses"), 
 		"View Table Course"); 
 	?> Show table "Courses".</h1>
-
+<h1><?=anchor(site_url("coursecompleted"), "User Select Course Completed (With animation and color!");?></h1>
 
 <?php 
 	echo form_open('pasta/register', array('id' => 'signup')); 
