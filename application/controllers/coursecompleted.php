@@ -93,4 +93,4 @@ class CourseCompleted extends MY_Controller {
 	}
 }
 
-?>
+// End of CourseCompleted.php

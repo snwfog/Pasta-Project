@@ -10,7 +10,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * Pasta main controller
  * Author: Charles
  */
-class Pasta extends CI_Controller {
+class Pasta extends MY_Controller {
 	function Pasta() {
 		parent::__construct();	
 		
@@ -21,21 +21,7 @@ class Pasta extends CI_Controller {
 	}	
 	
 	public function index() {			
-		/*
-		 * Managing user session
-		 */
-		// generate custom session data
-		$session_data = array(
-			'student_id' => NULL,
-			'first_name' => NULL,
-			'last_name'  => NULL,
-			'logged_in'  => false,
-		);
-
-		// instantiate the session with new session data
-		$this->session->set_userdata($session_data);
-		/*------------------------------------------------*/
-
+		
 		$data['title'] = 'Welcome to P.A.S.T.A.';
 		// display the main view
 		$this->put('main', $data);
@@ -100,17 +86,6 @@ class Pasta extends CI_Controller {
 	}
 
 	/**
-	 * Basic page display, $content should be the main content page,
-	 * $static_content should hosts things like footer note, or
-	 * page title (header/footer content). - Charles
-	 */
-	public function put($content_view, $data) {
-		$this->load->view('static/header', $data);
-		$this->load->view($content_view, $data);
-		$this->load->view('static/footer', $data);
-	}
-
-	/**
 	 * Callback function for a alpha_whitespace form validation
 	 */
 	public function alpha_whitespace($str) {
@@ -125,5 +100,5 @@ class Pasta extends CI_Controller {
 	}
 }
 
-/* End of file welcome.php */
+/* End of file Pasta.php */
 /* Location: ./application/controllers/welcome.php */

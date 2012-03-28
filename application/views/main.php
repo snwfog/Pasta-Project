@@ -1,30 +1,54 @@
 <div id="content">
 <!-- P.A.S.T.A. main content -->
-<h1><?php echo anchor(site_url("/scrape"), "Scrape Course Form"); ?></h1>
-<h1><?php echo anchor(site_url("/courseInfo"), "Scraped Course List"); ?></h1>
+<ul>
 
-<h1><?php echo anchor(
-		site_url("/scrape/testAll"), 
-		"Test scrape on all courses"); 
-	?>. WARNING: This is takes a while!</h1>
+	<li>
+		<h1><?php echo anchor(site_url("/scrape"), "Scrape Course Form"); ?></h1>
+	</li>
 
-<h1><?php echo anchor(
-		site_url("/scrape/showAllSerializedCourses"), 
-		"View all courses as an array"); 
-	?> (fast!). Pro-tip: Right Click -> View Source Code (for a formatted array view).</h1>
+	<li>
+		<h1><?php echo anchor(site_url("/courseInfo"), "Scraped Course List"); ?></h1>
+	</li>
+
+	<li>
+		<h1><?php echo anchor(
+				site_url("/scrape/testAll"), 
+				"Test scrape on all courses"); 
+			?>. WARNING: This is takes a while!</h1>
+	</li>
+
+	<li>
+		<h1><?php echo anchor(
+				site_url("/scrape/showAllSerializedCourses"), 
+				"View all courses as an array"); 
+			?> (fast!). Pro-tip: Right Click -> View Source Code (for a formatted array view).</h1>
+	</li>
 
 
-<h1><?php echo anchor(
-		site_url("/scrape/addCoursetoDatabase"), 
-		"Add Couse"); 
-	?> Clicking this link will add a course to the table "Courses".</h1>
+	<li>
+		<h1><?php echo anchor(
+				site_url("/scrape/addCoursetoDatabase"), 
+				"Add Couse"); 
+			?> Clicking this link will add a course to the table "Courses".</h1>
+	</li>
 
 
-<h1><?php echo anchor(
-		site_url("scrape/viewTableCourses"), 
-		"View Table Course"); 
-	?> Show table "Courses".</h1>
-<h1><?=anchor(site_url("coursecompleted"), "User Select Course Completed (With animation and color!");?></h1>
+	<li>
+		<h1><?php echo anchor(
+				site_url("scrape/viewTableCourses"), 
+				"View Table Course"); 
+			?> Show table "Courses".</h1>
+	</li>
+
+	<li>
+		<h1><?=anchor(site_url("coursecompleted"), "User Select Course Completed (With animation and color!");?></h1>
+	</li>
+
+	<li>
+		<h1><?=anchor(site_url("profile"), "Demo profile page with tables");?></h1>
+	</li>
+
+</ul>
 
 <?php 
 	echo form_open('pasta/register', array('id' => 'signup')); 
