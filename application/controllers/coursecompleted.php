@@ -27,7 +27,7 @@ class CourseCompleted extends MY_Controller {
 		$this->load->model('CompletedCourse', 'completed_courses_table');
 	}
 
-	public function index() {
+	public function index( $view = 'courseCompleted' ) {
 		// assign constant to an attribute variable
 		$soft_eng_courses = $this->config->item('SOFT_ENG_COURSES');
 
@@ -36,12 +36,14 @@ class CourseCompleted extends MY_Controller {
 		/*
 		 * Setting up the software engineering courses array with information
 		 */
-		foreach ($soft_eng_courses as $years => $semesters)
-			foreach($semesters as $semester => $course_lists)
+		foreach ($soft_eng_courses as $years => $semesters) {
+			foreach($semesters as $semester => $course_lists) {
 				$data['soft_eng_courses'][$years][$semester] = 
 					$this->_get_course_information($course_lists);
+            }
+        }
 
-		$this->put('courseCompleted', $data);
+		$this->put($view, $data);
 	}
 
 	/**

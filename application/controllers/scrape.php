@@ -466,10 +466,9 @@ class Scrape extends MY_Controller {
                              */
                         }
                     }
-                    
                 }
             }
-        }    
+        }
     }
 	
 	/**
@@ -502,31 +501,39 @@ class Scrape extends MY_Controller {
 		
 		$course['prerequisite'] = 
 			$this->scrape_prerequisite($all_rows[10]->children(2)->plaintext);
-		
+
+        echo "Prerequisites raw text: " . $all_rows[10]->children(2)->plaintext . ".<br />\n";
+
 		$course['section'] = array(); // assume that there is at least one lecture
 		
 		$start_row = 13;
 		// individual course information starts at table row 13
 		// unless there is not a "Special Note" at row 11, children 1
-		if (!preg_match("/Special\sNote/", $all_rows[11]->children(1)->plaintext))
+		if (!preg_match("/Special\sNote/", $all_rows[11]->children(1)->plaintext)) {
 			$start_row = 12;
-			
+        }
+		
+        // Courses with no prerequisites have 1 less row. Ex: COMP 232 /2
+        if ( count( $course['prerequisite'] == 0 ) ) {
+            $start_row -= 1;
+            echo "NO-PREREQS<br />\n";
+        }
+        
 		for ($i = $start_row; $i < sizeof($all_rows)-1; $i++) {
-			// if row contains a lecture information, and lecture is not canceled
+            // if row contains a lecture information, and lecture is not canceled
 			if (preg_match("/Lect/", $all_rows[$i]->children(2)->plaintext) &&
 				!preg_match("/Canceled/", $all_rows[$i]->children(2)->plaintext)) {
 				// create section name
 				$section_name = $this->scrape_name($all_rows[$i]->children(2)->plaintext);
-			
+
 				// scrape the lecture for this section
 				$course['section'][$section_name] = $this->scrape_lecture($all_rows[$i]);
-					
 			} else if (preg_match("/Tut/", $all_rows[$i]->children(2)->plaintext) &&
 				!preg_match("/Canceled/", $all_rows[$i]->children(2)->plaintext)) {
 				// if row contains a tutorial information, and tutorial is not canceled
 				$tutorial_section = 
 					$this->scrape_tutorial_name(
-						$all_rows[$i]->children(2)->plaintext, 
+						$all_rows[$i]->children(2)->plaintext,
 						$section_name
 					);
 					
@@ -609,7 +616,6 @@ class Scrape extends MY_Controller {
 		$prerequisite = array();
 		
 		preg_match_all("/(\b[\w]{4}\s[\d]{3}([\sor]+)?)+/", $str, $capture);
-	
 		$i = 0;
 		foreach ($capture[0] as $prerequisite_group) {
 			preg_match_all(
@@ -636,8 +642,7 @@ class Scrape extends MY_Controller {
 	}
 	
 	private function scrape_tutorial_name($str, $section_name) {
-		preg_match("/[^$section_name]\$/", $str, $name);
-		return $name[0];
+        return $str[strlen($str)-1];
 	}
 	
 	private function scrape_day($str) {
@@ -656,8 +661,16 @@ class Scrape extends MY_Controller {
 	}
 	
 	private function scrape_room($str) {
-		preg_match('/[\w\d]+-[\w\d\.]+/', $str, $room);
-		return $room[0];
+        $roomParts = explode( ' ', $str );
+
+        if ( count( $roomParts ) >= 2 ) {
+            $roomNumber = $roomParts[1];
+        }
+        else {
+            $roomNumber = '';
+        }
+        
+        return $roomNumber; 
 	}
 	
         //------------------------

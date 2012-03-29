@@ -7,14 +7,17 @@
 <body>
 	<?php print_r($section); ?>
 	<br />
-	<?php print_r($prerequisite); ?>
+    <br />
+    Prerequisites:
+	<?php print_r($prerequisite); ?> <br />
+    <br />
 	<!--<div id="container">
         <?php if(isset($title)): ?>
         	<h1><?php echo $name . ' ' . $number . ': ' . $title ?></h1>
             <?php echo anchor(site_url("/scrape"), "NEW SEARCH", null); ?>
             <hr />
     
-            Prerequisites: <?php echo $prerequisites ?><br />
+            Prerequisites: <?php echo $prerequisite ?><br />
             <br />
         <?php else: ?>
          	<h2>Sorry, <?php echo $name." ".$number ?> is not available for this semester</h1>
@@ -57,40 +60,6 @@
                 }
             }
     
-        /*
-          foreach( $course_lecture as $title => $information ) {
-            echo "<h1>Derp " . $title . "</h1><br>";
-            foreach($information as $type => $value){
-              if(strcmp($type,"Tutorials")===0){
-                foreach($value as $key => $value){
-                  echo "----------------------------------------------------<br>".$key."<br>";
-                   foreach($value as $key => $value){
-                     if(strcmp($key,"Labs")===0){
-                       foreach($value as $key => $value){
-                         echo "<br>".$key."<br>";
-                         foreach($value as $key => $value){
-                           echo $key.": ".$value."<br>";
-                         }
-                       }
-                     }
-                     else{
-                       echo '(GenKey) ' . $key.": ".$value."<br>";
-                     }
-                   }
-                }
-              }else{
-                echo '(GenType) ' . $type.": ".$value."<br>";
-              }
-    
-            }
-          }
-          // END OF OUTPUT TESTING
-          $i=9;
-          for($i; $i<=sizeOf($row)-1; $i++){
-          echo "<p>DERPDERP{$i}:{$row[$i]} \n</p>";
-          }
-    
-        */
         ?>
 	</div>
 
