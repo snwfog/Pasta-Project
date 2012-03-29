@@ -6,7 +6,6 @@ class ScheduleBuilder extends CI_Controller{
       parent::__contructor();
     }
 
-
 	public function listAllCourses()
 	{
 		$this->load->helper(array('form', 'url'));
@@ -18,6 +17,9 @@ class ScheduleBuilder extends CI_Controller{
 
     public function listAllAllowedCourses()
     {
+      //Choose Fall or Winter Semester
+      // Only retrieve courses for indicated semester.
+
       //1. Get student id from session, query the student record for completed courses or from global variable.
       $id = 3;
       $this->load->model('course', 'course_model');
