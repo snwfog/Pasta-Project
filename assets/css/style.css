@@ -1,9 +1,13 @@
 * {
-	font-family: "Helvetica Neue", "Helvetica";
+	font-family: 'Helvetica Neue', 'Helvetica';
 }
 
 a {
 	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
 }
 
 input {
@@ -227,7 +231,6 @@ ul#nav li {
 #user_schedule_table h2 {
 	font-size: 12pt;
 }
-
 
 /*****************/
 /* Media Queries */
