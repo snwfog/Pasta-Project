@@ -44,36 +44,33 @@ $(document).ready(function() {
 	 * Function to place visual placeholder for forms input text area and field
 	 * from: http://www.hagenburger.net/BLOG/HTML5-Input-Placeholder-Fix-With-jQuery.html
 	 */
-	$('[placeholder]').focus(function() {
-		var input = $(this);
-		if (input.val() == input.attr('placeholder')) {
-			input.val('');
-			input.removeClass('placeholder');
-		}
-	}).blur(function() {
-		var input = $(this);
-		if (input.val() == '' || input.val() == input.attr('placeholder')) {
-			input.addClass('placeholder');
-			input.val(input.attr('placeholder'));
-		}
-	}).blur();
+	// $('[placeholder]').focus(function() {
+	// 	var input = $(this);
+	// 	if (input.val() == input.attr('placeholder')) {
+	// 		input.val('');
+	// 		input.removeClass('placeholder');
+	// 	}
+	// }).blur(function() {
+	// 	var input = $(this);
+	// 	if (input.val() == '' || input.val() == input.attr('placeholder')) {
+	// 		input.addClass('placeholder');
+	// 		input.val(input.attr('placeholder'));
+	// 	}
+	// }).blur();
 
 	/**
 	 * Special handler for password field placeholder
 	 */
-	// $('#password-dummy').show();
-	// $('#password').hide();
-	// $('#password-dummy').focus(function() {
-	// 	$(this).hide();
-	// 	$('#password').show().focus();
-	// });
+	$('.dummy').focus(function() {
+		$(this).hide();
+		$(this).siblings().show().focus();
+	});
 
-	// $('#password').blur(function() {
-	// 	if ($('#password').val() == '' || $('#password').val() == 'Password') {
-	// 		$(this).hide();
-	// 		$('password-dummy').show();			
-	// 	}
-	// });	
+	$('.dummy').siblings().blur(function() {
+		if ($(this).val() == '') {
+			$(this).hide();
+			$(this).siblings().show();
+		}
+	});
 
-	
 });

@@ -103,14 +103,22 @@ ul#nav li {
  * Pasta signup form styling
  */
 .placeholder {
-	color: lightgray;
+	color: rgba(169, 169, 169, 1);
 }
 
 #signup li {
 	list-style: none;
 }
 
-#signup #password-dummy {
+/* Error message styling  */
+#signup li p {
+	font-family: "Calibri";
+	font-size: 0.7em;
+	margin-left: 5px;
+	color: red;
+}
+
+#signup input[type=password] {
 	display: none;
 }
 
@@ -141,11 +149,11 @@ ul#nav li {
 }
 
 #signup .button {
-	font-size: 0.8em;
+	font-size: 1em;
 	position: relative;
 	/* this aligns the button with the form textfield baseline */
 	bottom: 2px;
-	padding: 3px;
+	padding: 1px 15px 3px 15px;
 	color: white;
 	border-radius: 3px;
 	border: 1px solid #6e0f1c;

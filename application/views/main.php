@@ -69,7 +69,7 @@
 					<?=form_input(array(
 						'name' 		  => 'student_id', 
 						'maxlength'   => '7', 
-						'size' 		  => '7',
+						'size' 		  => '8',
 						'placeholder' => 'Student ID',
 						'value' 	  => set_value('student_id')
 					));?>
@@ -84,14 +84,29 @@
 						'name' 		  => 'password',
 						'id'		  => 'password',
 						'maxlength'	  => '20',
-						'placeholder' => 'Password'));?></li>
+						'placeholder' => ''));?>
+
+					<!-- dummy password form -->
+					<?=form_input(array(
+						'name' 		  => 'password_dummy',
+						'class'		  => 'placeholder dummy',
+						'value' 	  => 'Password',
+						'maxlength'   => '20',
+						'placeholder' => ''));?></li>
 			
 				<li><?=form_error('password_confirm');?></li>	
 				<li><?=form_password(array(
 						'name' 		  => 'password_confirm',
 						'id'  		  => 'password-confirm',
 						'maxlength'	  => '20',
-						'placeholder' => 'Repeat Password'));?></li>
+						'placeholder' => ''));?>
+						<!-- dummy password confirmation form -->
+					<?=form_input(array(
+						'name' 		  => 'password_confirm_dummy',
+						'class'		  => 'placeholder dummy',
+						'value' 	  => 'Confirm Password',
+						'maxlength'   => '20',
+						'placeholder' => ''));?></li>
 
 				<li><?=form_error('first_name');?></li>
 				<li><?=form_input(array(
