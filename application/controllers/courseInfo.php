@@ -5,7 +5,7 @@
   *
   */
 
-class CourseInfo extends CI_Controller {
+class CourseInfo extends MY_Controller {
 
   /**
 	 * 
@@ -37,5 +37,4 @@ class CourseInfo extends CI_Controller {
 }
 
 
-/* End of file test.php */
-/* Location: ./application/controllers/test.php */
+/* End of file CourseInfo.php */

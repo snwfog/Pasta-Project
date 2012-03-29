@@ -1,6 +1,6 @@
 <?php
 
-class Scheduler extends CI_Controller {
+class Scheduler extends MY_Controller {
 
 	public function index()
 	{
@@ -9,4 +9,4 @@ class Scheduler extends CI_Controller {
 
 }
 
-?>
+// End of Scheduler.php

@@ -82,6 +82,9 @@ ul#nav li {
 	border: 1px solid black;
 	padding: 5px;
 	margin: 0px auto;
+	
+	/* transition setting */
+	-webkit-transition: background-color 0.1s ease-in;
 }
 
 #course_selection_table h1 {
@@ -89,6 +92,32 @@ ul#nav li {
 }
 
 #course_selection_table h2 {
+	font-size: 12pt;
+}
+
+#course_selection_table tr:hover {
+	background-color: #e9f4fd;
+}
+
+/**
+ * User Schedule Table
+ * See: application/controller/profile
+ */
+
+#user_schedule_table, 
+#user_schedule_table tr,
+#user_schedule_table td {
+	border: 1px solid black;
+	padding: 5px;
+	margin: 0px auto;
+	background-color: #ffffff;
+}
+
+#user_schedule_table h1 {
+	font-size: 15pt;
+}
+
+#user_schedule_table h2 {
 	font-size: 12pt;
 }
 

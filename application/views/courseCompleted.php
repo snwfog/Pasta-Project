@@ -22,7 +22,7 @@
 					<td><?php echo form_checkbox(
 									'completed_courses[]', 
 									(isset($course['id']) ? $course['id'] : "-1"), 
-									FALSE); ?>
+									$course['has_taken']); ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>
@@ -30,10 +30,7 @@
 	<?php endforeach; ?>
 	
 	<tr>
-		<td colspan="4" style="text-align: right">
-			<?=form_reset('reset', 'Clear');?>
-		</td>
-		<td><?=form_submit('submit', 'Continue');?></td>
+		<td colspan="5" style="text-align: right"><?=form_submit('submit', 'Continue');?></td>
 	</tr>
 	</table>
 	

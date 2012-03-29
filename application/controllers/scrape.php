@@ -57,7 +57,7 @@ function createTimeLocQryParams( $details ) {
 }
 
 
-class Scrape extends CI_Controller {
+class Scrape extends MY_Controller {
 //	public __constructor() {
 //		
 //	}
@@ -469,9 +469,7 @@ class Scrape extends CI_Controller {
                     
                 }
             }
-        }
-
-        
+        }    
     }
 	
 	/**

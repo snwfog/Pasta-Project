@@ -11,7 +11,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * Author: Charles
  */
 
-class Login extends CI_Controller {
+class Login extends MY_Controller {
 
 	/**
 	 * Information regarding the database password type:
@@ -91,15 +91,6 @@ class Login extends CI_Controller {
 			}
 		}
 	}
-
-	/**
-	 * Basic page display, $content should be the main content page,
-	 * $static_content should hosts things like footer note, or
-	 * page title (header/footer content). - Charles
-	 */
-	public function put($content_view, $data) {
-		$this->load->view('static/header', $data);
-		$this->load->view($content_view, $data);
-		$this->load->view('static/footer', $data);
-	}
 }
+
+// End of Login.php

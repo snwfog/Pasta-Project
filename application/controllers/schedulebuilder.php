@@ -1,6 +1,6 @@
 <?php
 
-class ScheduleBuilder extends CI_Controller{
+class ScheduleBuilder extends MY_Controller{
     
     function __constructor(){
       parent::__contructor();
@@ -69,4 +69,5 @@ class ScheduleBuilder extends CI_Controller{
 
 }
 
-?>
+
+// End of ScheduleBuilder.php
