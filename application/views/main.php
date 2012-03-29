@@ -65,92 +65,51 @@
 			<?=form_open('pasta/register', array('id' => 'signup'));?>
 			<ul>
 				<li><?=form_error('student_id');?></li>	
-				echo form_error('student_id');
-				// echo form_label('Student ID:', 'student_id');
-				echo "<br />";
-				echo form_input(array(
+				<li>
+					<?=form_input(array(
 						'name' 		  => 'student_id', 
 						'maxlength'   => '7', 
 						'size' 		  => '7',
 						'placeholder' => 'Student ID',
 						'value' 	  => set_value('student_id')
-					));
-				echo "<br />";
+					));?>
+					<?=form_submit(array(
+						'name'  => 'submit',
+						'value' => 'Register',
+						'class' => 'button'
+					));?></li>
 			
-				echo form_error('password');	
-				// echo form_label('Password:', 'password');
-				echo "<br />";
-				echo form_password(array(
+				<li><?=form_error('password');?></li>
+				<li><?=form_password(array(
 						'name' 		  => 'password',
 						'id'		  => 'password',
 						'maxlength'	  => '20',
-						'placeholder' => 'Password'));
-				echo "<br />";
+						'placeholder' => 'Password'));?></li>
 			
-				echo form_error('password_confirm');	
-				// echo form_label('Confirm Password:', 'password_confirm');
-				echo "<br />";
-
-				// define a dummy password field for display
-				// echo form_input(array(
-				// 		'name' => 'password-dummy',
-				// 		'id' => 'password-dummy',
-				// 		'maxlength' => '20',
-				// 		'placeholder' => 'Password'));
-				
-				echo form_password(array(
+				<li><?=form_error('password_confirm');?></li>	
+				<li><?=form_password(array(
 						'name' 		  => 'password_confirm',
 						'id'  		  => 'password-confirm',
 						'maxlength'	  => '20',
-						'placeholder' => 'Repeat Password'));
+						'placeholder' => 'Repeat Password'));?></li>
 
-				echo "<br />";
-			
-				echo form_error('first_name');
-				// echo form_label('First Name:', 'first_name');
-				echo "<br />";
-				echo form_input(
-						array(
-								'name' 		  => 'first_name',
-								'maxlength'   => '20',
-								'placeholder' => 'First Name',
-								'value' 	  => set_value('first_name')));
-				echo "<br />";
-			
-				echo form_error('last_name');
-				// echo form_label('Last Name:', 'last_name');
-				echo "<br />";
-				echo form_input(
-						array(
-								'name' 		  => 'last_name',
-								'placeholder' => 'Last Name',
-								'maxlength'	  => '20',
-								'value' 	  => set_value('last_name')));
-				echo "<br />";
-			
-				// echo form_label('Program:', 'program');
-				echo "<br />";
-				echo form_dropdown('program', array(
-							'soft_eng' => 'Software Engineer', 
-							'mech_eng' => 'Mechanical Engineer'))."<br />";
+				<li><?=form_error('first_name');?></li>
+				<li><?=form_input(array(
+						'name' 		  => 'first_name',
+						'maxlength'   => '20',
+						'placeholder' => 'First Name',
+						'value' 	  => set_value('first_name')));?></li>
+
+				<li><?=form_error('last_name');?></li>
 				
-				// this sign up button is an HTML link, the function of this link
-				// is to submit this current form. The submit function is called
-				// with JavaScript in `assets/js/script.js` file
-				echo "<br />";
-			
-				echo form_submit(array(
-					'name'  => 'submit',
-					'value' => 'Submit',
-					'class' => 'button'
-				));
-
-				echo form_reset(array(
-					'name'  => 'reset',
-					'value' => 'Clear',
-					'class' => 'button'
-				));
-			?>
+				<li><?=form_input(array(
+						'name' 		  => 'last_name',
+						'placeholder' => 'Last Name',
+						'maxlength'	  => '20',
+						'value' 	  => set_value('last_name')));?></li>
+				<li><?=form_dropdown('program', array(
+						'soft_eng' => 'Software Engineer', 
+						'mech_eng' => 'Mechanical Engineer'));?></li>
 			</form>
 		</div>
 	</div>

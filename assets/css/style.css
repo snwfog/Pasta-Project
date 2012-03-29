@@ -106,6 +106,10 @@ ul#nav li {
 	color: lightgray;
 }
 
+#signup li {
+	list-style: none;
+}
+
 #signup #password-dummy {
 	display: none;
 }
@@ -138,7 +142,10 @@ ul#nav li {
 
 #signup .button {
 	font-size: 0.8em;
-	padding: 5px;
+	position: relative;
+	/* this aligns the button with the form textfield baseline */
+	bottom: 2px;
+	padding: 3px;
 	color: white;
 	border-radius: 3px;
 	border: 1px solid #6e0f1c;
