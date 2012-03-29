@@ -2,6 +2,17 @@
 	font-family: "Helvetica Neue", "Helvetica";
 }
 
+a {
+	text-decoration: none;
+}
+
+input {
+	outline: none;
+}
+
+/**
+ * Static styling
+ */	
 h1#top {
 	font-size: 2em;
 	font-weight: bold;
@@ -48,29 +59,110 @@ ul#nav li {
 
 #footer hr {
 	border-right: medium none;
-	border-top: #9a1729 1px dashed;
+	border-top: #9a1729 1px solid;
 	border-left: medium none;
 	border-bottom: medium none; 
 	height: 1px;
 }
 
+/* End of static styling */
+
+/**
+ * Content styling
+ */
 
 #content {
 	position: relative;
-	overflow: hidden;
-	padding: 5px;
+//	background-color: yellow;
 }
 
-#description {
-	width: 65%;
+#content #left-content {
+//	background-color: red;
 	float: left;
+	width: 100%;
 }
 
-#signup {
-	float: right;
+#content #left-content #wrapper {
+	margin-right: 250px;
+}
+
+#content #right-content {
+//	background-color: blue;
+	float: left;
+	width: 250px;
+	margin-left: -250px;
+}
+
+#content #right-content #signup-form {
+	margin: 20px;
+}
+
+/* End of content layout styling */
+
+/**
+ * Pasta signup form styling
+ */
+.placeholder {
+	color: lightgray;
+}
+
+#signup #password-dummy {
+	display: none;
+}
+
+#signup input[type=text],
+#signup input[type=password] {
+	border: 1px solid #891424;
+	border-radius: 3px;
+	height: 20px;
+	margin: 5px;
+	-webkit-box-shadow: 0px 1px rgba(0, 0, 0, 0.2);
+	background: 
+		-webkit-gradient(linear, left top, left bottom, 
+			color-stop(0%,rgba(0,0,0,0.1)), 
+			color-stop(10%,rgba(255, 255, 255, 0.2)), 
+			color-stop(20%,rgba(255, 255, 255, 1)));
+}
+
+#signup input:focus {
+	-webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.35);
+	background: #fffeea;
+}
+
+#signup input {
+	font-size: 1em;
+	font-family: "Calibri";
+	-webkit-transition: 0.1s all ease-in;
+	margin: 0px;
+}
+
+#signup .button {
 	font-size: 0.8em;
+	padding: 5px;
+	color: white;
+	border-radius: 3px;
+	border: 1px solid #6e0f1c;
+	background:
+		-webkit-gradient(linear, left top, left bottom, 
+			color-stop(0%,rgba(148, 52, 56, 1)), 
+			color-stop(100%,rgba(115, 41, 43, 1)));
 }
 
+#signup .button:hover {
+	background:
+		-webkit-gradient(linear, left top, left bottom, 
+			color-stop(0%,rgba(196, 60, 68, 1)), 
+			color-stop(100%,rgba(125, 41, 45, 1)));
+}
+
+#signup .button:active {
+	text-shadow: 1px 1px 0px rbga(0, 0, 0, 1);
+	background:
+		-webkit-gradient(linear, left top, left bottom,
+			color-stop(2%,rgba(64, 31, 33, 0.8)),
+			color-stop(3%,rgba(140, 35, 42, 1)), 
+			color-stop(100%,rgba(70, 20, 23, 1)));
+}
 /**
  * Course Selection Page Table
  * See: application/controller/coursecompleted
