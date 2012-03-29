@@ -37,13 +37,19 @@ class Login extends MY_Controller {
 		// check if the user is already logged in
 		if ($this->session->userdata('logged_in')) {
 			// if user is already logged in, do an immediate redirect
-			redirect('pasta', 'refresh');
+			redirect('profile', 'refresh');
 		} else {
 			// display the main view
 			$this->put('login', $data);
 		}
 	}
 	
+	public function logout() {
+		// unassign logged_in boolean
+		$this->session->set_userdata('logged_in', FALSE);
+		// redirect to pasta main
+		redirect('pasta', 'refresh');
+	}
 
 	public function user_login() {
 		// setup login form validation
@@ -81,8 +87,8 @@ class Login extends MY_Controller {
 					'logged_in'  => true
 				));
 
-				// redirect to homepage
-				redirect('pasta', 'redirect');
+				// redirect to user profile page
+				redirect('profile', 'redirect');
 			} else {
 				echo "Sorry, we could not find you in our records. "
 				 	 . "Perhaps, should you "
