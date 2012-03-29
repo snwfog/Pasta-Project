@@ -8,11 +8,11 @@
 <!-- <?php echo validation_errors(); ?> -->
 
 
-<?php echo form_open('SchedulerBuilder/listAllCourses'); ?>
+<?php echo form_open('Scrape'); ?>
     <h2>Course Code</h2>
     <?php echo form_error('course_code'); ?>
     <input type="text" name="course_code" value="" size="10" maxlength="4" />
-    
+
     <h2>Course Number</h2>
     <?php echo form_error('course_number'); ?>
     <input type="text" name="course_number" value="" size="10" maxlength="3" />
