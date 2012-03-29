@@ -21,4 +21,59 @@ $(document).ready(function() {
 	$('#course_selection_table input:checkbox:checked').parents('tr').css({
 		'background-color' : '#f0ffed' // green
 	});
+
+
+	/**
+	 * Function to submit the form when clicked the submit button
+	 */
+	$('#signup #submit').click(function() {
+		// prevent the defaulted `placeholder` text to be submitted from
+		// the placeholder jquery hack/fix by clearing the placeholder
+		// field before submitting
+		$(this).parents('form').submit(function() {
+			$(this).find('[placeholder]').each(function() {
+				var input = $(this);
+				if (input.val() == input.attr('placeholder'))
+					input.val('');
+			});
+		});
+	});
+
+
+	/**
+	 * Function to place visual placeholder for forms input text area and field
+	 * from: http://www.hagenburger.net/BLOG/HTML5-Input-Placeholder-Fix-With-jQuery.html
+	 */
+	$('[placeholder]').focus(function() {
+		var input = $(this);
+		if (input.val() == input.attr('placeholder')) {
+			input.val('');
+			input.removeClass('placeholder');
+		}
+	}).blur(function() {
+		var input = $(this);
+		if (input.val() == '' || input.val() == input.attr('placeholder')) {
+			input.addClass('placeholder');
+			input.val(input.attr('placeholder'));
+		}
+	}).blur();
+
+	/**
+	 * Special handler for password field placeholder
+	 */
+	// $('#password-dummy').show();
+	// $('#password').hide();
+	// $('#password-dummy').focus(function() {
+	// 	$(this).hide();
+	// 	$('#password').show().focus();
+	// });
+
+	// $('#password').blur(function() {
+	// 	if ($('#password').val() == '' || $('#password').val() == 'Password') {
+	// 		$(this).hide();
+	// 		$('password-dummy').show();			
+	// 	}
+	// });	
+
+	
 });
