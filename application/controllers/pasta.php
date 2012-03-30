@@ -145,11 +145,12 @@ class Pasta extends MY_Controller {
 	}
 
 	/**
-	 * Callback function for a alpha_whitespace form validation
+	 * Callback function for an alpha_whitespace form validation
+	 * Allowing white space in family and last name form validation
 	 */
 	public function alpha_whitespace($str) {
 		$this->form_validation->set_message(
-				'alpha_whitespace', 'Your mom gave me this custom error message.');
+				'alpha_whitespace', 'Invalid character.');
 
 		if (preg_match("/^([-a-z-\s])+$/i", $str)) {	
 			return TRUE;

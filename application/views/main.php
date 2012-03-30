@@ -53,7 +53,7 @@
 			
 			</ul>
 			<div id="description">
-				<p>Hey, welcome to P.A.S.T.A., an online academic courses scheduler. If you are a Software Engineering student at Concordia, then we've created P.A.S.T.A. just for you, because we know software engineering hates repeating algorithms and you've got more important ones to devise out than figuring your schedule every semester. So if you are an awesome engineer like us, feel free  sign up or login, and begin to save you more braincells and build your software engineer course sequences just in a few steps.</p>
+				<p>Hey, welcome to P.A.S.T.A., an online academic courses scheduler. If you are a Software Engineering student at Concordia, then we've created P.A.S.T.A. just for you because we know all good software engineers respect the DRY principle and that you've got more important algorithms to devise out than figuring your schedule every semester. So if you are an awesome engineer like us, feel free to sign up, and begin to save braincells and build your software engineer course sequences just in a few steps.</p>
 				<br />
 				<p>Have a great year!</p>
 
