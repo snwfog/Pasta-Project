@@ -53,8 +53,9 @@
 			
 			</ul>
 			<div id="description">
-				<p>Hey, welcome to P.A.S.T.A. We know its hard and a pain every year to register for new courses and make the schedule. This is why we created P.A.S.T.A. An online academic course scheduler for student that frequent Concordia University. Sign up to get your hassle free schedule generated in 2 simple steps. Have a great year!</p>
-				<br />
+				<p>Hey, welcome to P.A.S.T.A., an online academic courses scheduler. If you are a Software Engineering student at Concordia, then we've created P.A.S.T.A. just for you, because we know software engineering hates repeating algorithms and you've got more important ones to devise out than figuring your schedule every semester. So if you are an awesome engineer like us, feel free  sign up or login, and begin to save you more braincells and build your software engineer course sequences just in a few steps. Have a great year!</p>
+
+				<p id="pasta-team-signature">- the P.A.S.T.A. team</p>
 			</div>
 		</div>
 	</div>
@@ -62,7 +63,7 @@
 
 	<div id="right-content">
 		<div id="signup-form">
-			<h1>New to PASTA?</h1>
+			<h1>A new collegue?</h1>
 			<?=form_open('pasta/register', array('id' => 'signup'),
 				array('program' => 'soft_eng'));?>
 			<ul>
@@ -129,7 +130,7 @@
 		</div>
 
 		<div id="login-form">
-			<h1>Already registered to PASTA?</h1>
+			<h1>Already registered?</h1>
 			<?=form_open('pasta/user_login', array('id' => 'login'));?>
 			<ul>
 				<li><?=form_error('login_student_id');?></li>

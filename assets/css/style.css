@@ -102,6 +102,10 @@ ul#nav li {
 	margin: 20px;
 }
 
+#description {
+	margin: 40px;
+}
+
 /* End of content layout styling */
 
 /**
@@ -252,11 +256,13 @@ ul#nav li {
 /* Media Queries */
 /*****************/
 @media screen and (max-width: 780px) {
-	#description {
+/*	#description {
 		width: 100%;
 	}
 	
 	#signup {
 		float: left;
-	}
+	}*/
 }
+#right-content input[type=text],
+#right-content input[type=password]
