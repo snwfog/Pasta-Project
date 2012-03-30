@@ -61,14 +61,6 @@ ul#nav li {
 	padding: 5px;
 }
 
-#footer hr {
-	border-right: medium none;
-	border-top: #9a1729 1px solid;
-	border-left: medium none;
-	border-bottom: medium none; 
-	height: 1px;
-}
-
 /* End of static styling */
 
 /**
@@ -104,6 +96,18 @@ ul#nav li {
 
 #description {
 	margin: 40px;
+}
+
+#description p {
+	font: 1.1em/1.8em "Helvetica Neue";
+	font-weight: lighter;
+}
+
+#description p#pasta-team-signature {
+	margin: 30px 30px 0px 0px;
+	text-align: right;
+	font-family: "AlphaMack AOE";
+	font-size: 1.9em;
 }
 
 /* End of content layout styling */
@@ -264,5 +268,3 @@ ul#nav li {
 		float: left;
 	}*/
 }
-#right-content input[type=text],
-#right-content input[type=password]
