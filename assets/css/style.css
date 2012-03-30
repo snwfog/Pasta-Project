@@ -54,7 +54,7 @@ h5#caption {
 	width: 100%;
 	/*padding: 5px 0px;*/
 	background-color: #fae295;
-	border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 #header ul#nav {
@@ -124,6 +124,7 @@ h5#caption {
 
 #content {
 	position: relative;
+	margin: 20px;
 //	background-color: yellow;
 }
 
@@ -177,6 +178,7 @@ h5#caption {
 #right-content h1 {
 	font-size: 0.8em;
 	font-weight: lighter;
+	color: rgba(154, 23, 41, 1);
 	margin-bottom: 5px;
 }
 
@@ -263,6 +265,61 @@ h5#caption {
 #right-content .button#login {
 	padding: 1px 26px 3px 26px;
 }
+
+/**
+ * Registration Progression Indicator
+ *------------------------------------*/
+#registration-progress {
+	position: relative;
+	overflow: hidden;
+	padding: 10px;
+}
+
+#registration-progress ul {
+	list-style: none outside none;
+}
+
+#registration-progress ul li {
+	float: left;
+	margin-right: 30px;
+}
+
+#registration-progress h1, 
+#registration-progress h2, 
+#registration-progress h3, 
+#registration-progress h4, 
+#registration-progress h5 {
+	display: inline;
+}
+
+#registration-progress ul li h1 {
+	background-color: rgba(154, 23, 41, 0.1);
+	font-weight: lighter;
+	color: white;
+	margin-right: 10px;
+	padding: 6px 11px;
+	border-radius: 20px;
+}
+
+#registration-progress ul li h5 {
+	color: lightgray;
+	font-weight: lighter;
+	font-style: italic;
+	font-size: 0.9em;
+	position: relative;
+	bottom: 1px;
+}
+
+#registration-progress ul li#stepped-on h1 {
+	background-color: rgba(154, 23, 41, 1);
+}
+
+#registration-progress ul li#stepped-on h5 {
+	color: black;
+	font-style: normal;
+}
+
+
 /**
  * Course Selection Page Table
  * See: application/controller/coursecompleted
