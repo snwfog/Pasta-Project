@@ -3,7 +3,15 @@
 
 	<div id="left-content">
 		<div id="wrapper">
-			<ul>
+			<div id="description">
+				<p>Hey, welcome to P.A.S.T.A., an online academic courses scheduler. If you are a Software Engineering student at Concordia, then we've created P.A.S.T.A. just for you because we know all good software engineers got more important algorithms to devise out than planning their schedule. So if you are an awesome engineer like us, feel free to sign up, and get your course sequences in just a few steps.</p>
+				<br />
+				<p>Have a great year!</p>
+
+				<p id="pasta-team-signature">- the P.A.S.T.A. team</p>
+			</div>
+
+						<ul>
 			
 				<li>
 					<h1><?php echo anchor(site_url("/scrape"), "Scrape Course Form"); ?></h1>
@@ -52,13 +60,6 @@
 				</li>
 			
 			</ul>
-			<div id="description">
-				<p>Hey, welcome to P.A.S.T.A., an online academic courses scheduler. If you are a Software Engineering student at Concordia, then we've created P.A.S.T.A. just for you because we know all good software engineers respect the DRY principle and that you've got more important algorithms to devise out than figuring your schedule every semester. So if you are an awesome engineer like us, feel free to sign up, and begin to save braincells and build your software engineer course sequences just in a few steps.</p>
-				<br />
-				<p>Have a great year!</p>
-
-				<p id="pasta-team-signature">- the P.A.S.T.A. team</p>
-			</div>
 		</div>
 	</div>
 	<!-- End of left content -->

@@ -1,3 +1,9 @@
+/**
+ * Font collections
+ *------------------*/
+@import url(http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here);
+
+
 * {
 	font-family: 'Helvetica Neue', 'Helvetica';
 }
@@ -19,7 +25,7 @@ input {
  */	
 h1#top {
 	font-size: 2em;
-	font-weight: bold;
+	font-weight: 700;
 	color: #9a1729;
 	text-shadow: 2px 2px rgba(255, 255, 255, 1);
 }
@@ -27,6 +33,7 @@ h1#top {
 h5#caption {
 	font-size: 1em;
 	color: #9a1729;
+	font-weight: 200;
 	text-shadow: 1px 1px rgba(255, 255, 255, 1);
 }
 
@@ -57,7 +64,6 @@ ul#nav li {
 
 #footer {
 	width: 100%;
-	font-family: "Times";
 	padding: 5px;
 }
 
@@ -95,19 +101,19 @@ ul#nav li {
 }
 
 #description {
-	margin: 40px;
+	margin: 20px 40px 20px 10px;
 }
 
 #description p {
 	font: 1.1em/1.8em "Helvetica Neue";
 	font-weight: lighter;
+	text-align: Justify;
 }
 
 #description p#pasta-team-signature {
-	margin: 30px 30px 0px 0px;
+	margin: 10px 40px 0px 0px;
 	text-align: right;
-	font-family: "AlphaMack AOE";
-	font-size: 1.9em;
+	font: 1.9em "Just Me Again Down Here", "J.d.";
 }
 
 /* End of content layout styling */
@@ -128,6 +134,7 @@ ul#nav li {
 #right-content li {
 	list-style: none;
 }
+
 
 /* Error message styling  */
 #right-content li p {
