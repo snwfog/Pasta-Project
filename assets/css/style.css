@@ -20,6 +20,10 @@ input {
 	outline: none;
 }
 
+body {
+	
+}
+
 /**
  * Static styling
  */	
@@ -27,12 +31,14 @@ h1#top {
 	font-size: 2em;
 	font-weight: 700;
 	color: #9a1729;
-	text-shadow: 2px 2px rgba(255, 255, 255, 1);
+	padding: 0px 0px 5px 5px;
+	text-shadow: 1px 1px rgba(255, 255, 255, 1);
 }
 
 h5#caption {
 	font-size: 1em;
 	color: #9a1729;
+	padding: 0px 0px 5px 5px;
 	font-weight: 200;
 	text-shadow: 1px 1px rgba(255, 255, 255, 1);
 }
@@ -40,23 +46,24 @@ h5#caption {
 #outter {
 	max-width: 780px;
 	margin: 0px auto;
+
 }
 
 #header {
-	position: relative;
+	overflow: hidden;
 	width: 100%;
-	height: 100%;
-	padding: 5px;
+	/*padding: 5px 0px;*/
 	background-color: #fae295;
+	border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
-ul#nav {
+#header ul#nav {
 	position: absolute;
 	right: 0px;
-	bottom: 0px;
+	z-index: 2;
 }
 
-ul#nav li {
+#header ul#nav li {
 	float: left;
 	list-style: none;
 	margin: 0px 5px;
@@ -64,7 +71,49 @@ ul#nav li {
 
 #footer {
 	width: 100%;
-	padding: 5px;
+	height: 200px;
+	overflow: hidden;
+	text-align: center;
+	background-color: #fae295;
+}
+
+#page-1 {
+	background-color: white;
+	position: relative;
+	top: -40px;
+	width: 100%;
+	height: 50px;
+	-webkit-box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.3);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#page-2 {
+	background-color: white;
+	position: relative;
+	top: -95px;
+	width: 100%;
+	height: 50px;
+	-webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#page-3 {
+	background-color: white;
+	position: relative;
+	top: -150px;
+	width: 100%;
+	height: 50px;
+	-webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.3);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#footer h5 {
+	font-size: 0.8em;
+	font-weight: 200;
+	color: #9a1729;
+	text-shadow: 1px 1px rgba(255, 255, 255, 1);
+	position: relative;
+	top: -125px;
 }
 
 /* End of static styling */
@@ -138,7 +187,7 @@ ul#nav li {
 
 /* Error message styling  */
 #right-content li p {
-	font-family: "Calibri";
+	font-family: "Helvetica Neue";
 	font-size: 0.7em;
 	/*margin-left: 5px;*/
 	color: red;
@@ -171,6 +220,7 @@ ul#nav li {
 #right-content input {
 	font-size: 1em;
 	font-family: "Calibri";
+	font-weight: lighter;
 	-webkit-transition: 0.1s all ease-in;
 }
 

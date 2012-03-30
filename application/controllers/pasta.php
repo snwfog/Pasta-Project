@@ -22,11 +22,11 @@ class Pasta extends MY_Controller {
 		/**
 		 * Main site title
 		 *-----------------*/
-		$data['title'] = 'Welcome to P.A.S.T.A.';
+		$data['title'] = 'P.A.S.T.A. - Personal Academic Schedule Timetable Arranger';
 
 
 		// check if the user is already logged in
-		if ($this->session->userdata('logged_in')) {
+		if ($this->user_is_logged_in()) {
 			// if user is already logged in, do an immediate redirect
 			redirect('profile', 'refresh');
 		} else {

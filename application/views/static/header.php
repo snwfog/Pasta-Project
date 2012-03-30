@@ -15,17 +15,20 @@
 	
 </head>
 <body>
+
+<div id="header">
+	<h1 id="top">P.A.S.T.A.</h1>
+	<h5 id="caption">Personal Academic Schedule Timetable Arranger</h5>
+	<ul id="nav">
+		<li>
+			<?php 
+				if ($this->session->userdata('logged_in'))
+					echo anchor(site_url("login/logout"), "logout");
+			?>
+		</li>
+		<!-- <li><a href="">stats</a></li> -->
+	</ul>
+</div><!-- #header -->
+
 <div id="outter">
-	<div id="header">
-		<h1 id="top">P.A.S.T.A.</h1>
-		<h5 id="caption">Personal Academic Schedule Timetable Arranger</h5>
-		<ul id="nav">
-			<li>
-				<?php 
-					if ($this->session->userdata('logged_in'))
-						echo anchor(site_url("login/logout"), "logout");
-				?>
-			</li>
-			<!-- <li><a href="">stats</a></li> -->
-		</ul>
-	</div>
+	
