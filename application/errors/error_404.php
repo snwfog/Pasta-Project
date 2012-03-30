@@ -6,11 +6,11 @@
 	* {
 		font-family: 'Helvetica Neue', 'Helvetica', 'Calibri';
 		font-weight: lighter;
-		color:  white;
 	}
 
 	h1, h2, h3, h4, h5 {
-		text-shadow: 1px 1px rgba(0, 0, 0, 1);
+		color: rgba(255, 255, 255, 1);
+		text-shadow: 1px 2px rgba(0, 0, 0, 1);
 	}
 	#error {
 		text-align: center;

@@ -25,12 +25,10 @@
 		<ul id="nav">
 			<li>
 				<?php 
-					if (!$this->session->userdata('logged_in'))
-						echo anchor(site_url("login"), "login");
-					else
+					if ($this->session->userdata('logged_in'))
 						echo anchor(site_url("login/logout"), "logout");
 				?>
 			</li>
-			<li><a href="">stats</a></li>
+			<!-- <li><a href="">stats</a></li> -->
 		</ul>
 	</div>

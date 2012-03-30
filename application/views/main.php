@@ -62,7 +62,9 @@
 
 	<div id="right-content">
 		<div id="signup-form">
-			<?=form_open('pasta/register', array('id' => 'signup'));?>
+			<h1>New to PASTA?</h1>
+			<?=form_open('pasta/register', array('id' => 'signup'),
+				array('program' => 'soft_eng'));?>
 			<ul>
 				<li><?=form_error('student_id');?></li>	
 				<li>
@@ -75,6 +77,7 @@
 					));?>
 					<?=form_submit(array(
 						'name'  => 'submit',
+						'id'	=> 'register',
 						'value' => 'Register',
 						'class' => 'button'
 					));?></li>
@@ -122,9 +125,43 @@
 						'placeholder' => 'Last Name',
 						'maxlength'	  => '20',
 						'value' 	  => set_value('last_name')));?></li>
-				<li><?=form_dropdown('program', array(
-						'soft_eng' => 'Software Engineer', 
-						'mech_eng' => 'Mechanical Engineer'));?></li>
+			</form>
+		</div>
+
+		<div id="login-form">
+			<h1>Already registered to PASTA?</h1>
+			<?=form_open('pasta/user_login', array('id' => 'login'));?>
+			<ul>
+				<li><?=form_error('login_student_id');?></li>
+				<li>
+					<?=form_input(array(
+						'name' 		  => 'login_student_id', 
+						'maxlength'   => '7', 
+						'size' 		  => '8',
+						'placeholder' => 'Student ID',
+						'value' 	  => set_value('student_id')
+					));?>
+					<?=form_submit(array(
+						'name'  => 'submit',
+						'id' 	=> 'login',
+						'value' => 'Login',
+						'class' => 'button'
+					));?></li>
+			
+				<li><?=form_error('login_password');?></li>
+				<li><?=form_password(array(
+						'name' 		  => 'login_password',
+						'id'		  => 'password',
+						'maxlength'	  => '20',
+						'placeholder' => ''));?>
+
+					<!-- dummy password form -->
+					<?=form_input(array(
+						'name' 		  => 'password_dummy',
+						'class'		  => 'placeholder dummy',
+						'value' 	  => 'Password',
+						'maxlength'   => '20',
+						'placeholder' => ''));?></li>
 			</form>
 		</div>
 	</div>
