@@ -4,62 +4,14 @@
 	<div id="left-content">
 		<div id="wrapper">
 			<div id="description">
-				<p>Hey, welcome to P.A.S.T.A., an online academic courses scheduler. If you are a Software Engineering student at Concordia, then we've created P.A.S.T.A. just for you because we know all good software engineers got more important algorithms to devise out than planning their schedule. So if you are an awesome engineer like us, feel free to sign up, and get your course sequences in just a few steps.</p>
+				<p>Hey, welcome to P.A.S.T.A., an online academic course scheduler for Software Engineering students at Concordia. We've created P.A.S.T.A. because we know all good software engineers have more important algorithms to devise than to plan their course schedules. So if you feel that you are an awesome engineer like us, sign up, it's free, and receive your course schedules in just a few easy steps.</p>
 				<br />
 				<p>Have a great year!</p>
 
 				<p id="pasta-team-signature">- the P.A.S.T.A. team</p>
 			</div>
 
-						<ul>
-			
-				<li>
-					<h1><?php echo anchor(site_url("/scrape"), "Scrape Course Form"); ?></h1>
-				</li>
-			
-				<li>
-					<h1><?php echo anchor(site_url("/courseInfo"), "Scraped Course List"); ?></h1>
-				</li>
-			
-				<li>
-					<h1><?php echo anchor(
-							site_url("/scrape/testAll"), 
-							"Test scrape on all courses"); 
-						?>. WARNING: This is takes a while!</h1>
-				</li>
-			
-				<li>
-					<h1><?php echo anchor(
-							site_url("/scrape/showAllSerializedCourses"), 
-							"View all courses as an array"); 
-						?> (fast!). Pro-tip: Right Click -> View Source Code (for a formatted array view).</h1>
-				</li>
-			
-			
-				<li>
-					<h1><?php echo anchor(
-							site_url("/scrape/addCoursetoDatabase"), 
-							"Add Couse"); 
-						?> Clicking this link will add a course to the table "Courses".</h1>
-				</li>
-			
-			
-				<li>
-					<h1><?php echo anchor(
-							site_url("scrape/viewTableCourses"), 
-							"View Table Course"); 
-						?> Show table "Courses".</h1>
-				</li>
-			
-				<li>
-					<h1><?=anchor(site_url("coursecompleted"), "User Select Course Completed (With animation and color!");?></h1>
-				</li>
-			
-				<li>
-					<h1><?=anchor(site_url("profile"), "Demo profile page with tables");?></h1>
-				</li>
-			
-			</ul>
+
 		</div>
 	</div>
 	<!-- End of left content -->
@@ -168,7 +120,6 @@
 						'placeholder' => ''));?></li>
 			</form>
 		</div>
-	</div>
-	<!-- End of right content -->
+	</div><!-- #right-content -->
 	
-</div>
+</div><!-- #container -->

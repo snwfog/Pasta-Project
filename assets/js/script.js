@@ -26,18 +26,18 @@ $(document).ready(function() {
 	/**
 	 * Function to submit the form when clicked the submit button
 	 */
-	$('#signup #submit').click(function() {
-		// prevent the defaulted `placeholder` text to be submitted from
-		// the placeholder jquery hack/fix by clearing the placeholder
-		// field before submitting
-		$(this).parents('form').submit(function() {
-			$(this).find('[placeholder]').each(function() {
-				var input = $(this);
-				if (input.val() == input.attr('placeholder'))
-					input.val('');
-			});
-		});
-	});
+	// $('#signup #submit').click(function() {
+	// 	// prevent the defaulted `placeholder` text to be submitted from
+	// 	// the placeholder jquery hack/fix by clearing the placeholder
+	// 	// field before submitting
+	// 	$(this).parents('form').submit(function() {
+	// 		$(this).find('[placeholder]').each(function() {
+	// 			var input = $(this);
+	// 			if (input.val() == input.attr('placeholder'))
+	// 				input.val('');
+	// 		});
+	// 	});
+	// });
 
 
 	/**
