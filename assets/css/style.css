@@ -1,13 +1,27 @@
+/**
+ * Font collections
+ *------------------*/
+@import url(http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here);
+
+
 * {
-	font-family: "Helvetica Neue", "Helvetica";
+	font-family: 'Helvetica Neue', 'Helvetica';
 }
 
 a {
 	text-decoration: none;
 }
 
+a:hover {
+	text-decoration: underline;
+}
+
 input {
 	outline: none;
+}
+
+body {
+	
 }
 
 /**
@@ -15,37 +29,41 @@ input {
  */	
 h1#top {
 	font-size: 2em;
-	font-weight: bold;
+	font-weight: 700;
 	color: #9a1729;
-	text-shadow: 2px 2px rgba(255, 255, 255, 1);
+	padding: 0px 0px 5px 5px;
+	text-shadow: 1px 1px rgba(255, 255, 255, 1);
 }
 
 h5#caption {
 	font-size: 1em;
 	color: #9a1729;
+	padding: 0px 0px 5px 5px;
+	font-weight: 200;
 	text-shadow: 1px 1px rgba(255, 255, 255, 1);
 }
 
 #outter {
 	max-width: 780px;
 	margin: 0px auto;
+
 }
 
 #header {
-	position: relative;
+	overflow: hidden;
 	width: 100%;
-	height: 100%;
-	padding: 5px;
+	/*padding: 5px 0px;*/
 	background-color: #fae295;
+	border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
-ul#nav {
+#header ul#nav {
 	position: absolute;
 	right: 0px;
-	bottom: 0px;
+	z-index: 2;
 }
 
-ul#nav li {
+#header ul#nav li {
 	float: left;
 	list-style: none;
 	margin: 0px 5px;
@@ -53,16 +71,49 @@ ul#nav li {
 
 #footer {
 	width: 100%;
-	font-family: "Times";
-	padding: 5px;
+	height: 200px;
+	overflow: hidden;
+	text-align: center;
+	background-color: #fae295;
 }
 
-#footer hr {
-	border-right: medium none;
-	border-top: #9a1729 1px solid;
-	border-left: medium none;
-	border-bottom: medium none; 
-	height: 1px;
+#page-1 {
+	background-color: white;
+	position: relative;
+	top: -40px;
+	width: 100%;
+	height: 50px;
+	-webkit-box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.3);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#page-2 {
+	background-color: white;
+	position: relative;
+	top: -95px;
+	width: 100%;
+	height: 50px;
+	-webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#page-3 {
+	background-color: white;
+	position: relative;
+	top: -150px;
+	width: 100%;
+	height: 50px;
+	-webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.3);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#footer h5 {
+	font-size: 0.8em;
+	font-weight: 200;
+	color: #9a1729;
+	text-shadow: 1px 1px rgba(255, 255, 255, 1);
+	position: relative;
+	top: -125px;
 }
 
 /* End of static styling */
@@ -93,33 +144,65 @@ ul#nav li {
 	margin-left: -250px;
 }
 
-#content #right-content #signup-form {
+#content #right-content #signup-form,
+#content #right-content #login-form {
 	margin: 20px;
+}
+
+#description {
+	margin: 20px 40px 20px 10px;
+}
+
+#description p {
+	font: 1.1em/1.8em "Helvetica Neue";
+	font-weight: lighter;
+	text-align: Justify;
+}
+
+#description p#pasta-team-signature {
+	margin: 10px 40px 0px 0px;
+	text-align: right;
+	font: 1.9em "Just Me Again Down Here", "J.d.";
 }
 
 /* End of content layout styling */
 
 /**
- * Pasta signup form styling
+ * Pasta signup and login form styling
  */
 .placeholder {
-	color: lightgray;
+	color: rgba(169, 169, 169, 1);
 }
 
-#signup li {
+#right-content h1 {
+	font-size: 0.8em;
+	font-weight: lighter;
+	margin-bottom: 5px;
+}
+
+#right-content li {
 	list-style: none;
 }
 
-#signup #password-dummy {
+
+/* Error message styling  */
+#right-content li p {
+	font-family: "Helvetica Neue";
+	font-size: 0.7em;
+	/*margin-left: 5px;*/
+	color: red;
+}
+
+#right-content input[type=password] {
 	display: none;
 }
 
-#signup input[type=text],
-#signup input[type=password] {
+#right-content input[type=text],
+#right-content input[type=password] {
 	border: 1px solid #891424;
 	border-radius: 3px;
 	height: 20px;
-	margin: 5px;
+	margin: 5px 0px;
 	-webkit-box-shadow: 0px 1px rgba(0, 0, 0, 0.2);
 	background: 
 		-webkit-gradient(linear, left top, left bottom, 
@@ -128,24 +211,30 @@ ul#nav li {
 			color-stop(20%,rgba(255, 255, 255, 1)));
 }
 
-#signup input:focus {
+#right-content input[type=text]:focus,
+#right-content input[type=password]:focus {
 	-webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.35);
 	background: #fffeea;
 }
 
-#signup input {
+#right-content input {
 	font-size: 1em;
 	font-family: "Calibri";
+	font-weight: lighter;
 	-webkit-transition: 0.1s all ease-in;
-	margin: 0px;
 }
 
-#signup .button {
-	font-size: 0.8em;
+#right-content select {
+	width: 185px;
+	/*margin-left: 5px*/
+}
+
+#right-content .button {
+	font-size: 1em;
 	position: relative;
 	/* this aligns the button with the form textfield baseline */
 	bottom: 2px;
-	padding: 3px;
+	padding: 1px 16px 3px 16px;
 	color: white;
 	border-radius: 3px;
 	border: 1px solid #6e0f1c;
@@ -155,20 +244,24 @@ ul#nav li {
 			color-stop(100%,rgba(115, 41, 43, 1)));
 }
 
-#signup .button:hover {
+#right-content .button:hover {
 	background:
 		-webkit-gradient(linear, left top, left bottom, 
 			color-stop(0%,rgba(196, 60, 68, 1)), 
 			color-stop(100%,rgba(125, 41, 45, 1)));
 }
 
-#signup .button:active {
+#right-content .button:active {
 	text-shadow: 1px 1px 0px rbga(0, 0, 0, 1);
 	background:
 		-webkit-gradient(linear, left top, left bottom,
 			color-stop(2%,rgba(64, 31, 33, 0.8)),
 			color-stop(3%,rgba(140, 35, 42, 1)), 
 			color-stop(100%,rgba(70, 20, 23, 1)));
+}
+
+#right-content .button#login {
+	padding: 1px 26px 3px 26px;
 }
 /**
  * Course Selection Page Table
@@ -220,16 +313,15 @@ ul#nav li {
 	font-size: 12pt;
 }
 
-
 /*****************/
 /* Media Queries */
 /*****************/
 @media screen and (max-width: 780px) {
-	#description {
+/*	#description {
 		width: 100%;
 	}
 	
 	#signup {
 		float: left;
-	}
+	}*/
 }

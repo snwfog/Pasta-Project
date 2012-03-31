@@ -24,14 +24,23 @@ class ScheduleBuilder extends MY_Controller{
 	}
 
 
-    public function listAllAllowedCourses($season = null)
+    public function listAllAllowedCourses()
     {
-		if ($season == null) {
+        $this->load->model('scheduleBuilder_Model');
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules("season", "Season", "required");
+
+		if($this->form_validation->run() == FALSE){
 			$this->load->view('/scheduleBuilder_views/season');
 		} else {
             $id = 3;//temporary, retrieve from session.
+            $season = $this->input->post("season");
+            $time = $this->input->post("time");
+            $longWeekend = $this->input->post("longweekend");
             $courses = $this->course->get_all_courses_allowed($id);
+            //$courses = $this->get_course_detail($courses,$season);
             $courses = $this->filter_courses_by_season($courses, $season);
+            $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $time, $longWeekend);
             $data['courseList'] = $courses;
             $data['season'] = $season;
             $this->load->view('/scheduleBuilder_views/listAllCourses.php', $data);
@@ -52,32 +61,49 @@ class ScheduleBuilder extends MY_Controller{
     {
       $course_detail = array();
       foreach($courses as $course):
-        settype($course, 'integer');
-        $the_course = $this->course->find_by_id($course);
-        $the_course['lectures'] = $this->get_lecture($course,$season);
+        $id = (int)$course["id"];
+        $the_course = $this->course->find_by_id($id);
+        $the_course['lectures'] = $this->get_lectures($id,$season);
         array_push($course_detail,$the_course);
       endforeach;
-      print_r($course_detail);
+      return $course_detail;
     }
 
-    private function get_lecture($course_id,$season)
-    {
+    private function get_lectures($course_id,$season)
+    { 
+      $lecture_detail = array();
       $this->load->model('lecture', 'lecture_model');
-      return $lectures = $this->lecture_model->find_by_course_season($course_id, $season);
-      //foreach($lectures as $lecture):
-          //$lecture["tutorials"] = $this->get_tutorials($lecture["id"]);
-      //endforeach;
+      $lectures = $this->lecture_model->find_by_course_season($course_id, $season);
+      foreach($lectures as $lecture):
+          $lecture["tutorials"] = $this->get_tutorials($lecture["id"]);
+          array_push($lecture_detail, $lecture);
+      endforeach;
+      return $lecture_detail;
     }
 
-    private function get_tutorial($lecture_id)
+    private function get_tutorials($lecture_id)
     {
+      $tutorial_detail = array();
+      $this->load->model('tutorial', 'tutorial_model');
+      $tutorials = $this->tutorial_model->find_by_lecture_id($lecture_id);
+      foreach($tutorials as $tutorial):
+          $tutorial["labs"] = $this->get_labs($tutorial["id"]);
+          array_push($tutorial_detail, $tutorial);
+      endforeach;
+      return $tutorial_detail;
+    }
+    
+    private function get_labs($tutorial_id){
+      $this->load->model('lab', 'lab_model');
+      $labs = $this->lab_model->find_by_tutorial_id($tutorial_id);
+      return $labs;
     }
 
     private function filter_courses_by_season($courses, $season)
     {
       foreach($courses as $key=>$course):
         $this->load->model('lecture', 'lecture_model');
-        $lecture = $this->get_lecture($course['id'],$season);
+        $lecture = $this->get_lectures($course['id'],$season);
         if(empty($lecture)){
             unset($courses[$key]);
         }
@@ -85,9 +111,16 @@ class ScheduleBuilder extends MY_Controller{
 
       return array_values($courses);
     }
-
-
-
+/*
+SELECT * FROM  courses, lectures, time_locations, tutorials, labs
+where lectures.course_id = courses.id 
+and tutorials.lecture_id = lectures.id 
+and labs.tutorial_id = tutorials.id 
+and lectures.time_location_id = time_locations.id
+and tutorials.time_location_id = time_locations.id
+and labs.time_location_id = time_locations.id
+and time_locations.start_time < 1500
+*/
 }
 
 

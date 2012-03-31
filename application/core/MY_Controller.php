@@ -31,21 +31,21 @@ class MY_Controller extends CI_Controller {
 	 * logged in.
 	 * @return boolean [description]
 	 */
-	// public function is_logged_in() {
-	// 	return $this->session->userdata('logged_in');
-	// }
+	public function user_is_logged_in() {
+		return $this->session->userdata('logged_in');
+	}
 
-	// public function session_student_id() {
-	// 	return $this->session->userdata('student_id');
-	// }
+	public function session_student_id() {
+		return $this->session->userdata('student_id');
+	}
 
-	// public function session_student_first_name() {
-	// 	return $this->session->userdata('first_name');
-	// }
+	public function session_student_first_name() {
+		return $this->session->userdata('first_name');
+	}
 
-	// public function session_student_last_name() {
-	// 	return $this->session->userdata('last_name');
-	// }
+	public function session_student_last_name() {
+		return $this->session->userdata('last_name');
+	}
 
 }
 

@@ -91,7 +91,7 @@ class Course extends CI_Model{
       $completedCourses = $this->map_course_id($completedCourses);
       foreach($courses as $key=>$course){
         //Retrieve prerequisite for each course
-        $prerequisites = $this->prerequisite_model->find_by_course_id((int)$course["id"]);
+        $prerequisites = $this->prerequisite_model->find_by_course_id($course["id"]);
         foreach($prerequisites as $prerequisite){
             //Loops through the array of prequisites for each course
             if(isset($prerequisite["required_course_id"])){

@@ -14,19 +14,25 @@ class Pasta extends MY_Controller {
 	function Pasta() {
 		parent::__construct();	
 		
-		// load helper function
-		$this->load->helper(array('url', 'form', 'date'));	
-		// load form validation
-		$this->load->library('form_validation');	
+		// load the login model
+		$this->load->model('User', 'logins_table');	
 	}	
 	
 	public function index() {			
-		
-		$data['title'] = 'Welcome to P.A.S.T.A.';
-		// display the main view
-		$this->put('main', $data);
+		/**
+		 * Main site title
+		 *-----------------*/
+		$data['title'] = 'P.A.S.T.A. - Personal Academic Schedule Timetable Arranger';
 
 
+		// check if the user is already logged in
+		if ($this->user_is_logged_in()) {
+			// if user is already logged in, do an immediate redirect
+			redirect('profile', 'refresh');
+		} else {
+			// display the main view
+			$this->put('main', $data);
+		}
 	}
 	
 	// Registration function
@@ -58,8 +64,7 @@ class Pasta extends MY_Controller {
 			// echo $query->num_rows();
 
 			if ($query->result()) {
-				// user exists, redirect to login page
-				redirect('login', 'refresh');
+				echo "USER ALREADY REGISTERED";
 			} else {
 				echo "USER SUCCESFULLY REGISTERED";
 				$this->db->insert('logins', 
@@ -85,12 +90,67 @@ class Pasta extends MY_Controller {
 		}
 	}
 
+	public function logout() {
+		// unassign logged_in boolean
+		$this->session->set_userdata('logged_in', FALSE);
+		// redirect to pasta main
+		redirect('pasta', 'refresh');
+	}
+
+	public function user_login() {
+		// setup login form validation
+		$this->form_validation->set_rules(
+			'login_student_id', 
+			'Student ID', 
+			'required|trim|xss_clean|exact_length[7]|numeric'
+		); 
+
+		$this->form_validation->set_rules(
+			'login_password', 
+			'Password', 
+			'required|trim|xss_clean|required|min_length[6]|alpha_numeric'
+		);
+
+		if ($this->form_validation->run() == FALSE) {
+			$this->index();
+		} else {
+			// from http://www.haughin.com/2008/02/handling-passwords-in-codeigniter/
+			if ($this->logins_table->find_by_login_info(
+					$this->input->post('login_student_id'),
+					$this->encrypt->sha1($this->input->post('login_password')))) {
+
+				// ------------------------------------
+				// initialize sessions
+				// ------------------------------------
+
+				$user_data = $this->logins_table->find_by_student_id(
+					$this->input->post('login_student_id'));
+
+				$this->session->set_userdata(array(
+					'student_id' => $user_data['student_id'],
+					'first_name' => $user_data['first_name'],
+					'last_name'  => $user_data['last_name'],
+					'logged_in'  => true
+				));
+
+				// redirect to user profile page
+				redirect('profile', 'redirect');
+			} else {
+				echo "Sorry, we could not find you in our records. "
+				 	 . ", should you "
+				 	 . anchor(site_url('pasta'), 'register first')
+					 . "?";
+			}
+		}
+	}
+
 	/**
-	 * Callback function for a alpha_whitespace form validation
+	 * Callback function for an alpha_whitespace form validation
+	 * Allowing white space in family and last name form validation
 	 */
 	public function alpha_whitespace($str) {
 		$this->form_validation->set_message(
-				'alpha_whitespace', 'Your mom gave me this custom error message.');
+				'alpha_whitespace', 'Invalid character.');
 
 		if (preg_match("/^([-a-z-\s])+$/i", $str)) {	
 			return TRUE;

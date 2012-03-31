@@ -54,14 +54,14 @@ class Login extends MY_Controller {
 	public function user_login() {
 		// setup login form validation
 		$this->form_validation->set_rules(
-			'student_id', 
-			'Student ID', 
+			'login_student_id', 
+			'Login Student ID', 
 			'required|trim|xss_clean|exact_length[7]|numeric'
 		); 
 
 		$this->form_validation->set_rules(
-			'password', 
-			'Password', 
+			'login_password', 
+			'Login Password', 
 			'required|trim|xss_clean|required|min_length[6]|alpha_numeric'
 		);
 
@@ -91,7 +91,7 @@ class Login extends MY_Controller {
 				redirect('profile', 'redirect');
 			} else {
 				echo "Sorry, we could not find you in our records. "
-				 	 . "Perhaps, should you "
+				 	 . ", should you "
 				 	 . anchor(site_url('pasta'), 'register first')
 					 . "?";
 			}

@@ -1,10 +1,16 @@
+	</div><!-- #outter -->
+
+	
+
 	<!-- P.A.S.T.A. footer -->
 	<div id="footer">
-		<hr>
-		<p>Project SOEN 341</p>
-		<p>Page rendered in <strong>{elapsed_time}</strong> seconds</p>
-	</div>
-<!-- id = outter -->
-</div>
+		<div id="page-1"></div>
+		<div id="page-2"></div>
+		<div id="page-3"></div>
+		<h5>Project SOEN 341 - April 5, 2012</h5>
+
+		<!-- <p>Page rendered in <strong>{elapsed_time}</strong> seconds</p> -->
+	</div><!-- #footer -->
+	
 </body>
 </html>
