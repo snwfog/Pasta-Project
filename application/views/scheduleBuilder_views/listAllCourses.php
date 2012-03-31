@@ -12,5 +12,7 @@
     <div><input type="submit" value="Submit" /></div>
 </form>
 
+<?php echo $this->benchmark->memory_usage();  ?>
+
 </body>
 </html>

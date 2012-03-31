@@ -13,7 +13,7 @@ class Lecture extends CI_Model{
             trigger_error('setInteger expected Argument 1 to be Integer', E_USER_WARNING);
         }
         $query = $this->db->get_where('lectures', array('course_id' => $id));
-        return $query->row_array(); //row_array returns a single result in a pure array. Better for generating single results.
+        return $query->result_array(); //row_array returns a single result in a pure array. Better for generating single results.
     }
 
     function find_by_teacher($name) {
