@@ -1,13 +1,18 @@
 <?php
 class ScheduleBuilder_Model extends CI_Model{
    function filter_courses_by_preference($courses,$time,$longWeekend){
+      $constraint ="< 2400";
+      $fridayOff = null;
+
       if($time == "day"){
          $constraint ="< 1745";
       }elseif($time== "night"){
          $constraint ="> 1200";
-      }else{
-         $constraint ="< 2400";
       }
+      if($longWeekend){
+        $fridayOff = "and NOT FIND_IN_SET('F', day)";
+      }
+
       $filtered_courses = array();
       foreach($courses as $key=>$course):
         $lectures = $this->db->query(
@@ -16,7 +21,7 @@ class ScheduleBuilder_Model extends CI_Model{
                                 where courses.id =".$course["id"]."
                                 and lectures.course_id = courses.id
                                 and lectures.time_location_id = time_locations.id
-                                and time_locations.start_time".$constraint
+                                and time_locations.start_time".$constraint." ".$fridayOff
                               )->result_array();
         if(empty($lectures)){
           unset($courses[$key]);
