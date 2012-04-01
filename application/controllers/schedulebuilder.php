@@ -22,7 +22,6 @@ class ScheduleBuilder extends MY_Controller {
             $id = 3;//temporary, this should be retrieve from session.
             $form_data = $this->input->post(); //array( time => , longWeekend, season => , year =>
             $courses = $this->course->get_all_courses();
-            //$courses = $this->get_course_detail($courses,$season);
             $courses = $this->scheduleBuilder_Model->filter_courses_by_season($courses, $form_data["season"]);
             $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["longWeekend"], $form_data["season"]);
             $data['courseList'] = $courses;

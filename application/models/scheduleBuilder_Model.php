@@ -114,6 +114,7 @@ class ScheduleBuilder_Model extends CI_Model{
 
 
     function branching($courses){
+      //create all possible combination of course + lecture + tutorial(if have) + labs(if have) while respecting what course/lecture/tutorial they belong to.
       $course = array();
       foreach( $courses["lectures"] as $lecture){
         if(isset($lecture["tutorials"])){
@@ -153,6 +154,7 @@ class ScheduleBuilder_Model extends CI_Model{
        };
 
        //First step compare two course
+       // ***BUG: CAUSES ERROR IF USER ONLY CHOOSES ONE COURSE.
        $possible_sequence = array();
        foreach($branched_course[0] as $course_1){
          foreach($branched_course[1] as $course_2){
