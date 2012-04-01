@@ -235,5 +235,20 @@ class ScheduleBuilder_Model extends CI_Model{
       return false;
     }
 
+    function filter_courses_by_season($courses, $season){
+      foreach($courses as $key=>$course):
+        $lecture = $this->db->query("  SELECT * FROM `courses`
+                                       JOIN lectures
+                                       where courses.id = ".$course["id"]."
+                                       and lectures.course_id = courses.id
+                                       and lectures.season = ".$season);
+        if(empty($lecture)){
+            unset($courses[$key]);
+        }
+      endforeach;
+
+      return array_values($courses);
+    }
+
 }
 ?>

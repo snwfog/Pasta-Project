@@ -15,8 +15,8 @@ class Course extends CI_Model{
      */ 
     function get_all_untaken_courses($student_id) {
         $this->db->join(
-            'completed_courses', 
-            'courses.id = completed_courses.course_id', 
+            'completed_courses',
+            'courses.id = completed_courses.course_id',
             'left'
         );
 
@@ -27,6 +27,7 @@ class Course extends CI_Model{
 
         $this->db->group_by(array('courses.code', 'courses.number'));
         $this->db->select('courses.*');
+        print_r($this->db->get('courses')->result_array());
       
         return $this->db->get('courses')->result_array();
     }

@@ -12,7 +12,7 @@
 	<ul>
 		<li><?=form_radio('time', 'day');?> Day</li>
 		<li><?=form_radio('time', 'night');?> Evening</li>
-		<li><?=form_radio('time', '');?> I Don't Care</li>
+		<li><?=form_radio('time', '0');?> I Don't Care</li>
 	</ul>
 	<p><?=form_checkbox('long_weekend', 'true');?> Long Week-End (Friday or Monday off)</p>
 	<?=form_submit(array(

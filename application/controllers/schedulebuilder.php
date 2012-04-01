@@ -13,7 +13,7 @@ class ScheduleBuilder extends MY_Controller {
     }
 
     public function listAllCourses() {
-        $this->form_validation->set_rules("season", "Season", "required");
+        $this->form_validation->set_rules("time", "Time", "required");
 
 		    if($this->form_validation->run() == FALSE) {
             $form['url']='schedulebuilder/listAllCourses';
@@ -23,7 +23,7 @@ class ScheduleBuilder extends MY_Controller {
             $form_data = $this->input->post(); //array( time => , longWeekend, season => , year =>
             $courses = $this->course->get_all_courses();
             //$courses = $this->get_course_detail($courses,$season);
-            $courses = $this->filter_courses_by_season($courses, $form_data["season"]);
+            $courses = $this->scheduleBuilder_Model->filter_courses_by_season($courses, $form_data["season"]);
             $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["longWeekend"], $form_data["season"]);
             $data['courseList'] = $courses;
             $data['season'] = $form_data["season"];
@@ -34,7 +34,7 @@ class ScheduleBuilder extends MY_Controller {
 
 
     public function listAllAllowedCourses() {
-        $this->form_validation->set_rules("season", "Season", "required");
+        $this->form_validation->set_rules("time", "Time", "required");
 
 		    if($this->form_validation->run() == FALSE) {
             $form['url']='schedulebuilder/listAllAllowedCourses';
@@ -43,14 +43,13 @@ class ScheduleBuilder extends MY_Controller {
             $id = 3;//temporary, this should be retrieve from session.
             $form_data = $this->input->post(); //array( time => , longWeekend, season => , year =>
             $courses = $this->course->get_all_courses_allowed($id);
-            //$courses = $this->get_course_detail($courses,$season);
-            $courses = $this->filter_courses_by_season($courses, $form_data["season"]);
+            $courses = $this->scheduleBuilder_Model->filter_courses_by_season($courses, $form_data["season"]);
             $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["longWeekend"], $form_data["season"]);
-            $data['course_list'] = $courses;
+            $data['courseList'] = $courses;
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
-            //$this->load->view('/scheduleBuilder_views/listAllCourses.php', $data);
-		        $this->put('register_courses', $data);
+            $this->load->view('/scheduleBuilder_views/listAllCourses.php', $data);
+		        //$this->put('register_courses', $data);
         }
     }
 
@@ -65,53 +64,9 @@ class ScheduleBuilder extends MY_Controller {
         array_push($courses,$the_course);
      endforeach;
      $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["longWeekend"], $form_data["season"]);
-
      $possible_sequence = $this->scheduleBuilder_Model->generate_possibility($courses);
      $data["possible_sequence"] = $possible_sequence;
      $this->load->view("/scheduleBuilder_views/generated_schedule.php", $data);
-    }
-
-    private function filter_courses_by_season($courses, $season)
-    {
-      foreach($courses as $key=>$course):
-        $this->load->model('lecture', 'lecture_model');
-        $lecture = $this->get_lectures($course['id'],$season);
-        if(empty($lecture)){
-            unset($courses[$key]);
-        }
-      endforeach;
-
-      return array_values($courses);
-    }
-
-    private function get_lectures($course_id,$season)
-    { 
-      $lecture_detail = array();
-      $this->load->model('lecture', 'lecture_model');
-      $lectures = $this->lecture_model->find_by_course_season($course_id, $season);
-      foreach($lectures as $lecture):
-          $lecture["tutorials"] = $this->get_tutorials($lecture["id"]);
-          array_push($lecture_detail, $lecture);
-      endforeach;
-      return $lecture_detail;
-    }
-
-    private function get_tutorials($lecture_id)
-    {
-      $tutorial_detail = array();
-      $this->load->model('tutorial', 'tutorial_model');
-      $tutorials = $this->tutorial_model->find_by_lecture_id($lecture_id);
-      foreach($tutorials as $tutorial):
-          $tutorial["labs"] = $this->get_labs($tutorial["id"]);
-          array_push($tutorial_detail, $tutorial);
-      endforeach;
-      return $tutorial_detail;
-    }
-    
-    private function get_labs($tutorial_id){
-      $this->load->model('lab', 'lab_model');
-      $labs = $this->lab_model->find_by_tutorial_id($tutorial_id);
-      return $labs;
     }
 
 /*

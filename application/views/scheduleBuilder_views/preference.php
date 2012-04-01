@@ -19,7 +19,7 @@
       <tr>
         <td>
           <select name="time">
-              <option value="" >Both</option>
+              <option value="0" >Both</option>
               <option value="day" >Day</option>
               <option value="night" >Night</option>
           </select>
