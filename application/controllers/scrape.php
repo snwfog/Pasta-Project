@@ -35,15 +35,13 @@ function createTimeLocQryParams( $details ) {
      */
      $dayStr = '';
     foreach ( $details['day'] as $day ) {
-        echo "====> Occurs on " . $day . "<br />\n";
         $dayStr .= $day . ',';
     }
     
+    // Time's on the page are in standard HH:MM format,
+    // however, we want them in the format HHMM so we can store them in an int.
     $startTime = str_replace( ':','', $details['time'][0] );
     $endTime = str_replace( ':','', $details['time'][1] );
-    
-    echo "====> Start: " . $startTime . "<br />\n";
-    echo "====> End: " . $endTime . "<br />\n";
     
     $timeLocQryData = array(
         'start_time' => $startTime,
@@ -127,12 +125,10 @@ class Scrape extends MY_Controller {
             // If that element is an array containing 2 items, then it is a course.
             // If it isn't, then our groupCourseList has sub-groups that contain course lists.
             if ( (array_key_exists(0, $groupCourses)) && (count( $groupCourses[0] ) == 2) ) {
-                echo "Merging $groupName into the course list.<br />\n";
                 $ALL_COURSES = array_merge( $ALL_COURSES, $groupCourses );
             }
             else {
                 foreach ( $groupCourses as $subGroup => $subGroupCourses ) {
-                    echo "Merging $groupName/$subGroup into the course list.<br />\n";
                     $ALL_COURSES = array_merge( $ALL_COURSES, $subGroupCourses );
                 }
             }
@@ -142,7 +138,6 @@ class Scrape extends MY_Controller {
          * Merge soft_eng_courses into the course list.
          * Soft eng courses is grouped by year, then semester, then an array of courses.
          */
-        echo "Merging SOFT_ENG_COURSES into the course list.<br />\n";
         foreach ( $this->config->item('SOFT_ENG_COURSES') as $year => $seasons ) {
             foreach ( $seasons as $season => $courseList ) {
                 $ALL_COURSES = array_merge( $ALL_COURSES, $courseList );
@@ -321,15 +316,7 @@ class Scrape extends MY_Controller {
                     // Save the primary key to the associative array 
                     // so it can be re-used during the Winter iteration.
                     $COURSE_PRIM_KEYS[$course['code']][$course['number']] = $coursePrimaryKey; 
-                    echo 'Inserted ' . $course['code'] .' ' . $course['number']
-                         . '. It has the unique id "' . $coursePrimaryKey . "\"<br />\n";
-                }
-                
-                if ( ! $newWinterCourse ) {
-                    echo 'This course already existed: ' . $course['code']
-                         . ' ' . $course['number'] . '. It had the unique id \"'
-                         . $COURSE_PRIM_KEYS[$course['code']][$course['number']] . "\"<br />\n";
-                }                
+                }            
             }
         }        
                 
@@ -360,8 +347,6 @@ class Scrape extends MY_Controller {
                         if ( ! ( array_key_exists($course['code'], $REQS_INSERTED) && 
                                  array_key_exists($course['number'], $REQS_INSERTED) ) ) {
 
-                            echo "====> Requires: " . $prereq['code'] . ' ' . $prereq['number'];
-                            print_r( $DUMMY_COURSES );
                             // TODO: If the course is not in the DB, then create a dummy record in the DB
                             if ( (array_key_exists( $prereq['code'], $COURSE_PRIM_KEYS ) && 
                                   array_key_exists( $prereq['number'], $COURSE_PRIM_KEYS[$prereq['code']])) ||
@@ -375,7 +360,6 @@ class Scrape extends MY_Controller {
                                 else {
                                     $prereqId = $DUMMY_COURSES[$prereq['code']][$prereq['number']];
                                 }
-                                echo ' which is primary key ' . $prereqId . "<br />\n";
                                 
                                 $prereqQryParam = array(
                                     'course_id' => $coursePrimaryKey,
@@ -386,7 +370,6 @@ class Scrape extends MY_Controller {
                             else {
                                 // The prereq is a course we don't track, such as MATH 201. 
                                 // We need to create a dummy course record.
-                                echo " which is not in the db. Creating a record for it... <br />\n";
                                 
                                 $courseQryData = array(
                                     'code' => $prereq['code'],
@@ -397,15 +380,13 @@ class Scrape extends MY_Controller {
                                     // instead of -1 - Charles
                                 );
                                 $this->db->insert( 'courses', $courseQryData );
-                                // And add it to DUMMY_COURSES, so we can re-use it.
+                                // And add the primary key to DUMMY_COURSES,
+                                // so we can re-use it next time a course depends on this.
                                 $DUMMY_COURSES[$prereq['code']][$prereq['number']] = $this->db->insert_id();
                                 
                             }
                             
                             $REQS_INSERTED[$course['code']][$course['number']] = true;
-                        }
-                        else {
-                            echo "====> It's prereqs have already been handled.<br />\n";
                         }
                     }
                 }
@@ -414,16 +395,8 @@ class Scrape extends MY_Controller {
                     /*
                      * Create the lecture record and lecture time-loc.
                      */
-                    echo "====> Section: " . $courseSection . "<br />\n";
-                    echo "Details: ";
-                    print_r( $sectionDetails );
-                    echo "<br />\n";
-                    
                     $timeLocQryData = createTimeLocQryParams( $sectionDetails );
-                    
-                    echo "***** QRY: *****<br />\n";
-                    print_r( $timeLocQryData );
-                    
+
                     $this->db->insert( 'time_locations', $timeLocQryData );
                     
                     $timeLocPrimaryKey = $this->db->insert_id();

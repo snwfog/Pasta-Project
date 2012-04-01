@@ -292,6 +292,15 @@ h5#caption {
 }
 
 /**
+ * Format the optional courses table in the scraper tester.
+ */
+#option-courses, #option-courses td, #option-coourses tr {
+    border: 1px solid black;
+    padding: 5px;
+    margin: 0px auto;
+}
+
+/**
  * User Schedule Table
  * See: application/controller/profile
  */
