@@ -3,7 +3,6 @@
  * JavaScript functions
  */
 $(document).ready(function() {
-
 	/**
 	 * Load accordion effect for all accordions
 	 * and prevent it from collapsing
@@ -122,7 +121,50 @@ $(document).ready(function() {
 	/**
 	 * Show the course preferences on loading the schedulebuilder controller
 	 */
+	if ($('#course-preferences-selection').length > 0
+		&& $('#continue').length == 0) {
+		// if we are first at course registration page, load the preference first
+		$.blockUI({
+			message : $('#course-preferences-selection'),
+			overlayCSS : { opacity: 0.2 },
+		});
+	}
 	
+	$('#course-preferences-accept').click(function() {
+		$.unblockUI();
+	});
+
+
+	$('#course-preferences-reselect').click(function() {
+		$.blockUI({
+			message : $('#course-preferences-selection'),
+			overlayCSS : { opacity: 0.2 },
+		});
+	});
+
+	/**
+	 * Restrict user to register at maximum 6 courses per semester
+	 */
+	var MAX_COURSES_ALLOWED = 2;
+	$('#registrated-course-counter').html(MAX_COURSES_ALLOWED);
+
+	$('#course-registration-selection-table input:checkbox').click(function() {
+		if (!$(this).is(':checked'))
+			MAX_COURSES_ALLOWED++;
+		else
+			MAX_COURSES_ALLOWED--;
+		
+		$('#registrated-course-counter').html(MAX_COURSES_ALLOWED).animate();
+
+		if (MAX_COURSES_ALLOWED <= 0) {
+			// get all unchecked checkboxes from form, and disable them
+			$('#course-registration-selection-table input:checkbox:not(:checked)').attr('disabled', 'true');
+			// disable form
+		} else {
+			// if still space to register course, allows more checkboxes
+			$('#course-registration-selection-table input:checkbox:not(:checked)').removeAttr('disabled');
+		}
+	});
 
 });
 

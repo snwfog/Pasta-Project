@@ -9,7 +9,9 @@ class ScheduleBuilder extends MY_Controller {
   	}
 
     public function index() {
-        $this->listAllAllowedCourses();
+        // load the preference pane by default
+        $this->put('register_preferences', NULL);
+        //$this->listAllAllowedCourses();
     }
 
     public function listAllCourses() {
@@ -35,21 +37,36 @@ class ScheduleBuilder extends MY_Controller {
     public function listAllAllowedCourses() {
         $this->form_validation->set_rules("time", "Time", "required");
 
-		    if($this->form_validation->run() == FALSE) {
-            $form['url']='schedulebuilder/listAllAllowedCourses';
-			      $this->load->view('/scheduleBuilder_views/preference', $form);
-		    } else {
+		    //if($this->form_validation->run() == FALSE) {
+        //    $this->index();
+		    //} else {
             $id = 3;//temporary, this should be retrieve from session.
             $form_data = $this->input->post(); //array( time => , longWeekend, season => , year =>
+
+            // compute season based on current time
+            // before september, can only register for fall
+            // after september, can only register for winter
+            $form_data['season'] = (date('n') > '9' ? '4' : '2');
+            $form_data['long_weekend'] = ($this->input->post('long_weekend') ? 1 : 0);
             $courses = $this->course->get_all_courses_allowed($id);
-            $courses = $this->scheduleBuilder_Model->filter_courses_by_season($courses, $form_data["season"]);
-            $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["longWeekend"], $form_data["season"]);
-            $data['courseList'] = $courses;
+            
+            //$courses = $this->get_course_detail($courses,$season);
+            $courses = $this->scheduleBuidler_Model->filter_courses_by_season($courses, $form_data["season"]);
+
+
+            $courses = $this->scheduleBuilder_Model->
+                filter_courses_by_preference(
+                    $courses, 
+                    $form_data["time"], 
+                    $form_data["long_weekend"], 
+                    $form_data['season']
+                );
+            $data['course_list'] = $courses;
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
-            $this->load->view('/scheduleBuilder_views/listAllCourses.php', $data);
-		        //$this->put('register_courses', $data);
-            }
+            //$this->load->view('/scheduleBuilder_views/listAllCourses.php', $data);
+		        $this->put('register_courses', $data);
+        //}
     }
 
     

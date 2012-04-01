@@ -5,7 +5,7 @@
 			 . " - " . $schedules['year'];?></h3>
 	<p>Credit <?=$total_credit?></p>
 	<div id="modal-dummy"></div>
-	<div id="drop-schedule-confirm-box">
+	<div id="drop-schedule-confirm-box" class="dialog">
 		<h1>
 			Are you sure you want to drop this entire semester of course?
 		</h1>
