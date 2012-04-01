@@ -158,16 +158,19 @@ class ScheduleBuilder_Model extends CI_Model{
        };
 
        //First step compare two course
-       // ***BUG: CAUSES ERROR IF USER ONLY CHOOSES ONE COURSE.
        $possible_sequence = array();
-       foreach($branched_course[0] as $course_1){
-         foreach($branched_course[1] as $course_2){
-           $conflict = false;
-           $conflict=$this->compare_time($course_1, $course_2);
-           if(!$conflict){
-            array_push($possible_sequence, array($course_1,$course_2));
+       if(isset($branched_course[1])){
+         foreach($branched_course[0] as $course_1){
+           foreach($branched_course[1] as $course_2){
+             $conflict = false;
+             $conflict=$this->compare_time($course_1, $course_2);
+             if(!$conflict){
+              array_push($possible_sequence, array($course_1,$course_2));
+             }
            }
          }
+       }else{
+            array_push($possible_sequence, $branched_course[0]);
        }
        /*Each set of courses in $possible_sequence is compared against each the branch of a course in $branched_courses array.
        $branched_courses each index of this array contain an array of all possible combination of course, lecture, and labs of a Course
