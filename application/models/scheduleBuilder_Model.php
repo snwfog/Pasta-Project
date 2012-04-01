@@ -24,6 +24,7 @@ class ScheduleBuilder_Model extends CI_Model{
                                 and lectures.time_location_id = time_locations.id
                                 and time_locations.start_time".$constraint." ".$fridayOff
                               )->result_array();
+        //if lecture is empty remove course from list.
         if(empty($lectures)){
           unset($courses[$key]);
         }else{
@@ -43,7 +44,7 @@ class ScheduleBuilder_Model extends CI_Model{
   function check_tutorials($lectures,$constraint){
     $filtered_lectures = array();
     foreach($lectures as $key=>$lecture):
-        // query all tutorials that belong to a specific lecture and meets the time constraint
+        // query all tutorials that belong to a specific lecture and if it meets the time constraint
         $tutorials = $this->db->query(
                                 "SELECT tutorials.id, tutorials.section, lecture_id, tutorials.time_location_id, start_time, end_time, day
                                 FROM  lectures, time_locations, tutorials
@@ -57,13 +58,14 @@ class ScheduleBuilder_Model extends CI_Model{
         if(empty($tutorials)){
           $no_tutorial = $this->db->query("select * from tutorials
                                                 where tutorials.lecture_id =".$lecture["id"])->result_array();
-          //Checking if course even have tutorial before removing. If not, add to filtered array.
+          //Checking if lecture even have any tutorial before removing lecture from list. If not, add to filtered array.
           if(!empty($no_tutorial)){
             unset($lectures[$key]);
           }else{
             array_push($filtered_lectures, $lecture);
           }
         }else{
+          //If have tutorials and meet constraint, check labs time.
           $tutorials = $this->check_labs($tutorials,$constraint);
           if(empty($tutorials)){
             unset($lectures[$key]);
@@ -72,9 +74,6 @@ class ScheduleBuilder_Model extends CI_Model{
             array_push($filtered_lectures, $lecture);
           }
         }
-
-        //If there is no tutorial
-
     endforeach;
     return $filtered_lectures;
   }
@@ -93,7 +92,7 @@ class ScheduleBuilder_Model extends CI_Model{
                                 and time_locations.start_time".$constraint
                               )->result_array();
 
-        //Remove tutorials if it has no labs that meet time constraint. Caution: Tutorial may not have labs to begin with.
+        //Remove tutorial if it has no labs that meet time constraint. Caution: Tutorial may not have labs to begin with.
         if(empty($labs)){
           $no_labs = $this->db->query("select * from labs
                                                 where labs.tutorial_id =".$tutorial["id"])->result_array();
@@ -114,7 +113,7 @@ class ScheduleBuilder_Model extends CI_Model{
 
 
     function branching($courses){
-      //create all possible combination of course + lecture + tutorial(if have) + labs(if have) while respecting what course/lecture/tutorial they belong to.
+      //create all possible combination of course + lecture + tutorial(if have) + labs(if have) while respecting which course/lecture/tutorial they belong to.
       $course = array();
       foreach( $courses["lectures"] as $lecture){
         if(isset($lecture["tutorials"])){
@@ -147,7 +146,12 @@ class ScheduleBuilder_Model extends CI_Model{
     }
 
     function generate_possibility($courses){
-       //Preparing the data into a easier structure to work with for me
+       //This method is dependent on filter_courses_by_preference as that method structure the array of courses for this method.
+       // The structure is  = array ( ..... lectures => array ( ...... tutorials =>  array( ....... labs => .....)))
+       // where ....  is other keys => values
+       // Preparing the data into a easier structure to work with for me
+       // Method Constraints: This method doesn't put into account that it might compare to lecture/tutorials/labs that are from different season. -
+       //                     In other words, for this method to work properly, the lectures should be from the same season.
        $branched_course = array();
        for($i=0; $i<count($courses); $i++){
          $branched_course[$i] = $this->scheduleBuilder_Model->branching($courses[$i]);
@@ -165,27 +169,32 @@ class ScheduleBuilder_Model extends CI_Model{
            }
          }
        }
-  
-       //Compare a another course against a possible sequence of courses
-       //If it doesn't conflict, add the course branch snd the existing sequence to an array.
+       /*Each set of courses in $possible_sequence is compared against each the branch of a course in $branched_courses array.
+       $branched_courses each index of this array contain an array of all possible combination of course, lecture, and labs of a Course
+       $possible_sequence is an array of sets of courses that doesn't conflict.*/
        $final_possibilities = array();
        if(isset($branched_course[2])){
          for($i=2; $i<count($branched_course); $i++){
            foreach($branched_course[$i] as $new_course){
              foreach($possible_sequence as $key=>$sequence){
                foreach($sequence as $base_course){
-                  $conflict=$this->compare_time($base_course, $new_course);
+                  $conflict = $this->compare_time($base_course, $new_course);
+                  //If new course conflict with any of the courses in the set. Remove the set and exit loop.
                   if($conflict){
                       unset($possible_sequence[$key]);
                       break;
                   }
                }
+               //If new course does not conflict with any course in the set. A new set is created consisting of the old set + new course
                if(!$conflict){
                   array_push($sequence, $new_course);
-                  array_push($final_possibilities, $sequence);
+                  array_push($final_possibilities, $sequence); // store the new set of courses that doesn't conflict.
                }
              }
            }
+           //After checking the new course against each set of course. If final possibility array contain sets of courses
+           // then old sets of courses in possible_sequence is replaced by new set of courses in final_possibilities.
+           // final_posssibilities is emptied for next iteration of a new course.
            if(!empty($final_possibilities)){
                 $possible_sequence = $final_possibilities;
                 $final_possibilities = array();

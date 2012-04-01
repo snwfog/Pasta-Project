@@ -27,8 +27,7 @@ class Course extends CI_Model{
 
         $this->db->group_by(array('courses.code', 'courses.number'));
         $this->db->select('courses.*');
-        print_r($this->db->get('courses')->result_array());
-      
+
         return $this->db->get('courses')->result_array();
     }
 
@@ -40,23 +39,13 @@ class Course extends CI_Model{
     }
 
     function find_by_code($code) {
-      if (FALSE === is_string($code)) {
-        trigger_error('setString expected Argument 1 to be String', 
-          E_USER_WARNING);
-      }
       $query = $this->db->get_where('courses', array('code' => $code));
-
-      // result_array() return multiple result in a pure array.
-      return $query->result_array(); 
+      return $query->result_array();
     }
 
     function find_by_code_number($code, $number) { 
-      $query = $this->db->get_where('courses', 
-        array('code' => $code, 'number' => $number));
-
-      // use row_array() because there 
-      // is no two record with same code and number.
-      return $query->row_array(); 
+      $query = $this->db->get_where('courses', array('code' => $code, 'number' => $number));
+      return $query->row_array();
     }
 
     // Overload find_by_code_number function taking course code 
@@ -113,10 +102,10 @@ class Course extends CI_Model{
       $completedCourses = $this->completed_courses->find_by_student_id($student_id);
       $completedCourses = $this->map_course_id($completedCourses);
       foreach($courses as $key=>$course){
-        //Retrieve prerequisite for each course
+        //Retrieve array of prerequisites for each course
         $prerequisites = $this->prerequisite_model->find_by_course_id($course["id"]);
         foreach($prerequisites as $prerequisite){
-            //Loops through the array of prequisites for each course
+            //Loops through the each prequisite for each course
             if(isset($prerequisite["required_course_id"])){
              //Check against student completed courses. If course does not exist in completedCourses, remove course from courses array.
                 if(!in_array($prerequisite["required_course_id"],$completedCourses)){
@@ -131,7 +120,8 @@ class Course extends CI_Model{
     }
 
     private function map_course_id($array){
-      function return_course_id($record){ // Function within a Function: A hack for array_map callback problem with  models
+      //this function is called to return a 1-dimensional consisting course id only.
+      function return_course_id($record){ // Function within a Function: A hack for array_map callback problem with models
         return $record["course_id"];
       }
       return $courseCompleted = array_map("return_course_id", $array);

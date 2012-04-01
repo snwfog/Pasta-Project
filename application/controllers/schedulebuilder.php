@@ -49,7 +49,7 @@ class ScheduleBuilder extends MY_Controller {
             $data['preference'] = $form_data;
             $this->load->view('/scheduleBuilder_views/listAllCourses.php', $data);
 		        //$this->put('register_courses', $data);
-        }
+            }
     }
 
     
