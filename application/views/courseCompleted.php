@@ -1,6 +1,13 @@
 <div id="content">
+<div id="registration-progress">
+	<ul>
+		<li id="stepped-on"><h1 id="bullet">1</h1><h5>Course Completed</h5></li>
+		<li><h1 id="bullet">2</h1><h5>Register Courses</h5></li>
+		<li><h1 id="bullet">3</h1><h5>Done</h5></li>
+	</ul>
+</div>
 
-<p>Please select the course that you have completed.</p>
+<h1 id="section-title">Please select the course that you have completed.</h1>
 
 <?php echo form_open('coursecompleted/submit'); ?>
 
@@ -30,7 +37,14 @@
 	<?php endforeach; ?>
 	
 	<tr>
-		<td colspan="5" style="text-align: right"><?=form_submit('submit', 'Continue');?></td>
+		<td colspan="5" style="text-align: right;">
+			<?=form_submit(array(
+						'name'  => 'submit',
+						'id' 	=> 'continue',
+						'value' => 'Continue',
+						'class' => 'button'
+			));?>
+		</td>
 	</tr>
 	</table>
 	

@@ -1,8 +1,19 @@
 /**
+ * PASTA - SOEN341 Concordia 2012
  * JavaScript functions
  */
 $(document).ready(function() {
 
+	/**
+	 * Load accordion effect for all accordions
+	 * and prevent it from collapsing
+	 */
+	$('#accordion').accordion({ 
+		autoHeight 	: false,
+		collapsible	: true,
+		active 		: false,
+		multiple	: true
+	});
 
 	/**
 	 * Function to color the check table row to green when selected
@@ -73,4 +84,67 @@ $(document).ready(function() {
 		}
 	});
 
+	/**
+	 * Display warning when user click drop schedule button
+	 * @view: profile
+	 */
+	$('#dummy-drop-schedule').click(function() {
+		$.blockUI({
+			message : $('#drop-schedule-confirm-box'),
+			overlayCSS : { opacity: 0.2 },
+		});
+
+		// my dialog (unmodal)
+		// $('#drop-schedule-confirm-box').css({ 
+		// 	'z-index' : '9999',
+		// 	'opacity' : '1'
+		// });
+		// 
+		// a quick hack for my css dialog + jquery modal dialog
+		// $('#modal-dummy').dialog({ 
+		// 	modal 		: true,
+		// 	height 		: 0,
+		// 	width		: 300,
+		// });
+	});
+
+	$('#drop-schedule-cancel').click(function() {
+		$.unblockUI();
+		return false;
+		// $('#drop-schedule-confirm-box').css({ 
+		// 	'opacity' : '0',
+		// 	'z-index' : '-9999'
+		// });
+
+		// $('#modal-dummy').dialog('close');
+	});
+
 });
+
+// // extend jquery ui accordion to allow multiple
+// // sections at once if the multiple option is true
+// // from http://forum.jquery.com/topic/accordion-multiple-sections-open-at-once
+// $.extend($.ui.accordion.prototype.options,{multiple: false});
+// var _toggle = $.ui.accordion.prototype._toggle;
+// var _clickHandler = $.ui.accordion.prototype._clickHandler;
+// $.extend($.ui.accordion.prototype,{
+// 	_toggle: function(toShow, toHide, data, clickedIsActive, down){
+// 		if (this.options.collapsible && this.options.multiple && toShow.is(':visible')) {
+// 			arguments[1] = arguments[0];
+// 			arguments[3] = true;
+// 		}
+// 		else if (this.options.collapsible && this.options.multiple) {
+// 			arguments[1] = $([]);			
+// 		}
+// 		_toggle.apply(this,arguments);
+// 		this.active
+// 			.removeClass( "ui-state-active ui-corner-top" )
+// 			.addClass( "ui-state-default ui-corner-all" )
+// 	},
+// 	_clickHandler: function(event, target){
+// 		if ($(target).next().is(':visible:not(:animated)')) {
+// 			this.active = $(target);
+// 		}
+// 		_clickHandler.apply(this,arguments)
+// 	}
+// });

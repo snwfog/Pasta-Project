@@ -28,6 +28,20 @@ class CompletedCourse extends CI_Model{
     }
 
     /**
+     * Get current session student total course credit taken.
+     * @return Student Credit
+     */
+    public function get_total_credit_earned($student_id) {
+        $this->db->select('SUM(credit)');
+        $this->db->from('courses');
+        $this->db->join('completed_courses', 
+            'completed_courses.course_id = courses.id');
+        $this->db->where('student_id', $student_id);
+        $query = $this->db->get()->result_array();
+        return $query[0]['SUM(credit)'];
+    }
+
+    /**
      * Insert in the `completed_courses` database by student_id
      * @param: 	$student_it - The student id.
      *			$course_id - course_id that
