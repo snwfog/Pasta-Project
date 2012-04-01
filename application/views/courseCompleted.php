@@ -7,7 +7,7 @@
 	</ul>
 </div>
 
-<h2>Please select the course that you have completed.</h2>
+<h1 id="section-title">Please select the course that you have completed.</h1>
 
 <?php echo form_open('coursecompleted/submit'); ?>
 
@@ -37,7 +37,14 @@
 	<?php endforeach; ?>
 	
 	<tr>
-		<td colspan="5" style="text-align: right"><?=form_submit('submit', 'Continue');?></td>
+		<td colspan="5" style="text-align: right;">
+			<?=form_submit(array(
+						'name'  => 'submit',
+						'id' 	=> 'continue',
+						'value' => 'Continue',
+						'class' => 'button'
+			));?>
+		</td>
 	</tr>
 	</table>
 	

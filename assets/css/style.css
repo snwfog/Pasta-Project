@@ -10,10 +10,15 @@
 
 a {
 	text-decoration: none;
+	color: rgba(154, 23, 41, 1);
+	border-bottom: 1px dashed rgba(154, 23, 41, 1);
 }
 
 a:hover {
-	text-decoration: underline;
+	border: none;
+	color: rgba(99, 11, 24, 1);
+	position: relative;
+	bottom: 1px;
 }
 
 input {
@@ -22,6 +27,10 @@ input {
 
 body {
 	
+}
+
+.proud {
+	color: rgba(154, 23, 41, 1);
 }
 
 /**
@@ -46,7 +55,7 @@ h5#caption {
 #outter {
 	max-width: 780px;
 	margin: 0px auto;
-
+	border-radius: 10px;
 }
 
 #header {
@@ -61,6 +70,8 @@ h5#caption {
 	position: absolute;
 	right: 0px;
 	z-index: 2;
+	margin: 10px;
+	font-size: 0.8em;
 }
 
 #header ul#nav li {
@@ -80,31 +91,34 @@ h5#caption {
 #page-1 {
 	background-color: white;
 	position: relative;
-	top: -40px;
+	top: -30px;
 	width: 100%;
 	height: 50px;
 	-webkit-box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.3);
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
 }
 
 #page-2 {
 	background-color: white;
 	position: relative;
-	top: -95px;
+	top: -85px;
 	width: 100%;
 	height: 50px;
 	-webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
 }
 
 #page-3 {
 	background-color: white;
 	position: relative;
-	top: -150px;
+	top: -140px;
 	width: 100%;
 	height: 50px;
 	-webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.3);
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
 }
 
 #footer h5 {
@@ -125,7 +139,7 @@ h5#caption {
 #content {
 	position: relative;
 	margin: 20px;
-//	background-color: yellow;
+	padding-bottom: 50px;
 }
 
 #content #left-content {
@@ -148,6 +162,20 @@ h5#caption {
 #content #right-content #signup-form,
 #content #right-content #login-form {
 	margin: 20px;
+}
+
+h1#section-title {
+	font-size: 1.5em;
+	font-weight: lighter;
+	margin: 20px 20px 0px 20px;
+	color: #4c4c4c;
+}
+
+h3#section-subtitle {
+	font-size: 1em;
+	font-weight: lighter;
+	margin-left: 20px;
+	color: #4c4c4c;
 }
 
 #description {
@@ -231,7 +259,7 @@ h5#caption {
 	/*margin-left: 5px*/
 }
 
-#right-content .button {
+.button {
 	font-size: 1em;
 	position: relative;
 	/* this aligns the button with the form textfield baseline */
@@ -246,14 +274,14 @@ h5#caption {
 			color-stop(100%,rgba(115, 41, 43, 1)));
 }
 
-#right-content .button:hover {
+.button:hover {
 	background:
 		-webkit-gradient(linear, left top, left bottom, 
 			color-stop(0%,rgba(196, 60, 68, 1)), 
 			color-stop(100%,rgba(125, 41, 45, 1)));
 }
 
-#right-content .button:active {
+.button:active {
 	text-shadow: 1px 1px 0px rbga(0, 0, 0, 1);
 	background:
 		-webkit-gradient(linear, left top, left bottom,
@@ -348,6 +376,23 @@ h5#caption {
 	background-color: #e9f4fd;
 }
 
+#course_selection_table #continue {
+	margin: 20px;
+}
+
+#course_selection_table {
+	border: none;
+}
+
+#course_selection_table tr {
+	border: none;
+}
+
+#course_selection_table td {
+	border: none;
+}
+
+
 /**
  * User Schedule Table
  * See: application/controller/profile
@@ -355,19 +400,69 @@ h5#caption {
 
 #user_schedule_table, 
 #user_schedule_table tr,
-#user_schedule_table td {
+#user_schedule_table td,
+#user_schedule_table th {
 	border: 1px solid black;
 	padding: 5px;
 	margin: 0px auto;
 	background-color: #ffffff;
 }
 
-#user_schedule_table h1 {
-	font-size: 15pt;
+#user_schedule_table a:hover {
+	bottom: 0px;
 }
 
-#user_schedule_table h2 {
-	font-size: 12pt;
+#user_schedule_table ul {
+	list-style: none;
+}
+
+#user_schedule_table,
+#user_schedule_table td,
+#user_schedule_table tr,
+#user_schedule_table th {
+	border: none;
+}
+
+#user_schedule_table a {
+	font-size: 0.9em;
+	font-weight: normal;
+}
+
+#user_schedule_table a:hover {
+	border-bottom: 1px dashed rgba(154, 23, 41, 1);
+}
+
+/**
+ * Profile Drop Schedule Confirmation Box
+ *----------------------------------------*/
+#drop-schedule-confirm-box {
+	width: 300px;
+	position: fixed;
+	background-color: white;
+	-webkit-box-shadow: 
+		0px 4px 0px lightgray,
+		0px 2px 50px rgba(0, 0, 0, 0.2);
+	padding: 20px;
+	border-radius: 10px;
+	text-align: center;
+	top: 30%;
+	left: 28%;
+	background-color: rgba(249, 249, 249, 1);
+	border: solid 1px rgba(0, 0, 0, 0.1);
+	text-shadow: 2px 2px 0px white;
+	display: none;
+
+	/*display animation my hack - Charles - deprecated*/
+/*	z-index: -9999;
+	opacity: 0;
+	-webkit-transition: opacity 0.2s ease-in;*/
+}
+
+#drop-schedule-confirm-box h1 {
+	margin-bottom: 20px;
+	font-family: 'Helvetica Neue';
+	font-weight: lighter;
+	color: #9a1729;
 }
 
 /*****************/

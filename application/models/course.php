@@ -6,7 +6,6 @@ class Course extends CI_Model{
         $this->db->select("id, code, number, credit, title");
         $query = $this->db->get('courses');
         return $query->result_array();
-
     }
 
     function find_by_id($id) {

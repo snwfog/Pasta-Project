@@ -4,7 +4,7 @@
 	<div id="left-content">
 		<div id="wrapper">
 			<div id="description">
-				<p>Hey, welcome to P.A.S.T.A., an online academic course scheduler for Software Engineering students at Concordia. We've created P.A.S.T.A. because we know all good software engineers have more important algorithms to devise than to plan their course schedules. So if you feel that you are an awesome engineer like us, sign up, it's free, and receive your course schedules in just a few easy steps.</p>
+				<p>Hey, welcome to P.A.S.T.A., an online academic course scheduler for Software Engineering students at Concordia. We've created P.A.S.T.A. because we know all good <span class="proud">software engineers</span> have more important algorithms to devise than to plan their course schedules. So if you feel that you <span class="proud">are</span> an <span class="proud">awesome</span> engineer like us, sign up, it's free, and receive your course schedules in just a few easy steps.</p>
 				<br />
 				<p>Have a great year!</p>
 

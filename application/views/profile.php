@@ -1,26 +1,49 @@
 <div id="content">
-	<p>Hello Charles,</p>
+	<h1 id="section-title">Hello Charles,</h1>
+	<h3 id="section-subtitle">Here is your schedule for
+		<?=(($schedules['season'] == '2') ? "Fall" : "Winter")
+			 . " - " . $schedules['year'];?></h3>
 	<p>Credit <?=$total_credit?></p>
+	<div id="modal-dummy"></div>
+	<div id="drop-schedule-confirm-box">
+		<h1>
+			Are you sure you want to drop this entire semester of course?
+		</h1>
+
+		<?=form_open("profile/drop_course/".$schedules['id']);?>
+		<?=form_submit(array(
+						'name'  => 'drop-schedule-accept',
+						'id'	=> 'drop-schedule-accept',
+						'value' => 'Accept',
+						'class' => 'button'
+					));?>
+		<?=form_button(array(
+						'name'  => 'drop-schedule-cancel',
+						'id'	=> 'drop-schedule-cancel',
+						'value' => 'false',
+						'class' => 'button',
+						'content' => 'Cancel'
+					));?>
+
+		</form>
+	</div>
 	<table id="user_schedule_table">
-		<tr>
-			<td>Schedule</td>
-			<td>Year</td>
-			<td>Session</td>
-			<td>Option</td>
-		</tr>
-		<?php foreach($schedules as $index => $detail_schedule_info): ?>
-		<tr>
-			<td><?=($index+1)?></td>
-			<td><?=$detail_schedule_info['year']?></td>
-			<td><?=$detail_schedule_info['season']?></td>
-			<td>
-				<?=anchor(site_url("login"), "View")?> <!-- display the link to the schedule, replace with
-				anchor(site_url("schedule/method/$detail_schedule_info['id
-				']), "View"); in the final version. -->
-				<?=anchor(site_url("completedcourse"), "Drop");?>
-				<!-- PLACEHOLDER -->
-			</td>
-		</tr>
-		<?php endforeach;?>
+		<tr><td><div id="accordion" class="ui-accordion">
+		<?php foreach($schedules['course_info'] as $index => $course): ?>
+		
+
+					<h3 class="ui-accordion-header"><a href="#">
+						<?=$course['code']?>
+						<?=$course['number']?>
+						<?=$course['title']?>
+					</a></h3>
+					<div class="ui-accordion-content">CONTENT FOR COURSE</div>
+
+			
+		<?php endforeach; ?>
+		</div></td></tr>
+		<tr><td>
+			<a href="#" id="dummy-drop-schedule"><span class="ui-icon ui-icon-trash"></span></a>
+		</td></tr>
 	</table>
 </div>
