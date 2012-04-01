@@ -1,7 +1,7 @@
 <div id="content">
-<div id="registration-progress">
+<div id="progress-indicator">
 	<ul>
-		<li id="stepped-on"><h1 id="bullet">1</h1><h5>Course Completed</h5></li>
+		<li id="stepped-on"><h1 id="bullet">1</h1><h5>Completed Courses</h5></li>
 		<li><h1 id="bullet">2</h1><h5>Register Courses</h5></li>
 		<li><h1 id="bullet">3</h1><h5>Done</h5></li>
 	</ul>

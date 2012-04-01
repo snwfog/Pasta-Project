@@ -1,27 +1,24 @@
 <?php
 
-class ScheduleBuilder extends MY_Controller{
+class ScheduleBuilder extends MY_Controller {
 
-	function __construct() {
-		parent::__construct();
+  	function __construct() {
+  		  parent::__construct();
         $this->load->model('course');
         $this->load->model('scheduleBuilder_Model');
-		$this->load->helper(array('form', 'url'));
-	}
+  	}
 
-    public function index(){
-    $this->listAllAllowedCourses();
+    public function index() {
+        $this->listAllAllowedCourses();
     }
 
-	public function listAllCourses()
-	{
-        $this->load->library('form_validation');
+    public function listAllCourses() {
         $this->form_validation->set_rules("season", "Season", "required");
 
-		if($this->form_validation->run() == FALSE){
+		    if($this->form_validation->run() == FALSE) {
             $form['url']='schedulebuilder/listAllCourses';
-			$this->load->view('/scheduleBuilder_views/preference', $form);
-		} else {
+			      $this->load->view('/scheduleBuilder_views/preference', $form);
+		    } else {
             $id = 3;//temporary, this should be retrieve from session.
             $form_data = $this->input->post(); //array( time => , longWeekend, season => , year =>
             $courses = $this->course->get_all_courses();
@@ -32,30 +29,29 @@ class ScheduleBuilder extends MY_Controller{
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
             $this->load->view('/scheduleBuilder_views/listAllCourses.php', $data);
-		}
-	}
+		    }
+	  }
 
 
-    public function listAllAllowedCourses()
-    {
-        $this->load->library('form_validation');
+    public function listAllAllowedCourses() {
         $this->form_validation->set_rules("season", "Season", "required");
 
-		if($this->form_validation->run() == FALSE){
+		    if($this->form_validation->run() == FALSE) {
             $form['url']='schedulebuilder/listAllAllowedCourses';
-			$this->load->view('/scheduleBuilder_views/preference', $form);
-		} else {
+			      $this->load->view('/scheduleBuilder_views/preference', $form);
+		    } else {
             $id = 3;//temporary, this should be retrieve from session.
             $form_data = $this->input->post(); //array( time => , longWeekend, season => , year =>
             $courses = $this->course->get_all_courses_allowed($id);
             //$courses = $this->get_course_detail($courses,$season);
             $courses = $this->filter_courses_by_season($courses, $form_data["season"]);
             $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["longWeekend"], $form_data["season"]);
-            $data['courseList'] = $courses;
+            $data['course_list'] = $courses;
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
-            $this->load->view('/scheduleBuilder_views/listAllCourses.php', $data);
-		}
+            //$this->load->view('/scheduleBuilder_views/listAllCourses.php', $data);
+		        $this->put('register_courses', $data);
+        }
     }
 
     

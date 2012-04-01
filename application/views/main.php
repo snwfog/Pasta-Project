@@ -18,7 +18,7 @@
 
 	<div id="right-content">
 		<div id="signup-form">
-			<h1>New to P.A.S.T.A? Sign up for free!</h1>
+			<h1>New colleague?</h1>
 			<?=form_open('pasta/register', array('id' => 'signup'),
 				array('program' => 'soft_eng'));?>
 			<ul>

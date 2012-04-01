@@ -18,7 +18,7 @@ $(document).ready(function() {
 	/**
 	 * Function to color the check table row to green when selected
 	 */
-	$('#course_selection_table input:checkbox').click(function() {
+	$('input:checkbox').click(function() {
 		if (!$(this).is(':checked')) {
 			// must be checked previously, because checkbox state
 			// went from checked to unchecked: unselect a course
@@ -29,7 +29,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#course_selection_table input:checkbox:checked').parents('tr').css({
+	$('input:checkbox:checked').parents('tr').css({
 		'background-color' : '#f0ffed' // green
 	});
 
@@ -118,6 +118,11 @@ $(document).ready(function() {
 
 		// $('#modal-dummy').dialog('close');
 	});
+
+	/**
+	 * Show the course preferences on loading the schedulebuilder controller
+	 */
+	
 
 });
 

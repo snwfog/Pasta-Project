@@ -8,6 +8,29 @@ class Course extends CI_Model{
         return $query->result_array();
     }
 
+    /**
+     * Get all the courses that is not taken by a student
+     * @param  $student_id
+     * @return All the untaken courses as array
+     */ 
+    function get_all_untaken_courses($student_id) {
+        $this->db->join(
+            'completed_courses', 
+            'courses.id = completed_courses.course_id', 
+            'left'
+        );
+
+        $this->db->where(
+            "completed_courses.student_id != $student_id"
+            . " OR completed_courses.student_id IS NULL"
+        );
+
+        $this->db->group_by(array('courses.code', 'courses.number'));
+        $this->db->select('courses.*');
+      
+        return $this->db->get('courses')->result_array();
+    }
+
     function find_by_id($id) {
         $query = $this->db->get_where('courses', array('id' => $id));
         // row_array returns a single result in a pure array. 
@@ -85,7 +108,7 @@ class Course extends CI_Model{
     {
       $this->load->model("prerequisite","prerequisite_model");
       $this->load->model('CompletedCourse', 'completed_courses');
-      $courses = $this->db->get('courses')->result_array();
+      $courses = $this->get_all_untaken_courses($student_id);
       $completedCourses = $this->completed_courses->find_by_student_id($student_id);
       $completedCourses = $this->map_course_id($completedCourses);
       foreach($courses as $key=>$course){

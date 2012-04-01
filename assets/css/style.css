@@ -25,10 +25,6 @@ input {
 	outline: none;
 }
 
-body {
-	
-}
-
 .proud {
 	color: rgba(154, 23, 41, 1);
 }
@@ -167,8 +163,8 @@ h5#caption {
 h1#section-title {
 	font-size: 1.5em;
 	font-weight: lighter;
-	margin: 20px 20px 0px 20px;
-	color: #4c4c4c;
+	margin: 20px;
+	color: #9a1729;
 }
 
 h3#section-subtitle {
@@ -297,30 +293,30 @@ h3#section-subtitle {
 /**
  * Registration Progression Indicator
  *------------------------------------*/
-#registration-progress {
+#progress-indicator {
 	position: relative;
 	overflow: hidden;
 	padding: 10px;
 }
 
-#registration-progress ul {
+#progress-indicator ul {
 	list-style: none outside none;
 }
 
-#registration-progress ul li {
+#progress-indicator ul li {
 	float: left;
 	margin-right: 30px;
 }
 
-#registration-progress h1, 
-#registration-progress h2, 
-#registration-progress h3, 
-#registration-progress h4, 
-#registration-progress h5 {
+#progress-indicator h1, 
+#progress-indicator h2, 
+#progress-indicator h3, 
+#progress-indicator h4, 
+#progress-indicator h5 {
 	display: inline;
 }
 
-#registration-progress ul li h1 {
+#progress-indicator ul li h1 {
 	background-color: rgba(154, 23, 41, 0.1);
 	font-weight: lighter;
 	color: white;
@@ -329,7 +325,7 @@ h3#section-subtitle {
 	border-radius: 20px;
 }
 
-#registration-progress ul li h5 {
+#progress-indicator ul li h5 {
 	color: lightgray;
 	font-weight: lighter;
 	font-style: italic;
@@ -338,11 +334,11 @@ h3#section-subtitle {
 	bottom: 1px;
 }
 
-#registration-progress ul li#stepped-on h1 {
+#progress-indicator ul li#stepped-on h1 {
 	background-color: rgba(154, 23, 41, 1);
 }
 
-#registration-progress ul li#stepped-on h5 {
+#progress-indicator ul li#stepped-on h5 {
 	color: black;
 	font-style: normal;
 }
@@ -380,15 +376,46 @@ h3#section-subtitle {
 	margin: 20px;
 }
 
-#course_selection_table {
-	border: none;
-}
-
-#course_selection_table tr {
-	border: none;
-}
-
+#course_selection_table,
+#course_selection_table tr,
 #course_selection_table td {
+	border: none;
+}
+
+/**
+ * Course Registration Selection Table
+ * @view register_courses.php
+ */
+#course-registration-selection-table, 
+#course-registration-selection-table tr,
+#course-registration-selection-table td {
+	border: 1px solid black;
+	padding: 5px;
+	margin: 0px auto;
+	
+	/* transition setting */
+	-webkit-transition: background-color 0.1s ease-in;
+}
+
+#course-registration-selection-table h1 {
+	font-size: 15pt;
+}
+
+#course-registration-selection-table h2 {
+	font-size: 12pt;
+}
+
+#course-registration-selection-table tr:hover {
+	background-color: #e9f4fd;
+}
+
+#course-registration-selection-table #continue {
+	margin: 20px;
+}
+
+#course-registration-selection-table,
+#course-registration-selection-table tr,
+#course-registration-selection-table td {
 	border: none;
 }
 

@@ -81,17 +81,20 @@ class CourseCompleted extends MY_Controller {
 		$database_completed = $this->completed_courses_table->find_by_student_id(3 // DUMMY USER SESSION HERE <=====
 			);
 
-		// // delete all values in database
+		// delete all values in database
 		foreach ($database_completed as $database_relations => $value) {
 			$this->completed_courses_table->delete_by_student_id(3, // DUMMY SESSION HERE AGAIN
 				$value['course_id']);
 		}
 
-		// // insert new values
+		// insert new values
 		foreach ($updated_completed as $database_relations => $value) {
 			$this->completed_courses_table->insert_by_student_id(3, // DUMMY SESSION HERE
 				$value);
 		}
+
+		// redirect user to course registration
+		redirect('schedulebuilder', 'location');
 	}
 }
 
