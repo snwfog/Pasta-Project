@@ -8,13 +8,13 @@
 <?php echo validation_errors(); ?>
 
 
-<?php echo form_open('schedulebuilder/listAllAllowedCourses'); ?>
+<?php echo form_open($url); ?>
     <table border="1">
       <tr>
         <th> Schedule Preference</th>
         <th> Do you want long weekends?<small> (Friday Off)</small></th>
         <th> Fall or Winter? </th>
-        <th> Year </th>
+        <!-- <th> Year </th> --!>
       </tr>
       <tr>
         <td>
@@ -32,10 +32,11 @@
         </td>
         <td>
            <select name="season">
-              <option value="2" >Fall</option>
-              <option value="4" >Winter</option>
+              <option value="2" >Fall <?php echo date("Y")-1; ?></option>
+              <option value="4" >Winter <?php echo date("Y"); ?></option>
           </select>
         </td>
+        <!-- Removed because our scope for the database is only for one year
         <td>
            <select name="year">
               <?php
@@ -45,6 +46,7 @@
                 <?php }?>
           </select>
         </td>
+        -->
       </tr>
     </table>
     <br/>
