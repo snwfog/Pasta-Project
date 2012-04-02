@@ -56,12 +56,11 @@ function createTimeLocQryParams( $details ) {
 
 
 class Scrape extends MY_Controller {
-//	public __constructor() {
-//		
-//	}
-//	
-
-
+	function __construct() {
+		parent::__construct();
+        
+        $this->DEBUG = false;
+    }
 
 	public function index() {
 		$this->load->helper(array('url', 'form'));
@@ -86,6 +85,7 @@ class Scrape extends MY_Controller {
 	}
     
     public function debug( $courseCode, $courseName, $session ) {
+        $this->DEBUG = true;
         $this->load->view( '/scrape_views/scrape_view', $this->scrape_site($courseCode, $courseName, $session) );
     }
     
@@ -168,7 +168,7 @@ class Scrape extends MY_Controller {
                      */
                     $exceptionsThrown = true;
                     // Undefined offset 9 happens when the parser attempts to read course data for a course that isn't available that semester.
-                    if ( $e->getMessage() == "Undefined offset: 9" ) {
+                    if ( $e->getMessage() == "Undefined offset: 9" || $e->getMessage() == "Undefined offset: 8" ) {
                         echo '<b><font color="gray">Warning</font></b>: Course isn\'t available this semester. Parameters: ' .
                         $courseTitle . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
                         echo "<br />\n";   
@@ -456,42 +456,96 @@ class Scrape extends MY_Controller {
 		$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=2011'.$session.'&course='.$course_code.'&courno='.$course_number);
 		
 		$all_rows = $html->find('tr');
-			
+		        
 		//--------------------------------------------------------
 		// Course array, containing all course related information
 		//--------------------------------------------------------
 		$course = array();
-	
-		// matching the course_id e.g. SOEN 321 in different capture group
-		preg_match("/([\w]{4})\s([\d]{3})/", $all_rows[9]->children(1)->plaintext, $course_id);
+		
+        $departmentName = $all_rows[7]->plaintext;
+
+        $start_row = 10;
+        $basic_details_row = 8;
+        
+        $departmentNote = '';
+        $specialNote = '';
+        $prerequisiteText = '';
+        
+        /*
+         * Iterate through all rows, searching for special notes, department notes,
+         * and prerequisites. These push down the start row for the course time/location.
+         */
+        for ( $rowNum = 8; $rowNum < count($all_rows); $rowNum++ ) {
+            $rowText = $all_rows[$rowNum]->plaintext;
+            if ($this->DEBUG) { echo "Row ".$rowNum.": " . $rowText . "' <br />\n"; }
+
+            /*
+             * strpos returns the location of the substring,
+             * or false if the substring is not there.
+             * Note that 0 evaluates as false.
+             * is_int will return true on any integer (ie: a string/array index),
+             * but will return false on a boolean false, such as the one returned by strpos.
+             */
+            if ( is_int( strpos($rowText, 'Department Note (') ) ) {
+                $departmentNote = $rowText;
+            
+                // Department sends the details section down a row.
+                $basic_details_row++;
+                // All special rows send the start row down.
+                $start_row++;
+            }
+            
+            // Special note comes after prerequisites, so it doesn't modify that.
+            if ( is_int( strpos($rowText, 'Special Note:') ) ) {
+                $specialNote = $rowText;
+                // All special rows send the start row down.
+                $start_row++;
+            }
+
+            if ( is_int( strpos($rowText, 'Prerequisite:') ) ) {
+                $prerequisiteText = $rowText;
+                // All special rows send the start row down.
+                $start_row++;
+            }
+        }
+
+		$course['prerequisite'] = $this->scrape_prerequisite($prerequisiteText);
+
+        // Contains code and number.
+        $basicCourseInfo = $all_rows[$basic_details_row]->children(1)->plaintext;
+        if ($this->DEBUG) {echo "COURSE INFO: " . $basicCourseInfo . ".<br />\n"; }
+        
+        // Extract the code and number into $course_id.
+		preg_match("/([\w]{4})\s([\d]{3})/", $basicCourseInfo, $course_id);
 		$course['code'] = $course_id[1];
 		$course['number'] = $course_id[2];
-		$course['title'] = $all_rows[9]->children(2)->plaintext;
+        
+		$course['title'] = $all_rows[$basic_details_row]->children(2)->plaintext;
+        if ($this->DEBUG) { echo "TITLE: " . $course['title'] . ".<br />\n"; }
 		
 		// matching the course_id e.g. SOEN 321 in different capture group
-		preg_match("/[\d]/", $all_rows[9]->children(3)->plaintext, $credit);
+		preg_match("/[\d]/", $all_rows[$basic_details_row]->children(3)->plaintext, $credit);
 		$course['credit'] = $credit[0];
-		
-		$course['prerequisite'] = 
-			$this->scrape_prerequisite($all_rows[10]->children(2)->plaintext);
 
-        echo "Prerequisites raw text: " . $all_rows[10]->children(2)->plaintext . ".<br />\n";
+        if ($this->DEBUG) {        
+            if ( (count($course['prerequisite'] == 0)) && $prerequisiteText == '' ) {
+                echo "NO-PREREQS<br />\n"; // <============ REMOVE ME ====================================================================================================
+            }
+            else {
+                if ( count($course['prerequisite']) == 0 ) {
+                    echo "--------------------<br />\n";
+                    echo "<b>PREREQUISITES STRING HAS CONTENT, BUT NONE PARSED</b>: <br />\n";
+                    echo "Prereq string: '" . $prerequisiteText . "'<br />\n";
+                    echo "Scraped prereqs: <br />\n";
+                    print_r( $course['prerequisite'] );
+                    echo "<br />\n";
+                    echo "--------------------<br />\n";
+                }
+            }
+        }
 
-		$course['section'] = array(); // assume that there is at least one lecture
-		
-		$start_row = 13;
-		// individual course information starts at table row 13
-		// unless there is not a "Special Note" at row 11, children 1
-		if (!preg_match("/Special\sNote/", $all_rows[11]->children(1)->plaintext)) {
-			$start_row = 12;
-        }
-		
-        // Courses with no prerequisites have 1 less row. Ex: COMP 232 /2
-        if ( count( $course['prerequisite'] == 0 ) ) {
-            $start_row -= 1;
-            echo "NO-PREREQS<br />\n";
-        }
-        
+		$course['section'] = array(); // assume that there is at least one lecture                
+                
 		for ($i = $start_row; $i < sizeof($all_rows)-1; $i++) {
             // if row contains a lecture information, and lecture is not canceled
 			if (preg_match("/Lect/", $all_rows[$i]->children(2)->plaintext) &&
