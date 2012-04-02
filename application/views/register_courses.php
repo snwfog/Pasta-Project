@@ -33,7 +33,8 @@
 </div>
 
 <?php if (isset($course_list)): ?>
-<?php echo form_open('schedulerbuilder/register_courses'); ?>
+<?php echo form_open('/schedulebuilder/generate_schedule'); ?>
+<?php     echo form_hidden($preference); ?>
 
 	<table id="course-registration-selection-table">
 			<?php foreach($course_list as $course): ?>

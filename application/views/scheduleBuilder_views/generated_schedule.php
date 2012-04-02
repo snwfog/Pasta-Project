@@ -51,7 +51,7 @@
                                 $start = get_hour_min($course["start_time"]);
                                 $end = get_hour_min($course["end_time"]);
                                 $upper_size = ((abs($start["hour"]-$last_end["hour"])*60)+abs($start["min"]-$last_end["min"]))*(4/6);
-                                $lower_size = ((abs($start["hour"]-$end["hour"])*60)+abs($start["min"]-$end["min"]))*(4/6);
+                                $lower_size = ((abs($start["hour"]-$end["hour"])*60)+abs($start["min"]+$end["min"]))*(4/6);
                                 $last_end = $end;
                                 echo "<tr height=".$upper_size."px>
                                         <td>

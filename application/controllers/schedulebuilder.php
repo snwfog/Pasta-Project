@@ -30,7 +30,7 @@ class ScheduleBuilder extends MY_Controller {
             $form_data = $this->input->post(); //array( time => , longWeekend, season => , year =>
             $courses = $this->course->get_all_courses();
             $courses = $this->scheduleBuilder_Model->filter_courses_by_season($courses, $form_data["season"]);
-            $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["longWeekend"], $form_data["season"]);
+            $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["long_weekend"], $form_data["season"]);
             $data['courseList'] = $courses;
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
@@ -80,11 +80,11 @@ class ScheduleBuilder extends MY_Controller {
      //TODO CLEAN UP, REDIRECT USER IF NO FORM
      $form_data = $this->input->post();
      $courses = array();
-     foreach($form_data["course"] as $course_id):
+     foreach($form_data["registered_courses"] as $course_id):
         $the_course = $this->course->find_by_id($course_id);
         array_push($courses,$the_course);
      endforeach;
-     $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["longWeekend"], $form_data["season"]);
+     $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["long_weekend"], $form_data["season"]);
      $possible_sequence = $this->scheduleBuilder_Model->generate_possibility($courses);
      $time_tables = $this->categorize_by_day($possible_sequence);
      $time_tables = $this->sort_courses_in_each_day($time_tables);
