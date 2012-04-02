@@ -1,13 +1,3 @@
-<?php
-        function get_hour_min($time){
-        //Note: should be moved to helper class
-        $length = strlen($time);
-        $third_last = $length -2;
-        $min = substr($time, $third_last, $length);
-        $hour= substr($time, 0, $third_last);
-        return array("hour" => $hour, "min" =>$min);
-      }
-?>
 <table id="time_table" >
         <tr id="time_table_header">
            <td id="time_header"> <small>Time</small> </th>

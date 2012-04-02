@@ -1,5 +1,20 @@
 <div id="content">
 
+<?php   //TO DO, option to choose which schedule and save to database. 
+        // EITHER DISPLAY by text all possible sets of courses and a link to display in a time table or
+        // display all the time table with a button beside it to save this schedule
+
+        //THIS should be moved to a helper class. helper class help views? maybe dono.
+        function get_hour_min($time){
+        //Note: should be moved to helper class
+        $length = strlen($time);
+        $third_last = $length -2;
+        $min = substr($time, $third_last, $length);
+        $hour= substr($time, 0, $third_last);
+        return array("hour" => $hour, "min" =>$min);
+      }
+?>
+
   <?php foreach($time_tables as $time_table): ?>
          <?php  $data["time_table"] = $time_table;
                 $this->load->view("/scheduleBuilder_views/time_table.php", $data); 
