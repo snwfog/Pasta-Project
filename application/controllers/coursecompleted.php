@@ -28,22 +28,27 @@ class CourseCompleted extends MY_Controller {
 	}
 
 	public function index( $view = 'courseCompleted' ) {
-		// assign constant to an attribute variable
-		$soft_eng_courses = $this->config->item('SOFT_ENG_COURSES');
+		if (!$this->session->userdata('logged_in')) {
+			// if is not logged in, redirect user to the login page
+			redirect('pasta', 'refresh');
+		} else {
+			// assign constant to an attribute variable
+			$soft_eng_courses = $this->config->item('SOFT_ENG_COURSES');
 
-		$data['title'] = "Course Registration Form";
+			$data['title'] = "Course Registration Form";
 
-		/*
-		 * Setting up the software engineering courses array with information
-		 */
-		foreach ($soft_eng_courses as $years => $semesters) {
-			foreach($semesters as $semester => $course_lists) {
-				$data['soft_eng_courses'][$years][$semester] = 
-					$this->_get_course_information($course_lists);
-            }
-        }
+			/*
+			 * Setting up the software engineering courses array with information
+			 */
+			foreach ($soft_eng_courses as $years => $semesters) {
+				foreach($semesters as $semester => $course_lists) {
+					$data['soft_eng_courses'][$years][$semester] = 
+						$this->_get_course_information($course_lists);
+	            }
+	        }
 
-		$this->put($view, $data);
+			$this->put($view, $data);
+		}
 	}
 
 	/**

@@ -66,7 +66,6 @@ class Pasta extends MY_Controller {
 			if ($query->result()) {
 				echo "USER ALREADY REGISTERED";
 			} else {
-				echo "USER SUCCESFULLY REGISTERED";
 				$this->db->insert('logins', 
 							array(
 								'student_id' => $this->input->post('student_id'),
@@ -86,6 +85,9 @@ class Pasta extends MY_Controller {
 					'last_name'  => $this->input->post('last_name'),
 					'logged_in'  => true
 				));
+
+				// redirect user to the first step of the registration process
+				redirect('coursecompleted', 'location');
 			}
 		}
 	}

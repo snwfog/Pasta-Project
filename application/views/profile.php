@@ -1,11 +1,15 @@
 <div id="content">
 	<h1 id="section-title">Hello Charles,</h1>
 	<h3 id="section-subtitle">Here is your schedule for
-		<?=(($schedules['season'] == '2') ? "Fall" : "Winter")
-			 . " - " . $schedules['year'];?></h3>
-	<p>Credit <?=$total_credit?></p>
+		<span class="proud">
+			<?=(($schedules['season'] == '2') ? "Fall" : "Winter")
+				 . " - " . $schedules['year'];?>
+		</span>
+	</h3>
+	<h3 id="section-subtitle">Credits Obtained: <span class="proud"><?=$total_credit?></span></h3>
+	<h3 id="section-subtitle">Credits This Semester: <span class="proud"><?=$total_credit?></span></h3>
 	<div id="modal-dummy"></div>
-	<div id="drop-schedule-confirm-box">
+	<div id="drop-schedule-confirm-box" class="dialog">
 		<h1>
 			Are you sure you want to drop this entire semester of course?
 		</h1>

@@ -3,7 +3,6 @@
  *------------------*/
 @import url(http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here);
 
-
 * {
 	font-family: 'Helvetica Neue', 'Helvetica';
 }
@@ -172,6 +171,7 @@ h3#section-subtitle {
 	font-weight: lighter;
 	margin-left: 20px;
 	color: #4c4c4c;
+	margin: 20px;
 }
 
 #description {
@@ -471,7 +471,7 @@ h3#section-subtitle {
 /**
  * Profile Drop Schedule Confirmation Box
  *----------------------------------------*/
-#drop-schedule-confirm-box {
+.dialog {
 	width: 300px;
 	position: fixed;
 	background-color: white;
@@ -494,11 +494,36 @@ h3#section-subtitle {
 	-webkit-transition: opacity 0.2s ease-in;*/
 }
 
-#drop-schedule-confirm-box h1 {
+.dialog h1 {
 	margin-bottom: 20px;
 	font-family: 'Helvetica Neue';
 	font-weight: lighter;
 	color: #9a1729;
+}
+
+/**
+ * Registration Course Selection
+ */
+#course-preferences-selection {
+	display: none;
+	text-align: left;
+}
+
+
+#course-preferences-selection ul {
+	list-style: none outside none;
+	margin-left: 3px;
+	padding-bottom: 30px;
+}
+
+#course-preferences-selection ul li {
+	float: left;
+	margin-right: 20px
+}
+
+#course-preferences-selection h1 {
+	clear: both;
+	margin-bottom: 10px;
 }
 
 /*****************/
