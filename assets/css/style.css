@@ -172,6 +172,7 @@ h3#section-subtitle {
 	font-weight: lighter;
 	margin-left: 20px;
 	color: #4c4c4c;
+	margin: 20px;
 }
 
 #description {
@@ -506,6 +507,24 @@ h3#section-subtitle {
  */
 #course-preferences-selection {
 	display: none;
+	text-align: left;
+}
+
+
+#course-preferences-selection ul {
+	list-style: none outside none;
+	margin-left: 3px;
+	padding-bottom: 30px;
+}
+
+#course-preferences-selection ul li {
+	float: left;
+	margin-right: 20px
+}
+
+#course-preferences-selection h1 {
+	clear: both;
+	margin-bottom: 10px;
 }
 
 /*****************/

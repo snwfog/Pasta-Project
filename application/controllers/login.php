@@ -8,6 +8,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
  * Login controller
+ * 
  * Author: Charles
  */
 
@@ -40,7 +41,7 @@ class Login extends MY_Controller {
 			redirect('profile', 'refresh');
 		} else {
 			// display the main view
-			$this->put('login', $data);
+			$this->put('pasta', $data);
 		}
 	}
 	

@@ -8,7 +8,7 @@
 class CourseInfo extends MY_Controller {
 
   /**
-	 * 
+	 * DEBUGGING ONLY
 	 * 
 	 */
 	 

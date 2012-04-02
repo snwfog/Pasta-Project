@@ -37,7 +37,7 @@ class Profile extends MY_Controller {
 
 		if (!$this->session->userdata('logged_in')) {
 			// if is not logged in, redirect user to the login page
-			redirect('login', 'refresh');
+			redirect('pasta', 'refresh');
 		} else {
 			// load the correct data for this particular 
 			// user in form of a table

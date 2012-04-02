@@ -91,6 +91,7 @@ $(document).ready(function() {
 		$.blockUI({
 			message : $('#drop-schedule-confirm-box'),
 			overlayCSS : { opacity: 0.2 },
+			css: { cursor: 'default' },
 		});
 
 		// my dialog (unmodal)
@@ -127,6 +128,7 @@ $(document).ready(function() {
 		$.blockUI({
 			message : $('#course-preferences-selection'),
 			overlayCSS : { opacity: 0.2 },
+			css: { cursor: 'default' },
 		});
 	}
 	
@@ -139,6 +141,7 @@ $(document).ready(function() {
 		$.blockUI({
 			message : $('#course-preferences-selection'),
 			overlayCSS : { opacity: 0.2 },
+			css: { cursor: 'default' },
 		});
 	});
 

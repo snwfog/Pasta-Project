@@ -7,25 +7,28 @@
 	</ul>
 </div>
 
-<h1 id="section-title">Here are the courses that meet your preferences</h1>
-<h3 id="section-subtitle">You have <span id="registrated-course-counter">5</span> course(s) left</h3>
+<h1 id="section-title">Here are the courses that meet your preferences.</h1>
+<h3 id="section-subtitle">You can select <span id="registrated-course-counter" class="proud">5</span> more additional course(s)</h3>
 
 <div id="course-preferences-selection" class="dialog">
 	<?=form_open("schedulebuilder/listAllAllowedCourses");?>
+	<h1>Do you have a time preference?</h1>
 	<h1>
-		<ul>
+	<ul>
 			<li><?=form_radio('time', 'day');?> Day</li>
 			<li><?=form_radio('time', 'night');?> Evening</li>
 			<li><?=form_radio('time', '', TRUE);?> I Don't Care</li>
 		</ul>
-		<p><?=form_checkbox('long_weekend', 'true');?> Long Week-End (Friday or Monday off)</p>
 	</h1>
+	<h1>How about a 3 days weekend?</h1>
+	<h1><?=form_checkbox('long_weekend', 'true');?> Yes please!</h1>
+
 	<?=form_submit(array(
-						'name'  => 'course-preferences-accept',
-						'id'	=> 'course-preferences-accept',
-						'value' => 'Proceed',
-						'class' => 'button'
-					));?>
+		'name'  => 'course-preferences-accept',
+		'id'	=> 'course-preferences-accept',
+		'value' => 'Proceed',
+		'class' => 'button'
+	));?>
 	</form>
 </div>
 
