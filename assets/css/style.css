@@ -526,6 +526,40 @@ h3#section-subtitle {
 	margin-bottom: 10px;
 }
 
+/*Time Table CSS*/
+#time_table td{
+    border: 1px solid black;
+}
+
+#time_header{
+  width: 40px;
+  font-size:10px;
+  color:Black;
+  text-align:center;
+  background-color:#DDDDDD;
+}
+#time_table_header{
+  border-bottom-width:0;
+}
+
+#day_header{
+  width: 70px;
+  font-size:10px;
+  color:Black;
+  text-align:center;
+  background-color:#DDDDDD;
+}
+#day_column td{
+    border: 0px;
+}
+
+#time_column td{
+    border: 0px;
+    font-size:12px
+}
+
+/* End of Time Table Css*/
+
 /*****************/
 /* Media Queries */
 /*****************/

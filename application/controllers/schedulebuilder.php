@@ -45,7 +45,7 @@ class ScheduleBuilder extends MY_Controller {
             redirect('pasta', 'refresh');
         } else {
             $id = 3;//temporary, this should be retrieve from session.
-            $form_data = $this->input->post(); 
+            $form_data = $this->input->post();
             //array( time => , longWeekend, season => , year => )
 
             // compute season based on current time
@@ -69,7 +69,7 @@ class ScheduleBuilder extends MY_Controller {
             $data['course_list'] = $courses;
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
-            
+
             $this->put('register_courses', $data);
         }        
     }
@@ -90,7 +90,7 @@ class ScheduleBuilder extends MY_Controller {
      $time_tables = $this->sort_courses_in_each_day($time_tables);
      $data["possible_sequence"] = $possible_sequence;
      $data["time_tables"] =  $time_tables;
-     $this->load->view("/scheduleBuilder_views/generated_schedule.php", $data);
+     $this->put("/scheduleBuilder_views/generated_schedule.php", $data);
     }
 
 
@@ -151,15 +151,6 @@ class ScheduleBuilder extends MY_Controller {
         array_push($completed_time_table, $sorted_time_table);
       }
       return $completed_time_table;
-    }
-
-    public function get_hour_min($time){
-      //Note: should be moved to helper class
-      $length = strlen($time);
-      $third_last = $length -2;
-      $min = substr($time, $third_last, $length);
-      $hour= substr($time, 0, $third_last);
-      return array($min,$hour);
     }
 
 /*
