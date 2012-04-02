@@ -18,14 +18,14 @@
     foreach($time_tables as $time_table): ?>
       <table border=1px name=time_table cellpadding="0" cellspacing="0">
               <tr>
-                 <td width=44px> <strong>TIME</strong> </th>
-                 <td width=40px> <strong>M</strong> </th>
-                 <td width=40px> <strong>T</strong>  </th>
-                 <td width=40px> <strong>W</strong>  </th>
-                 <td width=40px> <strong>J</strong>  </th>
-                 <td width=40px> <strong>F</strong>  </th>
-                 <td width=40px> <strong>Sat</strong>  </th>
-                 <td width=40px> <strong>Sun</strong>  </th>
+                 <td width=44px> <small>time</small> </th>
+                 <td width=70px> <small>Monday</small> </th>
+                 <td width=70px> <small>Tuesday</small>  </th>
+                 <td width=70px> <small>Wednesday</small>  </th>
+                 <td width=70px> <small>Thursday</small>  </th>
+                 <td width=70px> <small>FUNDAY</small>  </th>
+                 <td width=70px> <small>Saturday</small>  </th>
+                 <td width=70px> <small>BORINGDAY</small>  </th>
               <tr>
               <tr >
                 <td>
@@ -39,14 +39,14 @@
                           $bgcolor = "bgcolor = 'DDDDDD'";
                         }
                         echo "<tr height=60px>
-                                <td ".$bgcolor."> ".$i.":00 </td>
+                                <td ".$bgcolor."> <small>".$i.":00 </small></td>
                              </tr>";
                       }?>
                    </table>
                  </td>
                <?php foreach($time_table as $key => $day): ?>
                  <td>
-                    <table border=0 cellpadding="0" cellspacing="0" height = <?php echo $total_height?>px name=day_column>
+                    <table width = 100% border=0 cellpadding="0" cellspacing="0" height = <?php echo $total_height?>px name=day_column>
                             <?  $last_end = array("min" => 0, "hour" => 7);
                                 $once = 15;
                                 foreach($day as $course){
@@ -78,6 +78,8 @@
                <?php endforeach ?>
               </tr>
        </table>
+       <br/>
+       <br/>
 
 <?php endforeach?>
 
