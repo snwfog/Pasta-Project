@@ -64,8 +64,71 @@ class ScheduleBuilder extends MY_Controller {
      endforeach;
      $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["longWeekend"], $form_data["season"]);
      $possible_sequence = $this->scheduleBuilder_Model->generate_possibility($courses);
+     $time_tables = $this->categorize_by_day($possible_sequence);
+     $time_tables = $this->sort_courses_in_each_day($time_tables);
      $data["possible_sequence"] = $possible_sequence;
+     $data["time_tables"] =  $time_tables;
      $this->load->view("/scheduleBuilder_views/generated_schedule.php", $data);
+    }
+
+
+    private function categorize_by_day($possible_sets_of_courses){
+      $time_table = array("M" => array(), "T" => array(), "W"=> array(), "J"=> array(), "F" => array(), "S" => array(), "SU" => array());
+      $complete_time_table = array();
+      foreach($possible_sets_of_courses as $set){
+        foreach($set as $course){
+            $lecture_days = explode(",", $course["lecture"]["day"]);
+            foreach($lecture_days as $day){
+              array_push($time_table[$day], $course["lecture"]);
+            }
+            if( isset($course["tutorial"])){
+              $tutorial_days = explode(",", $course["tutorial"]["day"]);
+              foreach($tutorial_days as $day){
+                array_push($time_table[$day], $course["tutorial"]);
+              }
+            }
+            if( isset($course["lab"])){
+              $lab_days = explode(",", $course["lab"]["day"]);
+              foreach($lecture_days as $day){
+                array_push($time_table[$day], $course["lab"]);
+              }
+            }
+        }
+        array_push($complete_time_table, $time_table);
+        $time_table = $time_table = array("M" => array(), "T" => array(), "W"=> array(), "J"=> array(), "F" => array(), "S" => array(), "SU" => array());
+      }
+      return $complete_time_table;
+    }
+
+    private function sort_courses_in_each_day($time_table){
+      $sorted_time_table = array();
+      $completed_time_table = array();
+      foreach($time_table as $table_set){
+        foreach($table_set as $key=>$day){
+          for($i=0; $i<count($day); $i++){
+            for($k = $i+1; $k<count($day); $k++){
+              if($day[$i]["start_time"] > $day[$k]["start_time"] ){
+                $temp = $day[$i];
+                $day[$i] = $day[$k];
+                $day[$k] = $temp;
+                $temp = null;
+              }
+            }
+          }
+          $sorted_time_table[$key] = $day;
+        }
+        array_push($completed_time_table, $sorted_time_table);
+      }
+      return $completed_time_table;
+    }
+
+    public function get_hour_min($time){
+      //Note: should be moved to helper class
+      $length = strlen($time);
+      $third_last = $length -2;
+      $min = substr($time, $third_last, $length);
+      $hour= substr($time, 0, $third_last);
+      return array($min,$hour);
     }
 
 /*

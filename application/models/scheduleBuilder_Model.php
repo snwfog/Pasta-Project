@@ -146,7 +146,7 @@ class ScheduleBuilder_Model extends CI_Model{
     }
 
     function generate_possibility($courses){
-       //This method is dependent on filter_courses_by_preference as that method structure the array of courses for this method.
+       //This method is dependent on filter_courses_by_preference because that method structures the array of courses for this method.
        // The structure is  = array ( ..... lectures => array ( ...... tutorials =>  array( ....... labs => .....)))
        // where ....  is other keys => values
        // Preparing the data into a easier structure to work with for me
@@ -157,7 +157,7 @@ class ScheduleBuilder_Model extends CI_Model{
          $branched_course[$i] = $this->scheduleBuilder_Model->branching($courses[$i]);
        };
 
-       //First step compare two course
+       //First step compare two course to set up the sets of course array
        $possible_sequence = array();
        if(isset($branched_course[1])){
          foreach($branched_course[0] as $course_1){
@@ -165,7 +165,7 @@ class ScheduleBuilder_Model extends CI_Model{
              $conflict = false;
              $conflict=$this->compare_time($course_1, $course_2);
              if(!$conflict){
-              array_push($possible_sequence, array($course_1,$course_2));
+                array_push($possible_sequence, array($course_1,$course_2));
              }
            }
          }
@@ -173,10 +173,10 @@ class ScheduleBuilder_Model extends CI_Model{
             array_push($possible_sequence, $branched_course[0]);
        }
        /*Each set of courses in $possible_sequence is compared against each the branch of a course in $branched_courses array.
-       $branched_courses each index of this array contain an array of all possible combination of course, lecture, and labs of a Course
-       $possible_sequence is an array of sets of courses that doesn't conflict.*/
+       $branched_courses: each index of this array contain an array of all possible combination of a lecture, tutorials and labs for a Course
+       $possible_sequence: is an array of sets of courses that doesn't conflict.*/
        $final_possibilities = array();
-       if(isset($branched_course[2])){
+       if(isset($branched_course[1])){
          for($i=2; $i<count($branched_course); $i++){
            foreach($branched_course[$i] as $new_course){
              foreach($possible_sequence as $key=>$sequence){
@@ -209,7 +209,7 @@ class ScheduleBuilder_Model extends CI_Model{
      }
 
     function compare_time($course_A, $course_B){
-
+      //Return true if there is a conflict else it return false.
       $A = array();
       $A["lecture"] = $course_A["lecture"];
       if(isset($course_A["tutorial"])){
