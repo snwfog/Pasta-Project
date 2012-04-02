@@ -18,14 +18,14 @@
     foreach($time_tables as $time_table): ?>
       <table border=1px name=time_table cellpadding="0" cellspacing="0">
               <tr>
-                 <th width=44px> TIME </th>
-                 <th width=40px> M </th>
-                 <th width=40px> T </th>
-                 <th width=40px> W </th>
-                 <th width=40px> J </th>
-                 <th width=40px> F </th>
-                 <th width=40px> Sat </th>
-                 <th width=40px> Sun </th>
+                 <td width=44px> <strong>TIME</strong> </th>
+                 <td width=40px> <strong>M</strong> </th>
+                 <td width=40px> <strong>T</strong>  </th>
+                 <td width=40px> <strong>W</strong>  </th>
+                 <td width=40px> <strong>J</strong>  </th>
+                 <td width=40px> <strong>F</strong>  </th>
+                 <td width=40px> <strong>Sat</strong>  </th>
+                 <td width=40px> <strong>Sun</strong>  </th>
               <tr>
               <tr >
                 <td>
@@ -33,12 +33,13 @@
                     <?php
                       $total_height = 0;
                       for($i=7; $i<24; $i++){
-                        $total_height += 40;
-                        echo "<tr height=20px>
-                                <td bgcolor = 'DDDDDD'> ".$i.":00 </td>
-                             </tr>
-                             <tr height=20px>
-                                <td> ".$i.":30 </td>
+                        $total_height += 60;
+                        $bgcolor=null;
+                        if(($i%2)==0){
+                          $bgcolor = "bgcolor = 'DDDDDD'";
+                        }
+                        echo "<tr height=60px>
+                                <td ".$bgcolor."> ".$i.":00 </td>
                              </tr>";
                       }?>
                    </table>
@@ -47,18 +48,23 @@
                  <td>
                     <table border=0 cellpadding="0" cellspacing="0" height = <?php echo $total_height?>px name=day_column>
                             <?  $last_end = array("min" => 0, "hour" => 7);
+                                $once = 15;
                                 foreach($day as $course){
                                 $start = get_hour_min($course["start_time"]);
                                 $end = get_hour_min($course["end_time"]);
-                                $upper_size = ((abs($start["hour"]-$last_end["hour"])*60)+abs($start["min"]-$last_end["min"]))*(4/6);
-                                $lower_size = ((abs($start["hour"]-$end["hour"])*60)+abs($start["min"]+$end["min"]))*(4/6);
+                                $upper_size = abs((($start["hour"]*60)+$start["min"])-(($last_end["hour"]*60)+$last_end["min"]));
+                                $lower_size = abs((($start["hour"]*60)+$start["min"])-(($end["hour"]*60)+$end["min"]));
                                 $last_end = $end;
                                 echo "<tr height=".$upper_size."px>
                                         <td>
                                         </td>
                                       </tr>
                                       <tr height=".$lower_size."px bgcolor = 'DDDDDD'>
-                                        <td >".$start["hour"]."-".$start["min"]." ".$end["hour"]."-".$end["min"]."
+                                        <td >
+                                             ".$course["code"]." ".$course["number"]."<br/>"
+                                              .$course["type"]."(".$course["section"].")<br/>"
+                                              .$start["hour"].":".$start["min"]."-".$end["hour"].":".$end["min"]."<br/>"
+                                              ."
                                         </td>
                                       </tr>";
                                }

@@ -101,17 +101,26 @@ class ScheduleBuilder extends MY_Controller {
         foreach($set as $course){
             $lecture_days = explode(",", $course["lecture"]["day"]);
             foreach($lecture_days as $day){
+              $course["lecture"]["code"] = $course["code"];
+              $course["lecture"]["number"] = $course["number"];
+              $course["lecture"]["type"] = "lecture";
               array_push($time_table[$day], $course["lecture"]);
             }
             if( isset($course["tutorial"])){
               $tutorial_days = explode(",", $course["tutorial"]["day"]);
               foreach($tutorial_days as $day){
+                $course["tutorial"]["code"] = $course["code"];
+                $course["tutorial"]["number"] = $course["number"];
+                $course["tutorial"]["type"] = "tutorial";
                 array_push($time_table[$day], $course["tutorial"]);
               }
             }
             if( isset($course["lab"])){
               $lab_days = explode(",", $course["lab"]["day"]);
               foreach($lecture_days as $day){
+                $course["lab"]["code"] = $course["code"];
+                $course["lab"]["number"] = $course["number"];
+                $course["lab"]["type"] = "lab";
                 array_push($time_table[$day], $course["lab"]);
               }
             }
