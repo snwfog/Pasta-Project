@@ -66,6 +66,7 @@ class ScheduleBuilder extends MY_Controller {
                     $form_data["long_weekend"], 
                     $form_data['season']
                 );
+            $course = $this->scheduleBuilder_Model->sort_courses_by_type($courses);
             $data['course_list'] = $courses;
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
