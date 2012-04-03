@@ -70,7 +70,7 @@ class CourseCompleted extends MY_Controller {
 			// that this course is already present in the database
 			$information_array[$index]["has_taken"] = 
 				$this->completed_courses_table->has_taken(
-					$this->input->post('student_id'),
+					$this->session->userdata('student_id'),
 					$this->courses_table->get_course_id($course));
 		}
 		
@@ -85,14 +85,14 @@ class CourseCompleted extends MY_Controller {
 		$updated_completed = $this->input->post('completed_courses');
 
 		// database completed courses
-		$database_completed = $this->completed_courses_table->find_by_student_id($this->input->post('student_id'));
+		$database_completed = $this->completed_courses_table->find_by_student_id($this->session->userdata('student_id'));
 
 		// if student has taken courses, then update the database
 		// for this student, else do nothing and move onto next step
 		if ($updated_completed != NULL) {
 			foreach ($database_completed as $database_relations => $value) {
 				$this->completed_courses_table->delete_by_student_id(
-					$this->input->post('student_id'),
+					$this->session->userdata('student_id'),
 					$value['course_id']);
 			}
 
@@ -100,7 +100,7 @@ class CourseCompleted extends MY_Controller {
 			// insert new values
 			foreach ($updated_completed as $database_relations => $value) {
 				$this->completed_courses_table->insert_by_student_id(
-					$this->input->post('student_id'),
+					$this->session->userdata('student_id'),
 					$value);
 			}
 		}

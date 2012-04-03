@@ -18,7 +18,7 @@
 			<tr><td colspan='5'><h2><?=$semester?></h2></td></tr>
 			<?php foreach($course_list as $course): ?>
 				<tr>
-					<td><?php echo (isset($course['code']) ? 
+					<td><?php echo $course["id"].(isset($course['code']) ? 
 										$course['code'] : "Unknown")?></td>
 					<td><?php echo (isset($course['number']) ? 
 										$course['number'] : "Unknown")?></td>

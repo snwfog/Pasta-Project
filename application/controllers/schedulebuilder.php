@@ -45,7 +45,7 @@ class ScheduleBuilder extends MY_Controller {
             // if is not logged in, redirect user to the login page
             redirect('pasta', 'refresh');
         } else {
-            $id = $this->session->userdata['id'];//temporary, this should be retrieve from session.
+            $id = $this->session->userdata['student_id'];//temporary, this should be retrieve from session.
             $form_data = $this->input->post();
             //array( time => , longWeekend, season => , year => )
 
