@@ -30,20 +30,21 @@
            <td>
               <table width = 100% height = <?php echo $total_height?>px id="day_column">
                       <?  $last_end = array("min" => 0, "hour" => 7);
-                          $once = 15;
                           foreach($day as $course){
                           $start = get_hour_min($course["start_time"]);
                           $end = get_hour_min($course["end_time"]);
                           $upper_size = abs((($start["hour"]*60)+$start["min"])-(($last_end["hour"]*60)+$last_end["min"]));
                           $lower_size = abs((($start["hour"]*60)+$start["min"])-(($end["hour"]*60)+$end["min"]));
                           $last_end = $end;
-                          echo "<tr height=".$upper_size."px>
+                          echo "
+                                <tr height=".$upper_size."px>
                                   <td>
                                   </td>
                                 </tr>
                                 <tr height=".$lower_size."px bgcolor = 'DDDDDD'>
-                                  <td >
-                                       ".$course["code"]." ".$course["number"]."<br/>"
+                                  <td >"
+
+                                        .$course["code"]." ".$course["number"]."<br/>"
                                         .$course["type"]."(".$course["section"].")<br/>"
                                         .$start["hour"].":".$start["min"]."-".$end["hour"].":".$end["min"]."<br/>"
                                         ."
