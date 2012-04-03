@@ -28,6 +28,7 @@ class CourseCompleted extends MY_Controller {
 	}
 
 	public function index( $view = 'courseCompleted' ) {
+
 		if (!$this->session->userdata('logged_in')) {
 			// if is not logged in, redirect user to the login page
 			redirect('pasta', 'refresh');
@@ -35,7 +36,7 @@ class CourseCompleted extends MY_Controller {
 			// assign constant to an attribute variable
 			$soft_eng_courses = $this->config->item('SOFT_ENG_COURSES');
 
-			$data['title'] = "Course Registration Form";
+			$data['title'] = "P.A.S.T.A. - Course Completed";
 
 			/*
 			 * Setting up the software engineering courses array with information
@@ -68,7 +69,8 @@ class CourseCompleted extends MY_Controller {
 			// if taken then we need to put a checked box to indicate
 			// that this course is already present in the database
 			$information_array[$index]["has_taken"] = 
-				$this->completed_courses_table->has_taken(3, // DUMMY USER SESSION HERE <=======
+				$this->completed_courses_table->has_taken(
+					$this->input->post('student_id'),
 					$this->courses_table->get_course_id($course));
 		}
 		
@@ -83,19 +85,24 @@ class CourseCompleted extends MY_Controller {
 		$updated_completed = $this->input->post('completed_courses');
 
 		// database completed courses
-		$database_completed = $this->completed_courses_table->find_by_student_id(3 // DUMMY USER SESSION HERE <=====
-			);
+		$database_completed = $this->completed_courses_table->find_by_student_id($this->input->post('student_id'));
 
-		// delete all values in database
-		foreach ($database_completed as $database_relations => $value) {
-			$this->completed_courses_table->delete_by_student_id(3, // DUMMY SESSION HERE AGAIN
-				$value['course_id']);
-		}
+		// if student has taken courses, then update the database
+		// for this student, else do nothing and move onto next step
+		if ($updated_completed != NULL) {
+			foreach ($database_completed as $database_relations => $value) {
+				$this->completed_courses_table->delete_by_student_id(
+					$this->input->post('student_id'),
+					$value['course_id']);
+			}
 
-		// insert new values
-		foreach ($updated_completed as $database_relations => $value) {
-			$this->completed_courses_table->insert_by_student_id(3, // DUMMY SESSION HERE
-				$value);
+
+			// insert new values
+			foreach ($updated_completed as $database_relations => $value) {
+				$this->completed_courses_table->insert_by_student_id(
+					$this->input->post('student_id'),
+					$value);
+			}
 		}
 
 		// redirect user to course registration

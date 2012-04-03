@@ -58,7 +58,6 @@ $autoload['packages'] = array();
 // config/database.php. - Charles
 $autoload['libraries'] = array(
 	'database', 		// handle database query
-	'datamapper', 		// so far not used yet
 	'encrypt', 			// encrypt user password
 	'form_validation', 	// validate forms
 	'table', 			// generate HTML tables
@@ -76,8 +75,7 @@ $autoload['libraries'] = array(
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array(
-	'url', 'form');
+$autoload['helper'] = array('url', 'form');
 
 
 /*
