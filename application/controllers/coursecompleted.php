@@ -68,7 +68,8 @@ class CourseCompleted extends MY_Controller {
 			// if taken then we need to put a checked box to indicate
 			// that this course is already present in the database
 			$information_array[$index]["has_taken"] = 
-				$this->completed_courses_table->has_taken(3, // DUMMY USER SESSION HERE <=======
+				$this->completed_courses_table->has_taken(
+					$this->input->post('student_id'),
 					$this->courses_table->get_course_id($course));
 		}
 		
@@ -83,18 +84,19 @@ class CourseCompleted extends MY_Controller {
 		$updated_completed = $this->input->post('completed_courses');
 
 		// database completed courses
-		$database_completed = $this->completed_courses_table->find_by_student_id(3 // DUMMY USER SESSION HERE <=====
-			);
+		$database_completed = $this->completed_courses_table->find_by_student_id($this->input->post('student_id'));
 
 		// delete all values in database
 		foreach ($database_completed as $database_relations => $value) {
-			$this->completed_courses_table->delete_by_student_id(3, // DUMMY SESSION HERE AGAIN
+			$this->completed_courses_table->delete_by_student_id(
+				$this->input->post('student_id'),
 				$value['course_id']);
 		}
 
 		// insert new values
 		foreach ($updated_completed as $database_relations => $value) {
-			$this->completed_courses_table->insert_by_student_id(3, // DUMMY SESSION HERE
+			$this->completed_courses_table->insert_by_student_id(
+				$this->input->post('student_id'),
 				$value);
 		}
 
