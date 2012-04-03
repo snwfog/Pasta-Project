@@ -48,7 +48,8 @@ class Profile extends MY_Controller {
 			// store all info about courses for this semester
 			// hence the '0' extra parameter in the array
 			$data['schedules']['course_info'] = 
-				$this->schedules_table->get_course_info_from_schedule_id($data['schedules']['id']);
+				$this->schedules_table->get_course_info_from_schedule_id(7);
+            print_r($data);
 
 			$this->put('profile', $data);
 		}

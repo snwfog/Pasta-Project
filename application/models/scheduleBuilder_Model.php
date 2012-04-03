@@ -153,6 +153,7 @@ class ScheduleBuilder_Model extends CI_Model{
        // Method Constraints: This method doesn't put into account that it might compare to lecture/tutorials/labs that are from different season. -
        //                     In other words, for this method to work properly, the lectures should be from the same season.
        $branched_course = array();
+
        for($i=0; $i<count($courses); $i++){
          $branched_course[$i] = $this->scheduleBuilder_Model->branching($courses[$i]);
        };
@@ -170,13 +171,15 @@ class ScheduleBuilder_Model extends CI_Model{
            }
          }
        }else{
-            array_push($possible_sequence, $branched_course[0]);
+         foreach($branched_course[0] as $course){
+            array_push($possible_sequence, array( 0 => $course));
+         }
        }
        /*Each set of courses in $possible_sequence is compared against each the branch of a course in $branched_courses array.
        $branched_courses: each index of this array contain an array of all possible combination of a lecture, tutorials and labs for a Course
        $possible_sequence: is an array of sets of courses that doesn't conflict.*/
        $final_possibilities = array();
-       if(isset($branched_course[1])){
+       if(isset($branched_course[2])){
          for($i=2; $i<count($branched_course); $i++){
            foreach($branched_course[$i] as $new_course){
              foreach($possible_sequence as $key=>$sequence){
