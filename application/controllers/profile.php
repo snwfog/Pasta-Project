@@ -38,18 +38,22 @@ class Profile extends MY_Controller {
 		if (!$this->session->userdata('logged_in')) {
 			// if is not logged in, redirect user to the login page
 			redirect('pasta', 'refresh');
+		} else if ($this->schedules_table->get_schedule_by_student_id(
+			$this->session->userdata('student_id')) == NULL) {
+			// if we cannot find any schedule for this user
+			// then auto direct him to the course selection page
+			redirect('coursecompleted', 'location');
 		} else {
 			// load the correct data for this particular 
 			// user in form of a table
 			$data['schedules'] = 
-				$this->schedules_table->get_schedule_by_student_id(3 // FAKE DATA HERE SHOULD REPLACE WITH $this->session->userdata('student_id');
-				);
+				$this->schedules_table->
+					get_schedule_by_student_id($this->session->userdata('student_id'));
 
 			// store all info about courses for this semester
 			// hence the '0' extra parameter in the array
 			$data['schedules']['course_info'] = 
 				$this->schedules_table->get_course_info_from_schedule_id(7);
-            print_r($data);
 
 			$this->put('profile', $data);
 		}

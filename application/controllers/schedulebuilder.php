@@ -13,6 +13,7 @@ class ScheduleBuilder extends MY_Controller {
             // if is not logged in, redirect user to the login page
             redirect('pasta', 'refresh');
         } else {
+            $data['title'] = "P.A.S.T.A. - Course Registration";
             // load the preference pane by default
             $this->put('register_preferences', NULL);
             //$this->listAllAllowedCourses();
