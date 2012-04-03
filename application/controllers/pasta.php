@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Script to prevent direct URL access to this file.
@@ -129,6 +129,7 @@ class Pasta extends MY_Controller {
 					$this->input->post('login_student_id'));
 
 				$this->session->set_userdata(array(
+                    'id'         => $user_data['id'],
 					'student_id' => $user_data['student_id'],
 					'first_name' => $user_data['first_name'],
 					'last_name'  => $user_data['last_name'],

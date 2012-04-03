@@ -45,7 +45,7 @@ class ScheduleBuilder extends MY_Controller {
             // if is not logged in, redirect user to the login page
             redirect('pasta', 'refresh');
         } else {
-            $id = 3;//temporary, this should be retrieve from session.
+            $id = $this->session->userdata['id'];//temporary, this should be retrieve from session.
             $form_data = $this->input->post();
             //array( time => , longWeekend, season => , year => )
 
@@ -53,7 +53,6 @@ class ScheduleBuilder extends MY_Controller {
             // before september, can only register for fall
             // after september, can only register for winter
             $form_data['season'] = (date('n') > '9' ? '4' : '2');
-            echo $form_data['season'];
             $form_data['long_weekend'] = ($this->input->post('long_weekend') ? 1 : 0);
             $courses = $this->course->get_all_courses_allowed($id);
 
