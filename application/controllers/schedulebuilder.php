@@ -49,7 +49,7 @@ class ScheduleBuilder extends MY_Controller {
             // if is not logged in, redirect user to the login page
             redirect('pasta', 'refresh');
         } else {
-            $id = $this->session->userdata['student_id'];//temporary, this should be retrieve from session.
+            $id = $this->session->userdata['student_id'];
             $form_data = $this->input->post();
             //array( time => , longWeekend, season => , year => )
 
@@ -90,18 +90,37 @@ class ScheduleBuilder extends MY_Controller {
         $the_course = $this->course->find_by_id($course_id);
         array_push($courses,$the_course);
      endforeach;
-     $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["long_weekend"], $form_data["season"]);
+     $courses = $this->scheduleBuilder_Model->filter_courses_by_preference(
+                                                                           $courses,$form_data["time"], 
+                                                                           $form_data["long_weekend"], 
+                                                                           $form_data["season"]
+                                                                          );
      $possible_sequence = $this->scheduleBuilder_Model->generate_possibility($courses);
      $time_tables = $this->categorize_by_day($possible_sequence);
      $time_tables = $this->sort_courses_in_each_day($time_tables);
-     $data["possible_sequence"] = $possible_sequence;
-     $data["time_tables"] =  $time_tables;
+     $data = array( "possible_sequence" => $possible_sequence,
+                    "time_tables"       => $time_tables,
+                    "season"             => $form_data["season"]);
+
      $this->put("/scheduleBuilder_views/generated_schedule.php", $data);
     }
     
     public function save_schedule(){
-      print_r($this->input->post());
+      $this->load->model("schedule");
+      $student_id = $this->session->userdata['student_id'];
+      $schedule = $this->input->post("courses");
+      $season = $this->input->post("season");
+      $year = date("Y");
+      if($season == 2){
+        $year = (date('n') > '9' ? $year+1 : $year);
+      }
+      $this->schedule->new_and_update_schedule($schedule, $student_id, $season, $year);
+      //should redirect somehwere now
     }
+
+
+
+
 
 
 

@@ -41,6 +41,37 @@ class Schedule extends CI_Model {
     function drop_schedule_by_id($schedule_id) {
     	
     }
+
+    function new_and_update_schedule($schedule, $student_id, $season, $year){
+      /*Structure Of $schedule parameter:
+        Array( 
+                [<course_id>] => Array
+                          (
+                            [lecture_id]  => <value>
+                            [tutorial_id] => <value>
+                            [lab_id]      => <value>
+                          )
+
+       )
+      */
+      $exist = $this->db->get_where("schedules", array("student_id" => $student_id, "season"=> $season, "year" => $year))->row_array();
+      if(!empty($exist)){
+        $this->db->delete("scheduled_courses", array( "schedule_id" => $exist["id"]));
+      }else{
+        $exist = $this->db->insert("schedules", array("student_id" => $student_id, "season"=> $season, "year" => $year));
+      }
+
+      foreach($schedule as $key => $course){
+          $this->db->insert("scheduled_courses", array( "schedule_id" => $exist["id"],
+                                                        "course_id"   => $key,
+                                                        "lecture_id"  => $course["lecture_id"],
+                                                        "tutorial_id"   => $course["tutorial_id"],
+                                                        "lab_id"  => $course["lab_id"]
+                                                       ));
+      }
+
+
+    }
 }
 
 ?>

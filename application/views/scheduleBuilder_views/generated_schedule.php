@@ -1,27 +1,28 @@
 <div id="content">
 
-<?php   //TO DO, option to choose which schedule and save to database. 
-        // EITHER DISPLAY by text all possible sets of courses and a link to display in a time table or
-        // display all the time table with a button beside it to save this schedule
-
-        //THIS should be moved to a helper class. helper class help views? maybe dono.
-        function get_hour_min($time){
-        //Note: should be moved to helper class
-        $length = strlen($time);
-        $third_last = $length -2;
-        $min = substr($time, $third_last, $length);
-        $hour= substr($time, 0, $third_last);
-        return array("hour" => $hour, "min" =>$min);
-      }
-?>
-  <?php if(empty($possible_sequence)){
-    echo "I'm very sorry, SO SORRY, There isn't any combination possible for those chosen courses";
-  }?>
+  <?php   //TO DO, option to choose which schedule and save to database.
+          // EITHER DISPLAY by text all possible sets of courses and a link to display in a time table or
+          // display all the time table with a button beside it to save this schedule
+  
+          //THIS should be moved to a helper class. helper class help views? maybe dono.
+    function get_hour_min($time){
+      //Note: should be moved to helper class
+      $length = strlen($time);
+      $third_last = $length -2;
+      $min = substr($time, $third_last, $length);
+      $hour= substr($time, 0, $third_last);
+      return array("hour" => $hour, "min" =>$min);
+    }
+  ?>
+  <?php
+    if(empty($possible_sequence)){
+      echo "I'm very sorry, SO SORRY, There isn't any combination possible for those chosen courses";
+    }
+  ?>
 
   <?php foreach($possible_sequence as $a_set): ?>
     <?php echo form_open("scheduleBuilder/save_schedule"); ?>
       <table id="course_selection_table">
-
         <?php foreach($a_set as $course): ?>
             <tr>
         		  <td><?php echo $course["id"].(isset($course['code']) ?
@@ -49,7 +50,8 @@
             </tr>
        <?php endforeach ?>
       </table>
-      <?=form_submit(null,"submit");?>
+      <input type = "hidden" name="season" value = <?php echo $season;?> />
+      <?=form_submit(null,"Save This Schedule");?>
     </form>
     <br/>
     <br/>
