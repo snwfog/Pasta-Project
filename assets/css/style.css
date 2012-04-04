@@ -518,7 +518,7 @@ h3#section-subtitle {
 
 #course-preferences-selection ul li {
 	float: left;
-	margin-right: 20px
+	margin-right: 20px;
 }
 
 #course-preferences-selection h1 {
@@ -555,10 +555,45 @@ h3#section-subtitle {
 
 #time_column td{
     border: 0px;
-    font-size:12px
+    font-size:12px;
 }
 
 /* End of Time Table Css*/
+
+
+/*Schedule Table CSS*/
+div#schedule{
+  margin:0px;
+  position: relative;
+  float:left;
+}
+#schedule_table tr{
+    border-top: 1px solid black;
+}
+
+#schedule_table td{
+    padding-right: 10px;
+    padding-left: 10px;
+    border-bottom: 1px solid black;
+}
+
+div#schedule_table{
+  position:relative;
+  float:left;
+}
+div#schedule_table_button{
+  position:relative;
+  float:left;
+}
+
+#schedule_table table{
+  margin:5px;
+
+}
+
+/* End of Schedule Table Css*/
+
+
 
 /*****************/
 /* Media Queries */

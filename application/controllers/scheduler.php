@@ -7,6 +7,9 @@ class Scheduler extends MY_Controller {
 
 	}
 
+    public function time_table(){
+    }  
+
 }
 
 // End of Scheduler.php
