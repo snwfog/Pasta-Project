@@ -1,7 +1,11 @@
 <?php
-
+/*
+Author: Duc Hoang Michel Pham
+*/
 class ScheduleBuilder extends MY_Controller {
-
+    //DATABASE PROBLEMS
+    /* Duplicated courses causes alot of prerequisite and associated lecture problems.
+    */
   	function __construct() {
   		  parent::__construct();
         $this->load->model('course');
@@ -62,7 +66,7 @@ class ScheduleBuilder extends MY_Controller {
 
             $courses = $this->scheduleBuilder_Model->
                 filter_courses_by_preference(
-                    $courses, 
+                    $courses,
                     $form_data["time"], 
                     $form_data["long_weekend"], 
                     $form_data['season']
@@ -94,6 +98,11 @@ class ScheduleBuilder extends MY_Controller {
      $data["time_tables"] =  $time_tables;
      $this->put("/scheduleBuilder_views/generated_schedule.php", $data);
     }
+    
+    public function save_schedule(){
+      print_r($this->input->post());
+    }
+
 
 
     private function categorize_by_day($possible_sets_of_courses){
