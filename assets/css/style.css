@@ -31,6 +31,11 @@ input {
 /**
  * Static styling
  */	
+
+body{
+  height:auto;
+}
+
 h1#top {
 	font-size: 2em;
 	font-weight: 700;
@@ -132,6 +137,7 @@ h5#caption {
  */
 
 #content {
+    min-height:350px;
 	position: relative;
 	margin: 20px;
 	padding-bottom: 50px;

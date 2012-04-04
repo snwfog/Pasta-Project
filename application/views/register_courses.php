@@ -17,7 +17,7 @@
 	<ul>
 			<li><?=form_radio('time', 'day');?> Day</li>
 			<li><?=form_radio('time', 'night');?> Evening</li>
-			<li><?=form_radio('time', '', TRUE);?> I Don't Care</li>
+			<li><?=form_radio('time', '', TRUE);?> I Don't Mind</li>
 		</ul>
 	</h1>
 	<h1>How about a 3 days weekend?</h1>
