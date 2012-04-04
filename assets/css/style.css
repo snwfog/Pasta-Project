@@ -563,7 +563,9 @@ h3#section-subtitle {
 
 /*Schedule Table CSS*/
 div#schedule{
-  margin:0px;
+  height:100%;
+  margin-left:0;
+  margin-right:0;
   position: relative;
   float:left;
 }
