@@ -54,6 +54,20 @@ function createTimeLocQryParams( $details ) {
     return $timeLocQryData;
 }
 
+// From PHP.net's manual for array_unique()
+function multi_unique( $array ) {
+    foreach ( $array as $k => $na ) {
+        $new[$k] = serialize( $na );
+    }
+
+    $uniq = array_unique($new);
+
+    foreach($uniq as $k=>$ser) {
+        $new1[$k] = unserialize($ser);
+    }
+    
+    return ($new1);
+}
 
 class Scrape extends MY_Controller {
 	function __construct() {
@@ -116,6 +130,16 @@ class Scrape extends MY_Controller {
         
         $ALL_COURSES = $this->config->item('COURSE_LIST');
         
+        // Remove the titles from the array,
+        // that way when the course list is merged
+        // with optional courses and the SOEN schedule,
+        // there won't be duplicates since the course arrays
+        // are in the same format.
+        foreach ( $ALL_COURSES as $idx => $course ) {
+            unset($course[2]);
+            $ALL_COURSES[$idx] = $course;
+        }
+        
         // Merge option courses
         // option_courses has a different format from course_list.
         // It is grouped by subjects, such as "Basic Science", "General Electives", etc.
@@ -144,16 +168,13 @@ class Scrape extends MY_Controller {
             }
         }
         
+        // Remove duplicates. Some courses are repeated in COURSE_LIST and SOFT_ENG_COURSES
+        $ALL_COURSES = multi_unique( $ALL_COURSES );
+        
+        
+        
         // COURSE_LIST has the format Name, Number, Title.
-        foreach ( $ALL_COURSES as $courseDetails ) {
-        
-            if ( array_key_exists(2, $courseDetails) ) {
-                $courseTitle = $courseDetails[2];
-            }
-            else {
-                $courseTitle = "N/A (OTHER_COURSES)";
-            }
-        
+        foreach ( $ALL_COURSES as $courseDetails ) {        
             // With every course we have two possibilites: Fall (2) and Winter(4). Try both of them.
             foreach ( array(2, 4) as $semester ) {
                 $exceptionsThrown = false;
@@ -170,12 +191,12 @@ class Scrape extends MY_Controller {
                     // Undefined offset 9 happens when the parser attempts to read course data for a course that isn't available that semester.
                     if ( $e->getMessage() == "Undefined offset: 9" || $e->getMessage() == "Undefined offset: 8" ) {
                         echo '<b><font color="gray">Warning</font></b>: Course isn\'t available this semester. Parameters: ' .
-                        $courseTitle . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
+                        $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester;
                         echo "<br />\n";   
                     }
                     else {
                         echo '<b><font color="red">ERROR</font></b>: "' . $e->getMessage() . '" Parameters: ' .
-                            $courseTitle . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ')';
+                            $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester;
                         echo "<br />\n";
                     }
                 }
@@ -184,7 +205,7 @@ class Scrape extends MY_Controller {
                  * If no exceptions were thrown, then we passed the test without error.
                  */
                 if ( ! $exceptionsThrown ) {
-                    echo '<b><font color="green">Pass</font></b>: ' . $courseTitle . ' (' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ') <br />' . "\n";
+                    echo '<b><font color="green">Pass</font></b>: ' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ' <br />' . "\n";
                     
                     // Save the data. This is only called if this method was called through a different save method.
                     if ( $saveData ) {
@@ -213,7 +234,7 @@ class Scrape extends MY_Controller {
             echo "============================= <br />\n";*/
             $serializedCoursed = serialize( $allScrapedCourses );
             write_file('SERIALIZED_COURSES.TXT', $serializedCoursed);
-            echo "Data saved to SERIALIZED_COURSES.TXT.<br />";
+            echo "<br />\nData saved to SERIALIZED_COURSES.TXT.<br />";
         }
         
     }
@@ -367,24 +388,6 @@ class Scrape extends MY_Controller {
                                 );
                                 $this->db->insert( 'prerequisites', $prereqQryParam );
                             }
-                            else {
-                                // The prereq is a course we don't track, such as MATH 201. 
-                                // We need to create a dummy course record.
-                                
-                                $courseQryData = array(
-                                    'code' => $prereq['code'],
-                                    'number' => $prereq['number'],
-                                    // 'credit' => NULL, /* -1 indicates that it is a dummy record. 
-                                    // We don't have full info on that course.
-                                    // untracked courses (credit && title) auto NULL in mysql data
-                                    // instead of -1 - Charles
-                                );
-                                $this->db->insert( 'courses', $courseQryData );
-                                // And add the primary key to DUMMY_COURSES,
-                                // so we can re-use it next time a course depends on this.
-                                $DUMMY_COURSES[$prereq['code']][$prereq['number']] = $this->db->insert_id();
-                                
-                            }
                             
                             $REQS_INSERTED[$course['code']][$course['number']] = true;
                         }
@@ -529,7 +532,7 @@ class Scrape extends MY_Controller {
 
         if ($this->DEBUG) {        
             if ( (count($course['prerequisite'] == 0)) && $prerequisiteText == '' ) {
-                echo "NO-PREREQS<br />\n"; // <============ REMOVE ME ====================================================================================================
+                echo "NO-PREREQS<br />\n";
             }
             else {
                 if ( count($course['prerequisite']) == 0 ) {
