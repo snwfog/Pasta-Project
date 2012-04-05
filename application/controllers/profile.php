@@ -26,14 +26,7 @@ class Profile extends MY_Controller {
 	
 	public function index() {
 
-		/**
-		 * FAKE DATA HERE
-		 * 
-		 */
-		$this->session->set_userdata('logged_in', TRUE);
-		$data['name'] = 'Charles';
-		$data['title'] = $data['name'] . "'s Profile";
-		$data['total_credit'] = $this->completed_courses_table->get_total_credit_earned(3 /* FAKE DATA HERE SHOULD REPLACE WITH session student id */);
+
 
 		if (!$this->session->userdata('logged_in')) {
 			// if is not logged in, redirect user to the login page
@@ -44,16 +37,24 @@ class Profile extends MY_Controller {
 			// then auto direct him to the course selection page
 			redirect('coursecompleted', 'location');
 		} else {
+			// fill in session information	
+			$data['name'] = $this->session->userdata('first_name');
+			$data['title'] = $data['name'] . "'s Profile";
+			$data['total_credit'] = $this->completed_courses_table->get_total_credit_earned(
+					$this->session->userdata('student_id'));
+
+
 			// load the correct data for this particular 
 			// user in form of a table
 			$data['schedules'] = 
 				$this->schedules_table->
 					get_schedule_by_student_id($this->session->userdata('student_id'));
 
-			// store all info about courses for this semester
-			// hence the '0' extra parameter in the array
+			// get schedule id
+			$user_schedule = $this->schedules_table->get_schedule_by_student_id(
+				$this->session->userdata('student_id'));
 			$data['schedules']['course_info'] = 
-				$this->schedules_table->get_course_info_from_schedule_id(7);
+				$this->schedules_table->get_course_info_from_schedule_id($user_schedule['id']);
 
 			$this->put('profile', $data);
 		}
