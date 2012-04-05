@@ -35,7 +35,7 @@
 		<li>
 			<?php 
 				if ($this->session->userdata('logged_in'))
-					echo anchor(site_url("login/logout"), "logout");
+					echo anchor(site_url("pasta/logout"), "logout");
 			?>
 		</li>
 		<!-- <li><a href="">stats</a></li> -->

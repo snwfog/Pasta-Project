@@ -11,6 +11,7 @@
  */
 
 class CompletedCourse extends CI_Model{
+    
     function find_by_student_id($student_id) {
       	return $this->db->get_where('completed_courses', 
 					array('student_id' => $student_id))->result_array();
@@ -28,7 +29,7 @@ class CompletedCourse extends CI_Model{
     }
 
     /**
-     * Get current session student total course credit taken.
+     * Get current session student total earned credits.
      * @return Student Credit
      */
     public function get_total_credit_earned($student_id) {
@@ -38,6 +39,10 @@ class CompletedCourse extends CI_Model{
             'completed_courses.course_id = courses.id');
         $this->db->where('student_id', $student_id);
         $query = $this->db->get()->result_array();
+        
+        // if user has no previously completed course
+        if ($query[0]['SUM(credit)'] == NULL) return 0;
+        
         return $query[0]['SUM(credit)'];
     }
 
