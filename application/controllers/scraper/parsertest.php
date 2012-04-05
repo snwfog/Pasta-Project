@@ -1,5 +1,5 @@
 <?php
-require_once 'coursecompleted.php';
+require_once 'application/controllers/coursecompleted.php';
 
 class parsertest extends CourseCompleted {
 	function __construct() {

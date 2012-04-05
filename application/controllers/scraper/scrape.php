@@ -72,6 +72,9 @@ function multi_unique( $array ) {
 class Scrape extends MY_Controller {
 	function __construct() {
 		parent::__construct();
+
+        $CI =& get_instance();
+		$CI->load->library('simple_html_dom.php');
         
         $this->DEBUG = false;
     }
@@ -110,24 +113,12 @@ class Scrape extends MY_Controller {
     public function serializeAll () {
         $this->testAll( true, 'serialize' );
     }
-        
-    /*
-     * A debug function that tests all courses to see how well
-     * WARNING: This func is VERY slow, since it fetches each course from the Concordia servers 1 at a time.
-     * Writes out directly to the browser, and uses deprecated HTML, but that's ok because it's purely for debugging.
-     */
-    public function testAll( $saveData = false, $saveFormat = 'serialize' ) {
-        // Override CI's exception handling, so we can easily output which parameters caused the scraper to fail, and procede to the next call to test.
-        $old_error_handler = set_error_handler( "scrapeTestErrorHandler", E_ALL );
-        
+    
+    function getUniqueCourseList() {
         $this->config->load('pasta_constants/course_list');
         $this->config->load('pasta_constants/option_courses');
         $this->config->load('pasta_constants/soft_eng_courses');
-        
-        if ( $saveData && $saveFormat == 'serialize' ) {
-            $allScrapedCourses = array( );
-        }
-        
+
         $ALL_COURSES = $this->config->item('COURSE_LIST');
         
         // Remove the titles from the array,
@@ -170,10 +161,26 @@ class Scrape extends MY_Controller {
         
         // Remove duplicates. Some courses are repeated in COURSE_LIST and SOFT_ENG_COURSES
         $ALL_COURSES = multi_unique( $ALL_COURSES );
+
+        return $ALL_COURSES;
+    }
+    
+    /*
+     * A debug function that tests all courses to see how well
+     * WARNING: This func is VERY slow, since it fetches each course from the Concordia servers 1 at a time.
+     * Writes out directly to the browser, and uses deprecated HTML, but that's ok because it's purely for debugging.
+     */
+    public function testAll( $saveData = false, $saveFormat = 'serialize' ) {
+        // Override CI's exception handling, so we can easily output which parameters caused the scraper to fail, and procede to the next call to test.
+        $old_error_handler = set_error_handler( "scrapeTestErrorHandler", E_ALL );
+                
+        if ( $saveData && $saveFormat == 'serialize' ) {
+            $allScrapedCourses = array( );
+        }
         
+        $ALL_COURSES = $this->getUniqueCourseList();
         
-        
-        // COURSE_LIST has the format Name, Number, Title.
+        // COURSE_LIST has the format Code, Number.
         foreach ( $ALL_COURSES as $courseDetails ) {        
             // With every course we have two possibilites: Fall (2) and Winter(4). Try both of them.
             foreach ( array(2, 4) as $semester ) {
@@ -233,7 +240,7 @@ class Scrape extends MY_Controller {
             echo serialize( $allScrapedCourses ) . "\n";
             echo "============================= <br />\n";*/
             $serializedCoursed = serialize( $allScrapedCourses );
-            write_file('SERIALIZED_COURSES.TXT', $serializedCoursed);
+            write_file('data/SERIALIZED_COURSES.TXT', $serializedCoursed);
             echo "<br />\nData saved to SERIALIZED_COURSES.TXT.<br />";
         }
         
@@ -245,7 +252,7 @@ class Scrape extends MY_Controller {
     public function showAllSerializedCourses() {
         $this->load->helper('file');
         
-        $s_serializedCourses = read_file('SERIALIZED_COURSES.TXT');
+        $s_serializedCourses = read_file('data/SERIALIZED_COURSES.TXT');
         
         $allScrapedCourses = unserialize( $s_serializedCourses );
         
@@ -446,17 +453,20 @@ class Scrape extends MY_Controller {
             }
         }
     }
+
+    function getPageContents( $session, $course_code, $course_number ) {                
+        $html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=2011'.$session.'&course='.$course_code.'&courno='.$course_number);
+        
+        return $html;
+    }
+
 	
 	/**
 	 * Method to get the course information data
 	 */
-	private function scrape_site($course_code, $course_number, $session) {
-		$CI =& get_instance();
-
-		$CI->load->library('simple_html_dom.php');
-		
+	function scrape_site($course_code, $course_number, $session) {		
 		// Note that for yrsess 4 is Winter, 2 is Fall, 3 is Fall & Winter, 1 is Summer.
-		$html = file_get_html('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=2011'.$session.'&course='.$course_code.'&courno='.$course_number);
+		$html = $this->getPageContents( $session, $course_code, $course_number );
 		
 		$all_rows = $html->find('tr');
 		        
@@ -748,3 +758,4 @@ if ($query->num_rows() > 0)
 
 /* End of file test.php */
 /* Location: ./application/controllers/test.php */
+?>
