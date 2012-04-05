@@ -96,10 +96,7 @@ class ScheduleBuilder extends MY_Controller {
                                                                            $form_data["season"]
                                                                           );
      $possible_sequence = $this->scheduleBuilder_Model->generate_possibility($courses);
-     $time_tables = $this->categorize_by_day($possible_sequence);
-     $time_tables = $this->sort_courses_in_each_day($time_tables);
      $data = array( "possible_sequence" => $possible_sequence,
-                    "time_tables"       => $time_tables,
                     "season"             => $form_data["season"]);
 
      $this->put("/scheduleBuilder_views/generated_schedule.php", $data);
@@ -111,6 +108,8 @@ class ScheduleBuilder extends MY_Controller {
       $schedule = $this->input->post("courses");
       $season = $this->input->post("season");
       $year = date("Y");
+      
+      print_r($schedule);
       if($season == 2){
         $year = (date('n') > '9' ? $year+1 : $year);
       }
@@ -124,64 +123,7 @@ class ScheduleBuilder extends MY_Controller {
 
 
 
-    private function categorize_by_day($possible_sets_of_courses){
-      $time_table = array("M" => array(), "T" => array(), "W"=> array(), "J"=> array(), "F" => array(), "S" => array(), "SU" => array());
-      $complete_time_table = array();
-      foreach($possible_sets_of_courses as $set){
-        foreach($set as $course){
-            $lecture_days = explode(",", $course["lecture"]["day"]);
-            foreach($lecture_days as $day){
-              $course["lecture"]["code"] = $course["code"];
-              $course["lecture"]["number"] = $course["number"];
-              $course["lecture"]["type"] = "lecture";
-              array_push($time_table[$day], $course["lecture"]);
-            }
-            if( isset($course["tutorial"])){
-              $tutorial_days = explode(",", $course["tutorial"]["day"]);
-              foreach($tutorial_days as $day){
-                $course["tutorial"]["code"] = $course["code"];
-                $course["tutorial"]["number"] = $course["number"];
-                $course["tutorial"]["type"] = "tutorial";
-                array_push($time_table[$day], $course["tutorial"]);
-              }
-            }
-            if( isset($course["lab"])){
-              $lab_days = explode(",", $course["lab"]["day"]);
-              foreach($lecture_days as $day){
-                $course["lab"]["code"] = $course["code"];
-                $course["lab"]["number"] = $course["number"];
-                $course["lab"]["type"] = "lab";
-                array_push($time_table[$day], $course["lab"]);
-              }
-            }
-        }
-        array_push($complete_time_table, $time_table);
-        $time_table = $time_table = array("M" => array(), "T" => array(), "W"=> array(), "J"=> array(), "F" => array(), "S" => array(), "SU" => array());
-      }
-      return $complete_time_table;
-    }
 
-    private function sort_courses_in_each_day($time_table){
-      $sorted_time_table = array();
-      $completed_time_table = array();
-      foreach($time_table as $table_set){
-        foreach($table_set as $key=>$day){
-          for($i=0; $i<count($day); $i++){
-            for($k = $i+1; $k<count($day); $k++){
-              if($day[$i]["start_time"] > $day[$k]["start_time"] ){
-                $temp = $day[$i];
-                $day[$i] = $day[$k];
-                $day[$k] = $temp;
-                $temp = null;
-              }
-            }
-          }
-          $sorted_time_table[$key] = $day;
-        }
-        array_push($completed_time_table, $sorted_time_table);
-      }
-      return $completed_time_table;
-    }
 
 /*
 SELECT * FROM  courses, lectures, time_locations, tutorials, labs

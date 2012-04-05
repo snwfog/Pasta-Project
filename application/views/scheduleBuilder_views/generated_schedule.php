@@ -1,16 +1,4 @@
 <div id="content">
-
-  <?php
-          //THIS should be moved to a helper class. helper class help views? maybe dono.
-    function get_hour_min($time){
-      //Note: should be moved to helper class
-      $length = strlen($time);
-      $third_last = $length -2;
-      $min = substr($time, $third_last, $length);
-      $hour= substr($time, 0, $third_last);
-      return array("hour" => $hour, "min" =>$min);
-    }
-  ?>
   <div id="schedule">
   <?php
     if(empty($possible_sequence)){
@@ -72,17 +60,18 @@
             <br/>
             <br/>
         </div>
-        <div id="schedule_table_button">
-          <input class="button" type = "hidden" name="season" value = <?php echo $season;?> />
-          <?=form_submit(null,"Save This Schedule");?>
-        </div>
-      </form>
+
+      <div id="schedule_table_button">
+        <input class="button" type = "hidden" name="season" value = <?php echo $season;?> />
+        <?=form_submit(null,"Save This Schedule");?>
+    </form>
+        <?php echo form_open("scheduler/time_table"); ?>
+          <?= form_hidden($a_set)?>
+          <?=form_submit(null,"View Time Table");?>
+        </form>
+      </div>
+
   <?php endforeach?>
   </div>
 
-   <!-- For testing purpose
-    <?php  $data["time_table"] = $time_table;
-                $this->load->view("/scheduleBuilder_views/time_table.php", $data);
-         ?>
-     --!>
 </div>
