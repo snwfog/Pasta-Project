@@ -1,3 +1,0 @@
-To do when deploying PASTA to the server:
-1. Do not include the Code Igniter user_guide folder.
-2. Ensure the `index.php` is removed from the URL, see .htaccess in root.
