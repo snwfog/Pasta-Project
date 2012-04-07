@@ -114,6 +114,7 @@ class Course extends CI_Model{
             }
         }
       }
+      $this->sort_courses_by_type($courses);
       $courses = array_values($courses);// reindex them
       return $courses;
 
@@ -125,6 +126,54 @@ class Course extends CI_Model{
         return $record["course_id"];
       }
       return $courseCompleted = array_map("return_course_id", $array);
+    }
+
+
+    function sort_courses_by_type($courses){
+        $this->config->load('pasta_constants/option_courses');
+        $this->config->load('pasta_constants/soft_eng_courses');
+        $soft_eng_courses =$this->config->item('SOFT_ENG_COURSES');
+        $option_courses = $this->config->item('OPTION_COURSES');
+        
+        //Core Soft.Eng
+        $core = $this->map_core_courses($soft_eng_courses);
+        //Basic Science
+        $basicScience = $this->map_optional_courses($option_courses["Basic Science"]);
+
+        //General Electives
+
+        $socialScience = $this->map_optional_courses($option_courses["General Electives"]["Social Sciences"]);
+        $humanities = $this->map_optional_courses($option_courses["General Electives"]["Humanities"]);
+        $otherGeneral = $this->map_optional_courses($option_courses["General Electives"]["Others"]);
+
+        //Technical Electives
+        $CG = $this->map_optional_courses($option_courses["Technical Electives"]["Computer Games (CG)"]);
+        $web = $this->map_optional_courses($option_courses["Technical Electives"]["Web Services and Applications"]);
+        $REA = $this->map_optional_courses($option_courses["Technical Electives"]["Real-Time, Embedded, and Avionics Software (REA)"]);
+        $otherElectives = $this->map_optional_courses($option_courses["Technical Electives"]["Others"]);
+
+
+    }
+
+    function map_core_courses($array){
+      //made specific to match for item SOFT_ENG_COURSES array structure
+      $list = array();
+      foreach($array as $year){
+        foreach($year as $season){
+          foreach($season as $course){
+            array_push($list, $course[0]."".$course[1]);
+          }
+        }
+      }
+      return $list;
+    }
+
+    function map_optional_courses($array){
+      $list = array();
+      foreach($array as $course){
+        array_push($list, $course[0]."".$course[1]);
+      }
+      return $list;
     }
 
 

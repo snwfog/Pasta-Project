@@ -37,21 +37,28 @@
 <?php     echo form_hidden($preference); ?>
 
 	<table id="course-registration-selection-table">
-			<?php foreach($course_list as $course): ?>
-				<tr>
-					<td><?=(isset($course['code']) ? 
-								$course['code'] : "Unknown")?></td>
-					<td><?=(isset($course['number']) ? 
-								$course['number'] : "Unknown")?></td>
-					<td><?=(isset($course['title']) ? 
-								$course['title'] : "Unknown")?></td>
-					<td><?=(isset($course['credit']) ? 
-								$course['credit'] : "Unknown")?></td>
-					<td><?=form_checkbox(
-							'registered_courses[]', 
-							(isset($course['id']) ? $course['id'] : "-1")); ?>
-					</td>
-				</tr>
+			<?php foreach($course_list as $key=>$type): ?>
+                <tr>
+                    <td id="course_type"><b><?= $key ?> </b></td>
+                    <td></td>
+                </tr>
+                <? foreach($type as $course): ?>
+    				<tr>
+                        <td></td>
+    					<td><?=(isset($course['code']) ? 
+    								$course['code'] : "Unknown")?></td>
+    					<td><?=(isset($course['number']) ? 
+    								$course['number'] : "Unknown")?></td>
+    					<td><?=(isset($course['title']) ? 
+    								$course['title'] : "Unknown")?></td>
+    					<td><?=(isset($course['credit']) ? 
+    								$course['credit'] : "Unknown")?></td>
+    					<td><?=form_checkbox(
+    							'registered_courses[]', 
+    							(isset($course['id']) ? $course['id'] : "-1")); ?>
+    					</td>
+    				</tr>
+                 <?php endforeach?>
 			<?php endforeach; ?>
 
 	

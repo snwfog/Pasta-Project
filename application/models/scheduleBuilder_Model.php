@@ -40,8 +40,9 @@ class ScheduleBuilder_Model extends CI_Model{
     return array_values($filtered_courses);
 
   }
-  
+
   function check_tutorials($lectures,$constraint){
+    // This method is called by filter_courses_by_preference. It is more of a helper method.
     $filtered_lectures = array();
     foreach($lectures as $key=>$lecture):
         // query all tutorials that belong to a specific lecture and if it meets the time constraint
@@ -80,6 +81,7 @@ class ScheduleBuilder_Model extends CI_Model{
 
 
  function check_labs($tutorials,$constraint){
+    // This method is called by check_tutorial method. It is more of a helper method.
     $filtered_tutorials = array();
     foreach($tutorials as $key=>$tutorial):
         // query all labs that belong to a specific tutorial and meets the time constraint
@@ -113,7 +115,10 @@ class ScheduleBuilder_Model extends CI_Model{
 
 
     function branching($courses){
-      //create all possible combination of course + lecture + tutorial(if have) + labs(if have) while respecting which course/lecture/tutorial they belong to.
+      /*
+        For each course, this method create all possible combination of course + lecture + tutorial(if have) + labs(if have)
+        while respecting which course/lecture/tutorial they belong to.
+      */
       $course = array();
       foreach( $courses["lectures"] as $lecture){
         if(isset($lecture["tutorials"])){
@@ -159,7 +164,7 @@ class ScheduleBuilder_Model extends CI_Model{
        };
 
        //First step compare two course to set up the sets of course array
-       $possible_sequence = array();
+       $possible_sequence = array(); // store sets of non-conflicting combination of courses
        if(isset($branched_course[1])){
          foreach($branched_course[0] as $course_1){
            foreach($branched_course[1] as $course_2){
@@ -289,6 +294,30 @@ class ScheduleBuilder_Model extends CI_Model{
         $web = $this->map_optional_courses($option_courses["Technical Electives"]["Web Services and Applications"]);
         $REA = $this->map_optional_courses($option_courses["Technical Electives"]["Real-Time, Embedded, and Avionics Software (REA)"]);
         $otherElectives = $this->map_optional_courses($option_courses["Technical Electives"]["Others"]);
+
+        $sorted_courses = array(
+                          "Core" => array(),
+                          "Basic Sciences" => array(),
+                          "General Electives" => array(),
+                          "Technical Electives" => array(),
+                          "Other" => array()
+                        );
+
+        foreach($courses as $course){
+            $code_number = $course['code']."".$course['number'];
+            if(in_array($code_number, $core)){
+              array_push($sorted_courses["Core"], $course);
+            }elseif(in_array($code_number, $basicScience)){
+              array_push($sorted_courses["Basic Sciences"], $course);
+            }elseif(in_array($code_number, $socialScience) || in_array($code_number, $basicScience) || in_array($code_number, $humanities) || in_array($code_number, $otherGeneral)){
+              array_push($sorted_courses["General Electives"], $course);
+            }elseif(in_array($code_number, $CG) || in_array($code_number, $web) || in_array($code_number, $REA) || in_array($code_number, $otherElectives)){
+              array_push($sorted_courses["Technical Electives"], $course);
+            }else{
+              array_push($sorted_courses["Other"], $course);
+            }
+        };
+      return $sorted_courses;
     }
 
     function map_core_courses($array){

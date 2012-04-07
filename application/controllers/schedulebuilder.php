@@ -71,7 +71,7 @@ class ScheduleBuilder extends MY_Controller {
                     $form_data["long_weekend"], 
                     $form_data['season']
                 );
-            $course = $this->scheduleBuilder_Model->sort_courses_by_type($courses);
+            $courses = $this->scheduleBuilder_Model->sort_courses_by_type($courses);
             $data['course_list'] = $courses;
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
@@ -92,7 +92,7 @@ class ScheduleBuilder extends MY_Controller {
      endforeach;
      $courses = $this->scheduleBuilder_Model->filter_courses_by_preference(
                                                                            $courses,$form_data["time"], 
-                                                                           $form_data["long_weekend"], 
+                                                                           $form_data["long_weekend"],
                                                                            $form_data["season"]
                                                                           );
      $possible_sequence = $this->scheduleBuilder_Model->generate_possibility($courses);
@@ -114,7 +114,7 @@ class ScheduleBuilder extends MY_Controller {
         $year = (date('n') > '9' ? $year+1 : $year);
       }
       $this->schedule->new_and_update_schedule($schedule, $student_id, $season, $year);
-      //should redirect somehwere now
+      redirect('profile');
     }
 
 

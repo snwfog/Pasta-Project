@@ -421,6 +421,13 @@ h3#section-subtitle {
 	border: none;
 }
 
+td#course_type{
+    text-transform:uppercase;
+	color: #9a1729;
+    font-size:20px;
+    border-bottom:1px solid black;
+    max-width:100px;
+}
 
 /**
  * Format the optional courses table in the scraper tester.
