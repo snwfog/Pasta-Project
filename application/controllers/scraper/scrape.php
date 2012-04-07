@@ -106,6 +106,22 @@ class Scrape extends MY_Controller {
         $this->load->view( '/scrape_views/scrape_view', $this->scrape_site($courseCode, $courseName, $session) );
     }
     
+    public function details( $courseCode, $courseName, $session, $displayFormat = '' ) {
+    
+        $pageData = $this->scrape_site($courseCode, $courseName, $session);
+        
+        switch ( $displayFormat ) {
+            case 'recursive':
+                $view = '/scrape_views/print_r';
+                $pageData['courseDetails'] = $pageData;
+                break;
+            default:
+                $view = '/scrape_views/details';
+        }
+        
+        $this->put( $view, $pageData );
+    }
+    
     /*
      * Call the scraper tester in a special mode to write out the course data as a serialized array.
      * (super slow!)
@@ -178,6 +194,8 @@ class Scrape extends MY_Controller {
             $allScrapedCourses = array( );
         }
         
+        $htmlOut = '';
+        
         $ALL_COURSES = $this->getUniqueCourseList();
         
         // COURSE_LIST has the format Code, Number.
@@ -197,14 +215,12 @@ class Scrape extends MY_Controller {
                     $exceptionsThrown = true;
                     // Undefined offset 9 happens when the parser attempts to read course data for a course that isn't available that semester.
                     if ( $e->getMessage() == "Undefined offset: 9" || $e->getMessage() == "Undefined offset: 8" ) {
-                        echo '<b><font color="gray">Warning</font></b>: Course isn\'t available this semester. Parameters: ' .
-                        $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester;
-                        echo "<br />\n";   
+                        $htmlOut .= '<b><font color="gray">Warning</font></b>: Course isn\'t available this semester. Parameters: ' .
+                            $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . "<br />\n";   
                     }
                     else {
-                        echo '<b><font color="red">ERROR</font></b>: "' . $e->getMessage() . '" Parameters: ' .
-                            $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester;
-                        echo "<br />\n";
+                        $htmlOut .= '<b><font color="red">ERROR</font></b>: "' . $e->getMessage() . '" Parameters: ' .
+                            $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . "<br />\n";
                     }
                 }
                 
@@ -212,7 +228,7 @@ class Scrape extends MY_Controller {
                  * If no exceptions were thrown, then we passed the test without error.
                  */
                 if ( ! $exceptionsThrown ) {
-                    echo '<b><font color="green">Pass</font></b>: ' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . ' <br />' . "\n";
+                    $htmlOut .= '<b><font color="green">Pass</font></b>: ' . $courseDetails[0] . ' ' . $courseDetails[1] . ', Semester: ' . $semester . " <br />\n";
                     
                     // Save the data. This is only called if this method was called through a different save method.
                     if ( $saveData ) {
@@ -229,21 +245,27 @@ class Scrape extends MY_Controller {
                 }
             }
         }
-        echo "<b>All courses have been tested.</b>";
         
+        
+        $htmlOut .= "<b>All courses have been tested.</b> <br />\n";
+                
         // Serialized data is written out to the client
         if ( $saveData && $saveFormat == 'serialize' ) {
             $this->load->helper('file');
-            /*echo "<br />\n";
-            echo "============================= <br />\n";
-            echo "Serialized scraped courses: <br />\n";
-            echo serialize( $allScrapedCourses ) . "\n";
-            echo "============================= <br />\n";*/
+
             $serializedCoursed = serialize( $allScrapedCourses );
             write_file('data/SERIALIZED_COURSES.TXT', $serializedCoursed);
-            echo "<br />\nData saved to SERIALIZED_COURSES.TXT.<br />";
+            
+            $htmlOut .= "<br />\nData saved to SERIALIZED_COURSES.TXT.<br />";
         }
         
+        //echo $htmlOut;
+        $this->put( 'scrape_views/fullpage', array( 'content' => $htmlOut, 'title' => 'Scraper' ) );
+        //$this->put( 'scrape_views/fullpage', array( 'content' => 'UM HELLO WORLD?', 'title' => 'Scraper' ) );
+    }
+    
+    public function testView () {
+        $this->put( 'scrape_views/fullpage', array( 'content' => 'HEREIAM', 'title' => 'LOL IT WORKS' ) );
     }
     
     /*
@@ -278,8 +300,12 @@ class Scrape extends MY_Controller {
         // $this->courses_table->insert_course($dummy_course);
     }
     
-    // TODO: Remember to parse the time; just remvoe ':'.
     public function save() {
+        /*
+         * Read the serialized data containing all course information,
+         * and save it to the database.
+         */
+        
         $this->load->helper('file');
         $this->load->database();
         
@@ -293,7 +319,6 @@ class Scrape extends MY_Controller {
         
         foreach ( $allScrapedCourses as $season => $semesterList ) {
         
-            //echo $semester . "<br />\n";
             if ( $season == 'FALL' ) {
                 $seasonID = 2;
             }
@@ -331,7 +356,6 @@ class Scrape extends MY_Controller {
                 }
                 
                 if ( $seasonID == 2 || $newWinterCourse ) {
-                    // TODO: Should add the title of the course to the DB and insert it here.
                     $courseQryData = array(
                         'code' => $course['code'],
                         'number' => $course['number'],

@@ -15,7 +15,7 @@
 			<tr><td colspan='6'><h2><?=$semester?></h2></td></tr>
 			<?php foreach($course_list as $course): ?>
             <?php
-            $scrapeURL = "/scrape/debug/".$course['code'].'/'.$course['number'].'/'.$semesterID;
+            $scrapeURL = "/scraper/scrapetest/debug/".$course['code'].'/'.$course['number'].'/'.$semesterID;
             ?>
 				<tr>
 					<td><?php echo (isset($course['code']) ? 
@@ -29,7 +29,7 @@
 					<td><?php echo anchor('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=2011'.$semesterID.'&course='.$course['code'].'&courno='.$course['number'],'View FCMS page');  ?>
              
                     <!-- Place a link to the parser here. At the end, generate links to all courses. -->
-                    <td><?php echo anchor( site_url($scrapeURL), "Test parser" ) ?></td>
+                    <td><?php echo anchor( site_url($scrapeURL), "Test scraper" ) ?></td>
 				</tr>
 			<?php endforeach; ?>
 		<?php endforeach; ?>	
@@ -70,15 +70,15 @@
         $fcmsFallLinkText = 'FCMS Fall';
         $scraperFallLinkText = "Test scraper (Fall)";
         if ( ! $course['Fall'] ) {
-            $fcmsFallLinkText = 'FCMS Fall (N/A)';
-            $scraperFallLinkText = "Test scraper (Fall) (N/A)";
+            $fcmsFallLinkText = 'N/A';
+            $scraperFallLinkText = "N/A";
         }
         
         $fcmsWinterLinkText = 'FCMS Winter';
         $scraperWinterLinkText = "Test scraper (Winter)";
         if ( ! $course['Winter'] ) {
-            $fcmsWinterLinkText = 'FCMS Winter (N/A)';
-            $scraperWinterLinkText = "Test scraper (Winter) (N/A)";
+            $fcmsWinterLinkText = 'N/A';
+            $scraperWinterLinkText = "N/A";
         }
         ?>
         
@@ -86,8 +86,8 @@
         <td><?php echo anchor('http://fcms.concordia.ca/fcms/asc002_stud_all.aspx?yrsess=2011'.'4'.'&course='.$course['code'].'&courno='.$course['number'],$fcmsWinterLinkText);  ?></td>
  
         <!-- Place a link to the parser here. At the end, generate links to all courses. -->
-        <?php $scrapeURLFall = "/scrape/debug/".$course['code'].'/'.$course['number'].'/2'; ?>
-        <?php $scrapeURLWinter = "/scrape/debug/".$course['code'].'/'.$course['number'].'/4'; ?>
+        <?php $scrapeURLFall = "/scraper/scrape/debug/".$course['code'].'/'.$course['number'].'/2'; ?>
+        <?php $scrapeURLWinter = "/scraper/scrape/debug/".$course['code'].'/'.$course['number'].'/4'; ?>
         <td><?php echo anchor( site_url($scrapeURLFall), $scraperFallLinkText ) ?></td>
         <td><?php echo anchor( site_url($scrapeURLWinter), $scraperWinterLinkText ) ?></td>
         

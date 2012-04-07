@@ -102,7 +102,7 @@ class parsertest extends CourseCompleted {
 		foreach ($semester_or_category_list as $index => $course) {
             $dbCourseDetails = $this->courses_table->find_by_code_number_array($course);
             if ( ( ! array_key_exists( 'credit', $dbCourseDetails )) || ( is_null($dbCourseDetails['credit']) ) ) {
-                $dbCourseDetails['credit'] = 'NOCRED';
+                $dbCourseDetails['credit'] = 'N/A';
                 $dbCourseDetails['code'] = $course[0];
                 $dbCourseDetails['number'] = $course[1];
             }
