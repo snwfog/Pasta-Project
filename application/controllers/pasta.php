@@ -7,39 +7,46 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Pasta main controller
+ * Pasta main controller, control user login, user logout, and
+ * handles session variables.
+ * 
  * Author: Charles
  */
 class Pasta extends MY_Controller {
 	function Pasta() {
 		parent::__construct();	
 		
-		// load the login model
+		/**
+		 * Load models
+		 */
 		$this->load->model('User', 'logins_table');	
 	}	
 	
-	public function index() {			
+	public function index() {
+
 		/**
 		 * Main site title
 		 *-----------------*/
-		$data['title'] = 'P.A.S.T.A. - Personal Academic Schedule Timetable Arranger';
+		$data['title'] = "P.A.S.T.A. - Personal Academic Schedule Timetable Arranger";
 
 
 		// check if the user is already logged in
 		if ($this->user_is_logged_in()) {
 			// if user is already logged in, do an immediate redirect
-			redirect('profile', 'refresh');
+			redirect('pasta_profile_view', 'refresh');
 		} else {
 			// display the main view
-			$this->put('main', $data);
+			$this->put('pasta_main_view', $data);
 		}
 	}
 	
 	// Registration function
 	public function register() {
-		// setup and commit registration login validations criteria
+		// Setup and commit registration login validations criteria.
+		// The last parameter with `call_back_` begins are custom
+		// validation functions
 		$this->form_validation->set_rules('student_id', 'Student ID', 
-					'required|exact_length[7]|numeric|trim|xss_clean');
+					'required|exact_length[7]|numeric|trim|xss_clean|callback_is_unique_student_it');
 
 		$this->form_validation->set_rules('password', 'Password', 
 					'required|min_length[6]|alpha_numeric');
@@ -55,7 +62,7 @@ class Pasta extends MY_Controller {
 		// validate the form with the registration rules
 		if ($this->form_validation->run() == FALSE) {
 			$this->index();
-			//$this->load->view('/scrape_views/form');
+			// $this->load->view('/scrape_views/form');
 		} else {
 			// query the database to check if there 
 			// is an user with this POST student id
@@ -66,16 +73,15 @@ class Pasta extends MY_Controller {
 			if ($query->result()) {
 				echo "USER ALREADY REGISTERED";
 			} else {
-				$this->db->insert('logins', 
-							array(
-								'student_id' => $this->input->post('student_id'),
-								// store user password in sha1
-								'password' =>  $this->encrypt->sha1(
-													$this->input->post('password')),
-								'first_name' => $this->input->post('first_name'),
-								'last_name' => $this->input->post('last_name'),
-								'program' => $this->input->post('program')
-								));
+				$this->db->insert('logins', array(
+					'student_id' => $this->input->post('student_id'),
+					// store user password in sha1
+					'password'   => $this->encrypt->sha1(
+						$this->input->post('password')),
+					'first_name' => $this->input->post('first_name'),
+					'last_name'  => $this->input->post('last_name'),
+					'program'    => $this->input->post('program')
+				));
 				
 				// update session with appropriate information and
 				// set user to be logged in
@@ -151,15 +157,23 @@ class Pasta extends MY_Controller {
 	 * Callback function for an alpha_whitespace form validation
 	 * Allowing white space in family and last name form validation
 	 */
-	public function alpha_whitespace($str) {
+	public function alpha_whitespace($str) 
+	{
 		$this->form_validation->set_message(
 				'alpha_whitespace', 'Invalid character.');
+		return (preg_match("/^([-a-z-\s])+$/i", $str)) ? TRUE : FALSE;
+	}
 
-		if (preg_match("/^([-a-z-\s])+$/i", $str)) {	
-			return TRUE;
-		} else {
-			return FALSE;
-		}
+	/**
+	 * Callback function for an unique student it form validation
+	 * Disallow already taken student it
+	 */
+	public function is_unique_student_it($student_it) 
+	{
+		$this->form_validation->set_message('is_unique_student_it',
+			'Student ID already taken.');
+		$query = $this->logins_table->find_by_student_id($student_it);
+		return ($query == NULL) ? TRUE : FALSE;
 	}
 }
 

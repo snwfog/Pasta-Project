@@ -215,7 +215,7 @@ h3#section-subtitle {
 
 /* Error message styling  */
 #right-content li p {
-	font-family: "Helvetica Neue";
+	font-family: 'Helvetica Neue', 'Open Sans', 'Helvetica';
 	font-size: 0.7em;
 	/*margin-left: 5px;*/
 	color: red;
@@ -498,7 +498,7 @@ h3#section-subtitle {
 
 .dialog h1 {
 	margin-bottom: 20px;
-	font-family: 'Helvetica Neue';
+	font-family: 'Helvetica Neue', 'Open Sans', 'Helvetica';
 	font-weight: lighter;
 	color: #9a1729;
 }

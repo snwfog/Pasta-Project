@@ -25,10 +25,7 @@ class Profile extends MY_Controller {
 	}
 	
 	public function index() {
-
-
-
-		if (!$this->session->userdata('logged_in')) {
+		if ( ! $this->session->userdata('logged_in')) {
 			// if is not logged in, redirect user to the login page
 			redirect('pasta', 'refresh');
 		} else if ($this->schedules_table->get_schedule_by_student_id(
@@ -56,7 +53,7 @@ class Profile extends MY_Controller {
 			$data['schedules']['course_info'] = 
 				$this->schedules_table->get_course_info_from_schedule_id($user_schedule['id']);
 
-			$this->put('profile', $data);
+			$this->put('pasta_user_profile_view', $data);
 		}
 	}
 

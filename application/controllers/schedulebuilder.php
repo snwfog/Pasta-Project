@@ -19,7 +19,7 @@ class ScheduleBuilder extends MY_Controller {
         } else {
             $data['title'] = "P.A.S.T.A. - Course Registration";
             // load the preference pane by default
-            $this->put('register_preferences', NULL);
+            $this->put('course_registration_preference_view', NULL);
             //$this->listAllAllowedCourses();
         }
     }
@@ -76,7 +76,7 @@ class ScheduleBuilder extends MY_Controller {
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
 
-            $this->put('register_courses', $data);
+            $this->put('course_registration_selection_view', $data);
         }        
     }
 

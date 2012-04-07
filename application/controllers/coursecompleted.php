@@ -27,7 +27,7 @@ class CourseCompleted extends MY_Controller {
 		$this->load->model('CompletedCourse', 'completed_courses_table');
 	}
 
-	public function index( $view = 'courseCompleted' ) {
+	public function index() {
 
 		if (!$this->session->userdata('logged_in')) {
 			// if is not logged in, redirect user to the login page
@@ -48,7 +48,7 @@ class CourseCompleted extends MY_Controller {
 	            }
 	        }
 
-			$this->put($view, $data);
+			$this->put('course_completed_selection_view', $data);
 		}
 	}
 

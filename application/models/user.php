@@ -17,20 +17,23 @@
  */
 
 class User extends CI_Model {
-    function find_by_student_id($student_id) {
+    function find_by_student_id($student_id) 
+    {
       	$this->db->select('id, student_id, first_name, last_name');
         // return unique student
         return $this->db->get_where('logins', 
                     array('student_id' => $student_id))->row_array(); // unique
     }
 
-    function find_by_id($id) {
+    function find_by_id($id) 
+    {
       	$this->db->select('student_id, first_name, last_name');
         return $this->db->get_where('logins', 
                     array('id' => $id))->row_array(); // unique
     }
 
-    function find_by_login_info($student_id, $salt) {
+    function find_by_login_info($student_id, $salt) 
+    {
         $this->db->select('student_id, first_name, last_name');
         return $this->db->get_where('logins', array(
            'student_id' => $student_id,
