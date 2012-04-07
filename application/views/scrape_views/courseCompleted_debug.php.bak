@@ -15,7 +15,7 @@
 			<tr><td colspan='6'><h2><?=$semester?></h2></td></tr>
 			<?php foreach($course_list as $course): ?>
             <?php
-            $scrapeURL = "/scraper/scrape/debug/".$course['code'].'/'.$course['number'].'/'.$semesterID;
+            $scrapeURL = "/scraper/scrapetest/debug/".$course['code'].'/'.$course['number'].'/'.$semesterID;
             ?>
 				<tr>
 					<td><?php echo (isset($course['code']) ? 
