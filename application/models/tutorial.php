@@ -1,12 +1,27 @@
 <?php
 class Tutorial extends CI_Model{
-   
-    function find_by_lecture_id($id){
-        $query = $this->db->get_where('tutorials', array('lecture_id' => $id));
-        // row_array returns a single result in a pure array. 
-        // Better for generating single results.
-        return $query->result_array();
+  
+  	/**
+  	 * Return the tutorial information given the tutorial id
+  	 * using SQL `JOIN` command.
+  	 * @param   $schedule_it - The tutorial id
+  	 */
+    public function get_tutorial_info_by_id($tutorial_id)
+    {
+    	$this->db->select('section, start_time, end_time, 
+    					   campus,  room,      	day');
+    	
+    	$this->db->join('time_locations',
+    					'tutorials.time_location_id = time_locations.id', 
+    					'left');
+    	
+    	$this->db->where('tutorials.id', $tutorial_id);
+
+    	$query = $this->db->get('tutorials');
+    	return $query->row_array();
     }
+
+
 
 
 }

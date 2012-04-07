@@ -1,7 +1,7 @@
 /**
  * Font collections
  *------------------*/
-@import url(http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here|Open+Sans:400,300,600);
+@import url(http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here|Open+Sans:400,300,600|Maven+Pro:400,700);
 
 * {
 	font-family: 'Helvetica Neue', 'Open Sans', 'Helvetica';
@@ -476,6 +476,40 @@ td#course_type{
 #user_schedule_table a:hover {
 	border-bottom: 1px dashed rgba(154, 23, 41, 1);
 }
+
+/**
+ * User Profile Detail Course Info (Inner Tables)
+ */
+
+#user_schedule_table table {
+	font-size: 0.9em;
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+#user_schedule_table table tr td:first-child {
+	text-align: right;
+}
+
+#user_schedule_table table tr td {
+	font-family: "Maven Pro";
+}
+
+td#class-day {
+	background-color: #9a1729;
+	font-weight: bold;
+	color: white;
+	border-radius: 5px;
+}
+
+/**
+ * Detail Schedule Info Div
+ */
+.detail-schedule-info-divider {
+	border-top: 1px solid lightgray;
+	margin-bottom: 20px;
+}
+
 
 /**
  * Profile Drop Schedule Confirmation Box

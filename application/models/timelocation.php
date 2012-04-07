@@ -1,5 +1,17 @@
 <?php
 class TimeLocation extends CI_Model{
+
+    /**
+     * Return the time location info based on time location id
+     * @param   $time_location_id - ID
+     */
+    function get_by_id($time_location_id) 
+    {
+        $this->db->where('id', $time_location_id);
+        $query = $this->db->get('time_locations');
+        return $query->row_array();
+    }
+
 	/**
      * Insert information functions
      * 

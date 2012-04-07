@@ -1,5 +1,22 @@
 <?php
 class Lecture extends CI_Model{
+
+    /**
+     * Get selected lecture information from a lecture id.
+     * @param   $lecture_id - The lecture ID.
+     */
+    function get_lecture_info_by_id($lecture_id)
+    {
+        $this->db->select('lectures.id, section, professor, start_time,
+                           end_time,    campus,  room,      day');
+        $this->db->join('time_locations',
+                        'lectures.time_location_id = time_locations.id',
+                        'left');
+        $this->db->where('lectures.id', $lecture_id);
+        $query = $this->db->get('lectures');
+        return $query->row_array();
+    }
+
     function find_by_id($id) {
         if (FALSE === is_int($id)) { // only allow id of type integer
             trigger_error('setInteger expected Argument 1 to be Integer', E_USER_WARNING);
