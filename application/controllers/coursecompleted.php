@@ -89,20 +89,18 @@ class CourseCompleted extends MY_Controller {
 
 		// if student has taken courses, then update the database
 		// for this student, else do nothing and move onto next step
-		if ($updated_completed != NULL) {
-			foreach ($database_completed as $database_relations => $value) {
-				$this->completed_courses_table->delete_by_student_id(
-					$this->session->userdata('student_id'),
-					$value['course_id']);
-			}
+		foreach ($database_completed as $database_relations => $value) {
+			$this->completed_courses_table->delete_by_student_id(
+				$this->session->userdata('student_id'),
+				$value['course_id']);
+		}
 
 
 			// insert new values
-			foreach ($updated_completed as $database_relations => $value) {
-				$this->completed_courses_table->insert_by_student_id(
-					$this->session->userdata('student_id'),
-					$value);
-			}
+		foreach ($updated_completed as $database_relations => $value) {
+			$this->completed_courses_table->insert_by_student_id(
+				$this->session->userdata('student_id'),
+				$value);
 		}
 
 		// redirect user to course registration
