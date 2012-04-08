@@ -10,7 +10,7 @@
       <?php echo form_open("scheduleBuilder/save_schedule"); ?>
         <div id="schedule_table">
             <table id="schedule_table">
-                <tr>
+                <tr id="schedule_table_header">
                     <th>Course</th>
                     <th>Lecture </th>
                     <th>Tutorial </th>

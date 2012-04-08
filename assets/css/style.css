@@ -68,6 +68,7 @@ h5#caption {
 
 #header h1{
   margin-right:10px;
+
 }
 
 #header ul#nav {
@@ -276,14 +277,14 @@ h3#section-subtitle {
 	border-radius: 3px;
 	border: 1px solid #6e0f1c;
 	background:
-		-webkit-gradient(linear, left top, left bottom, 
-			color-stop(0%,rgba(148, 52, 56, 1)), 
+		-webkit-gradient(linear, left top, left bottom,
+			color-stop(0%,rgba(148, 52, 56, 1)),
 			color-stop(100%,rgba(115, 41, 43, 1)));
 }
 
 .button:hover {
 	background:
-		-webkit-gradient(linear, left top, left bottom, 
+		-webkit-gradient(linear, left top, left bottom,
 			color-stop(0%,rgba(196, 60, 68, 1)), 
 			color-stop(100%,rgba(125, 41, 45, 1)));
 }
@@ -635,14 +636,26 @@ div#schedule{
   position: relative;
   float:left;
 }
+
 #schedule_table tr{
-    border-top: 1px solid black;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+  color: black;
+  border-bottom: 1px solid #D8E0CE;
 }
+
+#schedule_table td{
+    font-size: 14px;
+}
+
+tr#schedule_table_header{
+    background-color:#D8E0CE;
+    border-bottom: 1px solid black;
+}
+
 
 #schedule_table td{
     padding-right: 10px;
     padding-left: 10px;
-    border-bottom: 1px solid black;
 }
 
 div#schedule_table{
@@ -650,6 +663,7 @@ div#schedule_table{
   float:left;
 }
 div#schedule_table_button{
+  top:5px;
   position:relative;
   float:left;
 }
