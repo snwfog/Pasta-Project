@@ -68,12 +68,7 @@ h5#caption {
 	width: 100%;
 	/*padding: 5px 0px;*/
 	background-color: #fae295;
-    -moz-box-shadow:    3px 3px 5px 2px #ccc;
-    -webkit-box-shadow: 3px 3px 5px 2px #ccc;
-    box-shadow:         3px 3px 5px 2px #ccc;
-    border-bottom-left-radius:10px 5px;
-    border-bottom-right-radius:10px 5px;
-
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 #header h1{
@@ -160,7 +155,6 @@ h5#caption {
 }
 
 #content #left-content {
-//	background-color: red;
 	float: left;
 	width: 100%;
 }
@@ -170,7 +164,6 @@ h5#caption {
 }
 
 #content #right-content {
-//	background-color: blue;
 	float: left;
 	width: 250px;
 	margin-left: -250px;
@@ -735,11 +728,36 @@ div#schedule_table_button{
 /* Media Queries */
 /*****************/
 @media screen and (max-width: 780px) {
-/*	#description {
+	#content {
+	    overflow: none;
+	    min-height: none;
+		position: static;
+		margin: 0px;
+		padding: 50px;
+	}
+
+	#content #left-content {
+		float: none;
 		width: 100%;
 	}
-	
-	#signup {
-		float: left;
-	}*/
+
+	#content #left-content #wrapper {
+		margin-right: 0px;
+	}
+
+	#content #right-content {
+		position: relative;
+		width: 100%;
+		margin: 0px auto;
+	}
+
+	#content #description {
+		margin: 0px;
+	}
+
+	#content #right-content #signup-form,
+	#content #right-content #login-form {
+		width: 190px;
+		margin: 50px auto;
+	}
 }
