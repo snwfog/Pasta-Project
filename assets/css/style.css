@@ -532,6 +532,54 @@ td#class-day {
 	border-radius: 5px;
 }
 
+div#profile_main_content{
+    position:relative;
+    width:580px;
+    float:left;
+}
+
+div#profile_side_bar{
+  padding:10px;
+  position:relative;
+  top:20px;
+  float:left;
+  border:1px solid #9a1729;
+  height:250px;
+  width:120px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+
+}
+
+div#menu_list{
+  position:relative;
+  left:10px;
+}
+
+div#profile_side_bar h3{
+  font-family:'Helvetica Neue', 'Open Sans', 'Helvetica';
+  color: #2E2E2E;
+}
+
+div#menu_list input{
+  font-family: 'Helvetica Neue', 'Open Sans', 'Helvetica';
+  color:white;
+  background-color:rgba(154, 23, 41, 1);
+  border: 0px solid black;
+
+}
+
+div#menu_list ul{
+  list-style:none;
+
+}
+
+div#menu_list input:hover{
+  color:white;
+  background-color:rgba(161, 161, 161, 1);
+
+}
+
 /**
  * Detail Schedule Info Div
  */

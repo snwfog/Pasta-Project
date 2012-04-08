@@ -59,7 +59,7 @@ class Profile extends MY_Controller {
 
 			// multiple rows of all the scheduled courses
 			$scheduled_courses_list = $this->scheduled_courses_table->get_by_schedule_id($data['schedules']['id']);
-			
+
 			//print_r($scheduled_courses);
 			// going to store each and every scheduled course
 			// information into the `data['scheduled_courses']` variable

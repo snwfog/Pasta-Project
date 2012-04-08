@@ -47,7 +47,6 @@ class ScheduleBuilder extends MY_Controller {
             $id = $this->session->userdata['student_id'];
             $form_data = $this->input->post();
 
-
             //array( time => , longWeekend, season => , year => )
 
             $form_data['time'] = $this->input->post('time');
@@ -78,31 +77,25 @@ class ScheduleBuilder extends MY_Controller {
 
             $data['title'] = "P.A.S.T.A. - Course Registration";
 
-            $this->put('course_registration_selection_view', $data);       
+            $this->put('course_registration_selection_view', $data);
     }
 
     
     public function generate_schedule()
     {
-     //TODO CLEAN UP, REDIRECT USER IF NO FORM
-     $form_data = $this->input->post();
-     $courses = array();
-     foreach($form_data["registered_courses"] as $course_id):
-        $the_course = $this->course->find_by_id($course_id);
-        array_push($courses,$the_course);
-     endforeach;
-     $courses = $this->scheduleBuilder_Model->filter_courses_by_preference(
-                                                                           $courses,$form_data["time"], 
-                                                                           $form_data["long_weekend"],
-                                                                           $form_data["season"]
-                                                                          );
-     $possible_sequence = $this->scheduleBuilder_Model->generate_possibility($courses);
-     $data = array( "possible_sequence" => $possible_sequence,
-                    "season"             => $form_data["season"]);
+      $form_data = $this->input->post();
+  
+      //Preventing user from accessing this page before registering for courses. Must go through listAllAllowedCourses() controller first.
+      if(empty($form_data)){
+          redirect("scheduleBuilder");
+      }
 
-     $this->put("/scheduleBuilder_views/generated_schedule.php", $data);
+      $possible_sequence = $this->get_possible_sequence($form_data);
+      $data = array( "possible_sequence" => $possible_sequence,
+                      "season"       => $form_data["season"]);
+      $this->put("/scheduleBuilder_views/generated_schedule.php", $data);
     }
-    
+
     public function save_schedule(){
       $this->load->model("schedule");
       $student_id = $this->session->userdata['student_id'];
@@ -115,6 +108,22 @@ class ScheduleBuilder extends MY_Controller {
       }
       $this->schedule->new_and_update_schedule($schedule, $student_id, $season, $year);
       redirect('profile');
+    }
+
+
+    private function get_possible_sequence($form_data){
+     $courses = array();
+     foreach($form_data["registered_courses"] as $course_id):
+        $the_course = $this->course->find_by_id($course_id);
+        array_push($courses,$the_course);
+     endforeach;
+     $courses = $this->scheduleBuilder_Model->filter_courses_by_preference(
+                                                                           $courses,$form_data["time"], 
+                                                                           $form_data["long_weekend"],
+                                                                           $form_data["season"]
+                                                                          );
+     return $this->scheduleBuilder_Model->generate_possibility($courses);
+
     }
 
 
