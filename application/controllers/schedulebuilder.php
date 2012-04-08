@@ -46,9 +46,6 @@ class ScheduleBuilder extends MY_Controller {
     public function listAllAllowedCourses() {
             $id = $this->session->userdata['student_id'];
             $form_data = $this->input->post();
-
-            //array( time => , longWeekend, season => , year => )
-
             $form_data['time'] = $this->input->post('time');
             // compute season based on current time
             // before september, can only register for fall
@@ -56,20 +53,19 @@ class ScheduleBuilder extends MY_Controller {
             $form_data['season'] = (date('n') > '9' ? '4' : '2');
             $form_data['long_weekend'] = ($this->input->post('long_weekend') ? 1 : 0);
            
-
+            //First get all courses that user have pre-requisite for
+            //Then remove all courses that doesn't lecture in specified season
+            //Last remove all courses that doesn't meet his time constraint
             $courses = $this->course->get_all_courses_allowed($id);
-
-            //$courses = $this->get_course_detail($courses,$season);
             $courses = $this->scheduleBuilder_Model->filter_courses_by_season($courses, $form_data["season"]);
-
-
             $courses = $this->scheduleBuilder_Model->
                 filter_courses_by_preference(
                     $courses,
                     $form_data["time"], 
-                    $form_data["long_weekend"], 
+                    $form_data["long_weekend"],
                     $form_data['season']
                 );
+
             $courses = $this->scheduleBuilder_Model->sort_courses_by_type($courses);
             $data['course_list'] = $courses;
             $data['season'] = $form_data["season"];
@@ -84,12 +80,18 @@ class ScheduleBuilder extends MY_Controller {
     public function generate_schedule()
     {
       $form_data = $this->input->post();
-  
-      //Preventing user from accessing this page before registering for courses. Must go through listAllAllowedCourses() controller first.
+
+      //If no post data, use session stored data
       if(empty($form_data)){
-          redirect("scheduleBuilder");
+        $registered_courses = $this->session->userdata['registered_courses'];
+        if(empty($registered_courses)){
+          redirect($_SERVER['HTTP_REFERER']);
+        }else{
+          $form_data = $registered_courses;
+        }
       }
 
+      $this->session->set_userdata("registered_courses", $form_data);
       $possible_sequence = $this->get_possible_sequence($form_data);
       $data = array( "possible_sequence" => $possible_sequence,
                       "season"       => $form_data["season"]);

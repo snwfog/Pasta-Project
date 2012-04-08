@@ -41,7 +41,7 @@ class ScheduleBuilder_Model extends CI_Model{
 
   }
 
-  function check_tutorials($lectures,$constraint){
+  private function check_tutorials($lectures,$constraint){
     // This method is called by filter_courses_by_preference. It is more of a helper method.
     $filtered_lectures = array();
     foreach($lectures as $key=>$lecture):
@@ -80,74 +80,36 @@ class ScheduleBuilder_Model extends CI_Model{
   }
 
 
- function check_labs($tutorials,$constraint){
-    // This method is called by check_tutorial method. It is more of a helper method.
-    $filtered_tutorials = array();
-    foreach($tutorials as $key=>$tutorial):
-        // query all labs that belong to a specific tutorial and meets the time constraint
-        $labs = $this->db->query(
-                                "SELECT labs.id, labs.section, tutorial_id, labs.time_location_id, start_time, end_time, day
-                                FROM  time_locations, tutorials, labs
-                                where tutorials.id =".$tutorial["id"]."
-                                and labs.tutorial_id = tutorials.id
-                                and labs.time_location_id = time_locations.id
-                                and time_locations.start_time".$constraint
-                              )->result_array();
-
-        //Remove tutorial if it has no labs that meet time constraint. Caution: Tutorial may not have labs to begin with.
-        if(empty($labs)){
-          $no_labs = $this->db->query("select * from labs
-                                                where labs.tutorial_id =".$tutorial["id"])->result_array();
-          //Checking if course even have tutorial before removing.
-          if(!empty($no_labs)){
-            unset($tutorials[$key]);
+   private function check_labs($tutorials,$constraint){
+      // This method is called by check_tutorial method. It is more of a helper method.
+      $filtered_tutorials = array();
+      foreach($tutorials as $key=>$tutorial):
+          // query all labs that belong to a specific tutorial and meets the time constraint
+          $labs = $this->db->query(
+                                  "SELECT labs.id, labs.section, tutorial_id, labs.time_location_id, start_time, end_time, day
+                                  FROM  time_locations, tutorials, labs
+                                  where tutorials.id =".$tutorial["id"]."
+                                  and labs.tutorial_id = tutorials.id
+                                  and labs.time_location_id = time_locations.id
+                                  and time_locations.start_time".$constraint
+                                )->result_array();
+  
+          //Remove tutorial if it has no labs that meet time constraint. Caution: Tutorial may not have labs to begin with.
+          if(empty($labs)){
+            $no_labs = $this->db->query("select * from labs
+                                                  where labs.tutorial_id =".$tutorial["id"])->result_array();
+            //Checking if course even have tutorial before removing.
+            if(!empty($no_labs)){
+              unset($tutorials[$key]);
+            }else{
+              array_push($filtered_tutorials, $tutorial);
+            }
           }else{
+            $tutorial["labs"] = $labs;
             array_push($filtered_tutorials, $tutorial);
           }
-        }else{
-          $tutorial["labs"] = $labs;
-          array_push($filtered_tutorials, $tutorial);
-        }
-    endforeach;
-    return $filtered_tutorials;
-  }
-
-
-
-    function branching($courses){
-      /*
-        For each course, this method create all possible combination of course + lecture + tutorial(if have) + labs(if have)
-        while respecting which course/lecture/tutorial they belong to.
-      */
-      $course = array();
-      foreach( $courses["lectures"] as $lecture){
-        if(isset($lecture["tutorials"])){
-            foreach($lecture["tutorials"] as $tutorial){
-              if(isset($tutorial["labs"])){
-                foreach($tutorial["labs"] as $lab){
-                 unset($tutorial["labs"]);
-                 $courses["lab"] = $lab;
-                 unset($lecture["tutorials"]);
-                 $courses["tutorial"] = $tutorial;
-                 unset($courses["lectures"]);
-                 $courses["lecture"] = $lecture;
-                 array_push($course, $courses);
-                }
-              }else{
-                 unset($lecture["tutorials"]);
-                 $courses["tutorial"] = $tutorial;
-                 unset($courses["lectures"]);
-                 $courses["lecture"] = $lecture;
-                 array_push($course, $courses);
-              }
-            }
-        }else{
-             unset($courses["lectures"]);
-             $courses["lecture"] = $lecture;
-             array_push($course, $courses);
-        }
-      }
-    return $course;
+      endforeach;
+      return $filtered_tutorials;
     }
 
     function generate_possibility($courses){
@@ -216,7 +178,44 @@ class ScheduleBuilder_Model extends CI_Model{
        return $possible_sequence;
      }
 
-    function compare_time($course_A, $course_B){
+    private function branching($courses){
+      /*
+        Called by generate possibility function.
+        For each input course, this method create all possible combination of course + lecture + tutorial(if have) + labs(if have)
+        while respecting which course/lecture/tutorial they belong to.
+      */
+      $course = array();
+      foreach( $courses["lectures"] as $lecture){
+        if(isset($lecture["tutorials"])){
+            foreach($lecture["tutorials"] as $tutorial){
+              if(isset($tutorial["labs"])){
+                foreach($tutorial["labs"] as $lab){
+                 unset($tutorial["labs"]);
+                 $courses["lab"] = $lab;
+                 unset($lecture["tutorials"]);
+                 $courses["tutorial"] = $tutorial;
+                 unset($courses["lectures"]);
+                 $courses["lecture"] = $lecture;
+                 array_push($course, $courses);
+                }
+              }else{
+                 unset($lecture["tutorials"]);
+                 $courses["tutorial"] = $tutorial;
+                 unset($courses["lectures"]);
+                 $courses["lecture"] = $lecture;
+                 array_push($course, $courses);
+              }
+            }
+        }else{
+             unset($courses["lectures"]);
+             $courses["lecture"] = $lecture;
+             array_push($course, $courses);
+        }
+      }
+    return $course;
+    }
+
+    private function compare_time($course_A, $course_B){
       //Return true if there is a conflict else it return false.
       $A = array();
       $A["lecture"] = $course_A["lecture"];
