@@ -38,8 +38,9 @@ class Schedule extends CI_Model {
     				'student_id' => $student_id))->row_array();
     }
 
-    function drop_schedule_by_id($schedule_id) {
-    	
+    function delete_by_schedule_id($schedule_id) {
+    	$this->db->where("id", $schedule_id);
+        $this->db->delete('schedules');
     }
 
     function new_and_update_schedule($schedule, $student_id, $season, $year){

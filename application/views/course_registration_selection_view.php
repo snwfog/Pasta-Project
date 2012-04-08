@@ -8,7 +8,7 @@
 </div>
 
 <h1 id="section-title">Here are the courses that meet your preferences.</h1>
-<h3 id="section-subtitle">You can select <span id="registrated-course-counter" class="proud">5</span> more additional course(s)</h3>
+<h3 id="section-subtitle">You can select <span id="registrated-course-counter" class="important-digit">5</span> more additional course(s)</h3>
 
 <div id="course-preferences-selection" class="dialog">
 	<?=form_open("schedulebuilder/listAllAllowedCourses");?>

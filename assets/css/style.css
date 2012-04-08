@@ -28,6 +28,16 @@ input {
 	color: rgba(154, 23, 41, 1);
 }
 
+.important-digit {
+	font-size: 1.4em;
+	font-weight: bold;
+	color: white;
+	background-color: #9a1729;
+	padding: 3px 8px;
+	border-radius: 5px;
+	-webkit-box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
 /**
  * Static styling
  */
@@ -438,10 +448,6 @@ h3#section-subtitle {
 #course-registration-selection-table tr,
 #course-registration-selection-table td {
 	border: none;
-}
-
-#course-registration-selection-table tr:first-child {
-
 }
 
 td#course_type{

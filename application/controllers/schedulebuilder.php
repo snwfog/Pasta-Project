@@ -19,7 +19,7 @@ class ScheduleBuilder extends MY_Controller {
         } else {
             $data['title'] = "P.A.S.T.A. - Course Registration";
             // load the preference pane by default
-            $this->put('course_registration_preference_view', NULL);
+            $this->put('course_registration_preference_view', $data);
             //$this->listAllAllowedCourses();
         }
     }
@@ -53,11 +53,14 @@ class ScheduleBuilder extends MY_Controller {
             $form_data = $this->input->post();
             //array( time => , longWeekend, season => , year => )
 
+            $form_data['time'] = $this->input->post('time');
             // compute season based on current time
             // before september, can only register for fall
             // after september, can only register for winter
             $form_data['season'] = (date('n') > '9' ? '4' : '2');
             $form_data['long_weekend'] = ($this->input->post('long_weekend') ? 1 : 0);
+           
+
             $courses = $this->course->get_all_courses_allowed($id);
 
             //$courses = $this->get_course_detail($courses,$season);
@@ -75,8 +78,9 @@ class ScheduleBuilder extends MY_Controller {
             $data['course_list'] = $courses;
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
+
             $data['title'] = "P.A.S.T.A. - Course Registration";
-            
+
             $this->put('course_registration_selection_view', $data);
         }        
     }

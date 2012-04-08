@@ -50,7 +50,9 @@ class Profile extends MY_Controller {
 					$this->session->userdata('student_id'));
 
 			$data['scheduled_credit'] = $this->scheduled_courses_table->
-				get_total_credit($data['schedules']['id']);
+				get_total_credit($data['schedules']['id']) != NULL ?
+				$this->scheduled_courses_table->
+				get_total_credit($data['schedules']['id']) : "0";
 
 			$data['name'] = $this->session->userdata('first_name');
 			$data['title'] = $data['name'] . "'s Profile";
@@ -91,9 +93,12 @@ class Profile extends MY_Controller {
 	}
 
 	function drop_course($schedule_id) {
+		// remove all courses from scheduled_courses table
+		$this->scheduled_courses_table->delete_by_schedule_id($schedule_id);
+
 		// remove from schedules table
+		$this->schedules_table->delete_by_schedule_id($schedule_id);
 		
-		// remove from scheduled_courses table
 		
 		redirect('profile', 'refresh');
 	}
