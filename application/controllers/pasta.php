@@ -33,7 +33,7 @@ class Pasta extends MY_Controller {
 		// check if the user is already logged in
 		if ($this->user_is_logged_in()) {
 			// if user is already logged in, do an immediate redirect
-			redirect('pasta_profile_view', 'refresh');
+			redirect('profile', 'refresh');
 		} else {
 			// display the main view
 			$this->put('pasta_main_view', $data);

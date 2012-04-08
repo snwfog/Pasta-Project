@@ -1,8 +1,7 @@
 /**
  * Font collections
  *------------------*/
-/*@import url(http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here|Open+Sans:400,300,600|Maven+Pro:400,700);
-*/
+@import url(http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here|Open+Sans:400,300,600|Maven+Pro:400,700);
 * {
 	font-family: 'Helvetica Neue', 'Open Sans', 'Helvetica';
 }
@@ -200,9 +199,9 @@ h3#section-subtitle {
 }
 
 #description p#pasta-team-signature {
-	margin: 10px 40px 0px 0px;
+	margin: 70px 40px 0px 0px;
 	text-align: right;
-	font: 1.9em "Just Me Again Down Here", "J.d.";
+	font: 1.4em "Just Me Again Down Here", "J.d.";
 }
 
 /* End of content layout styling */
