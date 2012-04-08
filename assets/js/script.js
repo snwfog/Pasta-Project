@@ -123,7 +123,7 @@ $(document).ready(function() {
 	 * Show the course preferences on loading the schedulebuilder controller
 	 */
 	if ($('#course-preferences-selection').length > 0
-		&& $('#continue').length == 0) {
+		&& $('#register-selected-courses').length == 0) {
 		// if we are first at course registration page, load the preference first
 		$.blockUI({
 			message : $('#course-preferences-selection'),
@@ -168,6 +168,20 @@ $(document).ready(function() {
 			$('#course-registration-selection-table input:checkbox:not(:checked)').removeAttr('disabled');
 		}
 	});
+
+	/**
+	 * Require user to register at least 1 course in order to continue
+	 */
+	// on load disable the register course
+	$('#register-selected-courses').attr('disabled', 'disabled');
+	$('#course-registration-selection-table input:checkbox').click(function() {
+		if ($('#course-registration-selection-table input:checkbox:checked').length == 0) {
+			$('#register-selected-courses').attr('disabled', 'disabled');
+		} else {
+			$('#register-selected-courses').removeAttr('disabled');
+		}
+	});
+
 
 });
 

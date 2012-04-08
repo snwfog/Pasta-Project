@@ -300,7 +300,7 @@ class ScheduleBuilder_Model extends CI_Model{
                           "Basic Sciences" => array(),
                           "General Electives" => array(),
                           "Technical Electives" => array(),
-                          "Other" => array()
+                          "Others" => array()
                         );
 
         foreach($courses as $course){
@@ -314,7 +314,7 @@ class ScheduleBuilder_Model extends CI_Model{
             }elseif(in_array($code_number, $CG) || in_array($code_number, $web) || in_array($code_number, $REA) || in_array($code_number, $otherElectives)){
               array_push($sorted_courses["Technical Electives"], $course);
             }else{
-              array_push($sorted_courses["Other"], $course);
+              array_push($sorted_courses["Others"], $course);
             }
         };
       return $sorted_courses;

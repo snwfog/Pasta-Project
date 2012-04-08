@@ -75,7 +75,8 @@ class ScheduleBuilder extends MY_Controller {
             $data['course_list'] = $courses;
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
-
+            $data['title'] = "P.A.S.T.A. - Course Registration";
+            
             $this->put('course_registration_selection_view', $data);
         }        
     }

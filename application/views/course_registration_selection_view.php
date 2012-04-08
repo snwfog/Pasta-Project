@@ -38,9 +38,9 @@
 
 	<table id="course-registration-selection-table">
 			<?php foreach($course_list as $key=>$type): ?>
-                <tr>
-                    <td id="course_type"><b><?= $key ?> </b></td>
-                    <td></td>
+                <tr style="border-bottom: 2px solid lightgray">
+                    <td id="course_type" style="text-align: right"><?= $key ?></td>
+                    <td colspan="4"></td>
                 </tr>
                 <? foreach($type as $course): ?>
     				<tr>
@@ -74,7 +74,7 @@
 
 			<?=form_submit(array(
 				'name'  => 'register',
-				'id' 	=> 'continue',
+				'id' 	=> 'register-selected-courses',
 				'value' => 'Register',
 				'class' => 'button'
 			));?>	
