@@ -113,8 +113,7 @@ class ScheduleBuilder extends MY_Controller {
       $schedule = $this->input->post("courses");
       $season = $this->input->post("season");
       $year = date("Y");
-      
-      print_r($schedule);
+
       if($season == 2){
         $year = (date('n') > '9' ? $year+1 : $year);
       }
