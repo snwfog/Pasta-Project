@@ -417,6 +417,10 @@ h3#section-subtitle {
 	-webkit-transition: background-color 0.1s ease-in;
 }
 
+#course-registration-selection-table input[type=checkbox] {
+	opacity: 0;
+}
+
 #course-registration-selection-table h1 {
 	font-size: 15pt;
 }

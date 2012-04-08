@@ -36,9 +36,9 @@ $(document).ready(function() {
 	});
 
 	/**
-	 * Allow table row clicking based on input context
+	 * Allow table row clicking based on input context course completed
 	 */
-	$('input:checkbox').parents('tr').click(function() {
+	$('#course_selection_table input:checkbox').parents('tr').click(function() {
 		if ($("input:checkbox", this).is(':checked')) {
 			$("input:checkbox", this).removeAttr("checked");
 			$(this).css({'background-color' : '#ffefea'}); // red
@@ -47,42 +47,6 @@ $(document).ready(function() {
 			$(this).css({'background-color' : '#f0ffed'}); // green
 		}
 	});
-
-
-	/**
-	 * Function to submit the form when clicked the submit button
-	 */
-	// $('#signup #submit').click(function() {
-	// 	// prevent the defaulted `placeholder` text to be submitted from
-	// 	// the placeholder jquery hack/fix by clearing the placeholder
-	// 	// field before submitting
-	// 	$(this).parents('form').submit(function() {
-	// 		$(this).find('[placeholder]').each(function() {
-	// 			var input = $(this);
-	// 			if (input.val() == input.attr('placeholder'))
-	// 				input.val('');
-	// 		});
-	// 	});
-	// });
-
-
-	/**
-	 * Function to place visual placeholder for forms input text area and field
-	 * from: http://www.hagenburger.net/BLOG/HTML5-Input-Placeholder-Fix-With-jQuery.html
-	 */
-	// $('[placeholder]').focus(function() {
-	// 	var input = $(this);
-	// 	if (input.val() == input.attr('placeholder')) {
-	// 		input.val('');
-	// 		input.removeClass('placeholder');
-	// 	}
-	// }).blur(function() {
-	// 	var input = $(this);
-	// 	if (input.val() == '' || input.val() == input.attr('placeholder')) {
-	// 		input.addClass('placeholder');
-	// 		input.val(input.attr('placeholder'));
-	// 	}
-	// }).blur();
 
 	/**
 	 * Special handler for password field placeholder
@@ -167,22 +131,34 @@ $(document).ready(function() {
 	var MAX_COURSES_ALLOWED = 6;
 	$('#registrated-course-counter').html(MAX_COURSES_ALLOWED);
 
-	$('#course-registration-selection-table input:checkbox').click(function() {
-		if (!$(this).is(':checked'))
+	$('#course-registration-selection-table input:checkbox').parents('tr').click(function() {
+		// if checkbox is checked
+		if ($('input:checkbox', this).is(":checked")) {
+			// uncheck the checkbox
+			$('input:checkbox', this).removeAttr("checked");
+			// change color indicator
+			$(this).css({'background-color' : '#ffefea'}); // red
+			// increment the MAX_COURSES_ALLOWED
 			MAX_COURSES_ALLOWED++;
-		else
-			MAX_COURSES_ALLOWED--;
-		
-		$('#registrated-course-counter').html(MAX_COURSES_ALLOWED).animate();
-
-		if (MAX_COURSES_ALLOWED <= 0) {
-			// get all unchecked checkboxes from form, and disable them
-			$('#course-registration-selection-table input:checkbox:not(:checked)').attr('disabled', 'true');
-			// disable form
-		} else {
-			// if still space to register course, allows more checkboxes
+			// enable all form
 			$('#course-registration-selection-table input:checkbox:not(:checked)').removeAttr('disabled');
+		// if the checkbox is unchecked
+		} else {
+			// check if we are still allowed to check more boxes
+			if (MAX_COURSES_ALLOWED > 0) {
+				$('input:checkbox', this).attr("checked", "checked");
+				// change color indicator
+				$(this).css({'background-color' : '#f0ffed'}); // green
+				MAX_COURSES_ALLOWED--;
+				// if MAX_COURSES_ALLOWED reached zero
+				// disable all unchecked elements
+				if (MAX_COURSES_ALLOWED == 0)
+					$('#course-registration-selection-table input:checkbox:not(:checked)').attr('disabled', 'true');
+			}
 		}
+
+		// update course allowed counter
+		$('#registrated-course-counter').html(MAX_COURSES_ALLOWED).animate();
 	});
 
 	/**
@@ -192,13 +168,11 @@ $(document).ready(function() {
 	if ($('#course-registration-selection-table input:checkbox:checked').length == 0)
 		$('#register-selected-courses').attr('disabled', 'disabled');
 	
-	$('#course-registration-selection-table input:checkbox').click(function() {
+	$('#course-registration-selection-table').click(function() {
 		if ($('#course-registration-selection-table input:checkbox:checked').length == 0) {
 			$('#register-selected-courses').attr('disabled', 'disabled');
 		} else {
 			$('#register-selected-courses').removeAttr('disabled');
 		}
 	});
-
-
 });
