@@ -10,18 +10,17 @@ class ScheduleBuilder extends MY_Controller {
   		  parent::__construct();
         $this->load->model('course');
         $this->load->model('scheduleBuilder_Model');
-  	}
-
-    public function index() {
         if (!$this->session->userdata('logged_in')) {
             // if is not logged in, redirect user to the login page
             redirect('pasta', 'refresh');
-        } else {
+        }
+  	}
+
+    public function index() {
             $data['title'] = "P.A.S.T.A. - Course Registration";
             // load the preference pane by default
             $this->put('course_registration_preference_view', $data);
             //$this->listAllAllowedCourses();
-        }
     }
 
     public function listAllCourses() {
