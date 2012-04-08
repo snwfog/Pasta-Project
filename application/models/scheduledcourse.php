@@ -34,6 +34,12 @@ class ScheduledCourse extends CI_Model
 		$sum_credit = $query->row_array();
 		return $sum_credit['SUM(courses.credit)'];
 	}
+
+	function delete_by_schedule_id($schedule_id) 
+	{
+		$this->db->where('schedule_id', $schedule_id);
+		$this->db->delete('scheduled_courses');
+	}
 }
   
 
