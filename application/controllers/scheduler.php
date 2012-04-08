@@ -8,7 +8,11 @@ class Scheduler extends MY_Controller {
 	}
 
     public function time_table(){
-      $time_table = $this->sort_by_day($this->input->post());
+      $form_data = $this->input->post();
+      if(empty($form_data)){
+        redirect($_SERVER['HTTP_REFERER']);
+      }
+      $time_table = $this->sort_by_day($form_data);
       $time_table = $this->sort_courses_in_each_day($time_table);
       $data["time_table"] = $time_table;
       $this->put("scheduleBuilder_views/time_table", $data);
