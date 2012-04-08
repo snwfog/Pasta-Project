@@ -1,10 +1,19 @@
 <div id="content">
   <div id="schedule">
-  <?php
-    if(empty($possible_sequence)){
-      echo "I'm very sorry, SO SORRY, There isn't any combination possible for those chosen courses";
-    }
-  ?>
+  <?php if(empty($possible_sequence)): ?>
+      <div id="no_combination_message">
+        <p id="large_sorry"> : (  Sorry !</p>
+        <div id="sorry_back">
+            <a href=<?= $_SERVER['HTTP_REFERER']?> >
+                <img border="0" src=<?= base_url()."assets/img/red-back-arrow.png" ?> alt="HTML tutorial" width="60" height="60" />
+            </a>
+            <p id="reason"> P.A.S.T.A could not generate any possibility with chosen courses. Please select a different combination</p>
+        </div>
+
+
+      </div>
+
+  <?php  endif ?>
 
   <?php foreach($possible_sequence as $a_set): ?>
       <?php echo form_open("scheduleBuilder/save_schedule"); ?>
