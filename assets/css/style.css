@@ -379,31 +379,27 @@ h3#section-subtitle {
 	border: 1px solid black;
 	padding: 5px;
 	margin: 0px auto;
+	border: none;
 	
 	/* transition setting */
 	-webkit-transition: background-color 0.1s ease-in;
 }
 
-#course_selection_table h1 {
-	font-size: 15pt;
+#course_selection_table input[type=checkbox] {
+	opacity: 0;
 }
 
-#course_selection_table h2 {
-	font-size: 12pt;
+#course_selection_table h1 {
+	font-size: 1.2em;
 }
 
 #course_selection_table tr:hover {
 	background-color: #e9f4fd;
+	cursor: pointer;
 }
 
 #course_selection_table #continue {
 	margin: 20px;
-}
-
-#course_selection_table,
-#course_selection_table tr,
-#course_selection_table td {
-	border: none;
 }
 
 /**
@@ -431,6 +427,7 @@ h3#section-subtitle {
 
 #course-registration-selection-table tr:hover {
 	background-color: #e9f4fd;
+	cursor: pointer;
 }
 
 #course-registration-selection-table #continue {
@@ -733,7 +730,7 @@ div#schedule_table_button{
 	    min-height: none;
 		position: static;
 		margin: 0px;
-		padding: 50px;
+		padding: 20px;
 	}
 
 	#content #left-content {
@@ -759,5 +756,23 @@ div#schedule_table_button{
 	#content #right-content #login-form {
 		width: 190px;
 		margin: 50px auto;
+	}
+
+	#progress-indicator ul li {
+		float: none;
+		margin-left: 20px;
+		margin-bottom: 20px;
+	}
+
+	#course_selection_table, 
+	#course_selection_table tr,
+	#course_selection_table td {
+		padding: 5px;
+		margin: 0px auto;
+		border: none;
+		font-size: 1em;
+
+		/* transition setting */
+		-webkit-transition: background-color 0.1s ease-in;
 	}
 }

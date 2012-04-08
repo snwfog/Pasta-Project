@@ -35,6 +35,19 @@ $(document).ready(function() {
 		'background-color' : '#f0ffed' // green
 	});
 
+	/**
+	 * Allow table row clicking based on input context
+	 */
+	$('input:checkbox').parents('tr').click(function() {
+		if ($("input:checkbox", this).is(':checked')) {
+			$("input:checkbox", this).removeAttr("checked");
+			$(this).css({'background-color' : '#ffefea'}); // red
+		} else {
+			$("input:checkbox", this).attr("checked", "checked");
+			$(this).css({'background-color' : '#f0ffed'}); // green
+		}
+	});
+
 
 	/**
 	 * Function to submit the form when clicked the submit button
