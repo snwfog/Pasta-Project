@@ -12,7 +12,7 @@
             return array("hour" => $hour, "min" =>$min);
         }
     ?>
-    <?=anchor(site_url("profile"), "Back"); ?>
+    <?=anchor($_SERVER['HTTP_REFERER'], "Back"); ?>
     <table id="time_table" >
         <tr id="time_table_header">
             <td>TIME</th><td>MONDAY</th><td>TUESDAY</th>
