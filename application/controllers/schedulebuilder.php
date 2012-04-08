@@ -44,12 +44,10 @@ class ScheduleBuilder extends MY_Controller {
 
 
     public function listAllAllowedCourses() {
-        if (!$this->session->userdata('logged_in')) {
-            // if is not logged in, redirect user to the login page
-            redirect('pasta', 'refresh');
-        } else {
             $id = $this->session->userdata['student_id'];
             $form_data = $this->input->post();
+
+
             //array( time => , longWeekend, season => , year => )
 
             $form_data['time'] = $this->input->post('time');
@@ -80,8 +78,7 @@ class ScheduleBuilder extends MY_Controller {
 
             $data['title'] = "P.A.S.T.A. - Course Registration";
 
-            $this->put('course_registration_selection_view', $data);
-        }        
+            $this->put('course_registration_selection_view', $data);       
     }
 
     
