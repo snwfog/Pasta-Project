@@ -1,8 +1,8 @@
 /**
  * Font collections
  *------------------*/
-@import url(http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here|Open+Sans:400,300,600|Maven+Pro:400,700);
-
+/*@import url(http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here|Open+Sans:400,300,600|Maven+Pro:400,700);
+*/
 * {
 	font-family: 'Helvetica Neue', 'Open Sans', 'Helvetica';
 }
@@ -618,33 +618,54 @@ div#menu_list input:hover{
 }
 
 /*Time Table CSS*/
-#time_table td{
-    border: 1px solid black;
+
+#time_table {
+	margin: 20px auto;
 }
 
-#time_header{
-  width: 40px;
-  font-size:10px;
-  color:Black;
-  text-align:center;
-  background-color:#DDDDDD;
+#time_table_header {
+	font-family: 'Helvetica Neue', 'Open Sans', 'Helvetica';
+	font-weight: lighter;
+	color: #9a1729;
 }
-#time_table_header{
-  border-bottom-width:0;
+
+#time_table_header td:not(:first-child) {
+	width: 110px;
+	text-align: center;
+}
+
+#time_table_header td:first-child {
+	width: 45px;
+}
+
+#time_table td{
+    border: 1px solid #9a1729;
+    text-align: center;
+    vertical-align: top;
+    padding-top: 2px;
+}
+
+#time_header {
+  width: 40px;
+  font-size: 10px;
+  color: black;
+  text-align: center;
+  background-color: #DDDDDD;
 }
 
 #day_header{
   width: 100px;
-  font-size:10px;
-  color:Black;
-  text-align:center;
-  background-color:#DDDDDD;
+  font-size: 10px;
+  color: black;
+  text-align: center;
+  background-color: #DDDDDD;
 }
-#day_column td{
+#day_column td {
     border: 0px;
+    width: 110px;
 }
 
-#time_column td{
+#time_column td {
     border: 0px;
     font-size:12px;
 }
@@ -698,7 +719,6 @@ div#schedule_table_button{
 }
 
 /* End of Schedule Table Css*/
-
 
 
 /*****************/

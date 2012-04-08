@@ -182,4 +182,11 @@ $(document).ready(function() {
 	$('#dummy-view-schedule-table').click(function() {
 		$(this).parents('form').submit();
 	});
+
+	/**
+	 * Alternating Time Table Schedule Coloring
+	 */
+	$('table#time_column tr:odd td').css({
+		'background-color' : 'rgba(154, 23, 41, 0.1)',
+	});
 });

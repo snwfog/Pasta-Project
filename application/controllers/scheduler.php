@@ -16,7 +16,7 @@ class Scheduler extends MY_Controller {
 
 
     private function sort_by_day($set_of_courses){
-      $time_table = array("M" => array(), "T" => array(), "W"=> array(), "J"=> array(), "F" => array(), "S" => array(), "SU" => array());
+      $time_table = array("M" => array(), "T" => array(), "W"=> array(), "J"=> array(), "F" => array());
       foreach($set_of_courses as $course){
         $lecture_days = explode("," , $course["lecture"]["day"]);
         foreach($lecture_days as $day){
