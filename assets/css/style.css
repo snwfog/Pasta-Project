@@ -439,8 +439,14 @@ h3#section-subtitle {
 	border: none;
 }
 
-#course-registration-selection-table tr:first-child {
-
+#registrated-course-counter {
+	font-size: 1.4em;
+	font-weight: bold;
+	color: white;
+	background-color: #9a1729;
+	padding: 3px 8px;
+	border-radius: 5px;
+	-webkit-box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
 }
 
 td#course_type{

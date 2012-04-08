@@ -173,7 +173,9 @@ $(document).ready(function() {
 	 * Require user to register at least 1 course in order to continue
 	 */
 	// on load disable the register course
-	$('#register-selected-courses').attr('disabled', 'disabled');
+	if ($('#course-registration-selection-table input:checkbox:checked').length == 0)
+		$('#register-selected-courses').attr('disabled', 'disabled');
+	
 	$('#course-registration-selection-table input:checkbox').click(function() {
 		if ($('#course-registration-selection-table input:checkbox:checked').length == 0) {
 			$('#register-selected-courses').attr('disabled', 'disabled');
