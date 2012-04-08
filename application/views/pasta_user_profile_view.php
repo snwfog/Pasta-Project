@@ -1,5 +1,4 @@
 <div id="content">
-<div id="profile_main_content">
 	<h1 id="section-title">Hello <?=$name;?>,</h1>
 	<h3 id="section-subtitle">Here is your schedule for
 		<span class="proud">
@@ -125,29 +124,23 @@
 				</div>
 			<?php endforeach; ?>
 			</div></td></tr>
-			<tr><td>
-				<a href="#" id="dummy-drop-schedule"><span class="ui-icon ui-icon-trash"></span></a>
-			</td></tr>
+			<tr>
+				<td>
+				<table>
+					<tr>
+						<td style="width: 5px">
+							<a href="#" id="dummy-drop-schedule"><span class="ui-icon ui-icon-trash"></span></a>
+						</td>
+						<td>
+							<?php echo form_open("scheduler/time_table");?>
+                				<?=form_hidden($scheduled_courses)?>
+                				<a href="#" id="dummy-view-schedule-table"><span class="ui-icon ui-icon-extlink"></span></a>
+              				</form>
+						</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
 		</table>
 	<?php endif; ?>
-</div>
-<div id="profile_side_bar">
-        <h3> Menu </h3>
-        <div id="menu_list">
-          <ul>
-            <li>
-              <?php echo form_open("scheduler/time_table"); ?>
-                <?= form_hidden($scheduled_courses)?>
-                <?=form_submit(null,"View Schedule");?>
-              </form>
-            </li>
-            <li>
-              <?php echo form_open("courseCompleted"); ?>
-                <?=form_submit(null,"New Schedule");?>
-              </form>
-            </li>
-          </ul>
-        </div>
-</div>
-
 </div>

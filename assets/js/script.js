@@ -175,4 +175,11 @@ $(document).ready(function() {
 			$('#register-selected-courses').removeAttr('disabled');
 		}
 	});
+
+	/**
+	 * View Scheduled-Table Submit Button
+	 */
+	$('#dummy-view-schedule-table').click(function() {
+		$(this).parents('form').submit();
+	});
 });
