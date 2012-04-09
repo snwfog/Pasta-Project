@@ -12,7 +12,7 @@
             return array("hour" => $hour, "min" =>$min);
         }
     ?>
-    <a href="javascript:history.back()">Go back</a>
+    <a href="javascript:history.back()">Back</a>
     <table id="time_table" >
         <tr id="time_table_header">
             <td>TIME</th><td>MONDAY</th><td>TUESDAY</th>
