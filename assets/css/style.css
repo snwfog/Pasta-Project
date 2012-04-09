@@ -783,7 +783,7 @@ p#reason {
 
 	#content #left-content {
 		float: none;
-		width: 100%;
+		padding: 20px 0px 20px 0px;
 	}
 
 	#content #left-content #wrapper {
