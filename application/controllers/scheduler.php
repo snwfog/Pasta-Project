@@ -22,7 +22,6 @@ class Scheduler extends MY_Controller {
       
       $this->session->set_userdata("time_table", $form_data);
       $time_table = $this->sort_by_day($form_data);
-      $time_table = $this->sort_courses_in_each_day($time_table);
       $data["time_table"] = $time_table;
       $this->put("scheduleBuilder_views/time_table", $data);
     }
@@ -57,7 +56,7 @@ class Scheduler extends MY_Controller {
           }
         }
       }
-      return $time_table;
+      return $this->sort_courses_in_each_day($time_table);
     }
 
     private function sort_courses_in_each_day($time_table){
