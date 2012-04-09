@@ -1,4 +1,4 @@
-<?php
+`<?php
 /**
  * Script to prevent direct URL access to this file.
  * Should include at every beginning of file.

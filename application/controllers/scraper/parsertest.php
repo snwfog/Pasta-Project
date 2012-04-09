@@ -5,7 +5,7 @@ class parsertest extends CourseCompleted {
 	function __construct() {
 		parent::__construct();
         
-        $this->config->load('pasta_constants/option_courses');
+        $this->config->load('pasta_constants/OPTION_COURSES');
         $this->config->load('pasta_constants/courses_not_available');
 	}
         
