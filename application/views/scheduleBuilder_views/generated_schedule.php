@@ -15,7 +15,7 @@
   <?php else: ?>
     <h1 id="section-title">The following schedules match your preferences.<br/>Please pick one.</h1>
   <?php  endif ?>
-
+    
   <?php foreach($possible_sequence as $a_set): ?>
       <?php echo form_open("schedulebuilder/save_schedule"); ?>
         <div id="schedule_table">
@@ -35,22 +35,22 @@
     
                 		<td><?php echo (isset($course['lecture']) ? "Section: ".$course['lecture']['section']."<br/>".
                                                                     $course['lecture']['day']."<br/>".
-                                                                    $course['lecture']['start_time']."-".
-                                                                    $course['lecture']['end_time'] 
+                                                                    format_time($course['lecture']['start_time'])."-".
+                                                                    format_time($course['lecture']['end_time'])
                                                                     : "-")?>
                         </td>
     
                 		<td><?php echo (isset($course['tutorial'])? "Section: ".$course['tutorial']['section']."<br/>".
                                                                     $course['tutorial']['day']."<br/>".
-                                                                    $course['tutorial']['start_time']."-".
-                                                                    $course['tutorial']['end_time'] 
+                                                                    format_time($course['tutorial']['start_time'])."-".
+                                                                    format_time($course['tutorial']['end_time'])
                                                                     : "-")?>
                         </td>
     
                 		<td><?php echo (isset($course['lab'])     ? "Section: ".$course['lab']['section']."<br/>".
                                                                     $course['lab']['day']."<br/>".
-                                                                    $course['lab']['start_time']."-".
-                                                                    $course['lab']['end_time']
+                                                                    format_time($course['lab']['start_time'])."-".
+                                                                    format_time($course['lab']['end_time'])
                                                                     : "-")?>
                         </td>
             		</tr>
@@ -85,3 +85,17 @@
   </div>
 
 </div>
+
+<?php
+function format_time ( $time ) {
+    // If the time is earlier than 10:00, we need an to prefix a 0. ex: 8:45 => 08:45
+    if ( strlen($time) < 4 ) {
+        $time = '0' . $time;
+    }
+
+    // The first two characters are the hour, the last two are the minute. Separate by a colon.
+    $formattedTime = substr($time, 0, 2) . ":" . substr($time, 2, 2);
+    return $formattedTime;
+}
+?>
+
