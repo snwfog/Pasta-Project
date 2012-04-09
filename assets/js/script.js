@@ -147,6 +147,9 @@ $(document).ready(function () {
      * Restrict user to register at maximum 6 courses per semester
      */
     var MAX_COURSES_ALLOWED = 6;
+    // check if there is any checkboxes that are selected
+    MAX_COURSES_ALLOWED -= $('#course-registration-selection-table input:checkbox:checked').length;
+
     $('#registrated-course-counter').html(MAX_COURSES_ALLOWED);
 
     $('#course-registration-selection-table input:checkbox').parents('tr').click(function () {
