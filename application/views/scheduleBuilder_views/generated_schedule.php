@@ -16,7 +16,7 @@
   <?php  endif ?>
 
   <?php foreach($possible_sequence as $a_set): ?>
-      <?php echo form_open("scheduleBuilder/save_schedule"); ?>
+      <?php echo form_open("schedulebuilder/save_schedule"); ?>
         <div id="schedule_table">
             <table id="schedule_table">
                 <tr id="schedule_table_header">
