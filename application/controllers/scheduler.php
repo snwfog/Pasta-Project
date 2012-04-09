@@ -6,12 +6,7 @@ class Scheduler extends MY_Controller {
         $form_data = $this->input->post();
         //If no post data, use session stored data
         if (empty($form_data)) {
-            $time_table = $this->session->userdata['time_table'];
-            if (empty($time_table)) {
-                redirect($_SERVER['HTTP_REFERER']);
-            } else {
-                $form_data = $time_table;
-            }
+            redirect($_SERVER['HTTP_REFERER']);
         }
         $this->session->set_userdata("time_table", $form_data);
         $time_table = $this->sort_by_day($form_data);
