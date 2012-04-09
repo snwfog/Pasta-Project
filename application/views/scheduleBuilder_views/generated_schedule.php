@@ -4,7 +4,7 @@
       <div id="no_combination_message">
         <p id="large_sorry"> : (  Sorry !</p>
         <div id="sorry_back">
-            <a href=<?= $_SERVER['HTTP_REFERER']?> >
+            <a href="javascript:history.back()">
                 <img border="0" src=<?= base_url()."assets/img/red-back-arrow.png" ?> alt="HTML tutorial" width="60" height="60" />
             </a>
             <p id="reason"> P.A.S.T.A could not generate any possibility with chosen courses. Please select a different combination</p>
