@@ -7,12 +7,13 @@
             <a href="javascript:history.back()">
                 <img border="0" src=<?= base_url()."assets/img/red-back-arrow.png" ?> alt="HTML tutorial" width="60" height="60" />
             </a>
-            <p id="reason"> P.A.S.T.A could not generate any possibility with chosen courses. Please select a different combination</p>
+            <p id="reason"> P.A.S.T.A could not generate any schedules with the chosen courses. Please select a different combination and try again.</p>
         </div>
 
 
       </div>
-
+  <?php else: ?>
+    <h1 id="section-title">The following schedules match your preferences.<br/>Please pick one.</h1>
   <?php  endif ?>
 
   <?php foreach($possible_sequence as $a_set): ?>

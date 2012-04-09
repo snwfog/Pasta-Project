@@ -75,6 +75,7 @@ class ScheduleBuilder extends MY_Controller {
         $this->session->set_userdata("registered_courses", $form_data);
         $possible_sequence = $this->get_possible_sequence($form_data);
         $data = array("possible_sequence" => $possible_sequence, "season" => $form_data["season"]);
+        $data['title'] = 'P.A.S.T.A. - Schedule Selection';
         $this->put("/scheduleBuilder_views/generated_schedule.php", $data);
     }
     public function save_schedule() {

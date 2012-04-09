@@ -75,7 +75,7 @@
 			<?=form_submit(array(
 				'name'  => 'register',
 				'id' 	=> 'register-selected-courses',
-				'value' => 'Register',
+				'value' => 'Generate Schedules',
 				'class' => 'button'
 			));?>	
 

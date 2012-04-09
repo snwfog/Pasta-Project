@@ -7,7 +7,7 @@
 	</ul>
 </div>
 
-<h1 id="section-title">Please select the course that you have completed.</h1>
+<h1 id="section-title">Please select the courses that you have completed.</h1>
 
 <?php echo form_open('coursecompleted/submit'); ?>
 
