@@ -259,7 +259,7 @@ h3#section-subtitle {
 
 #right-content input {
 	font-size: 1em;
-	font-family: "Calibri";
+	font-family: "Calibri", "Open Sans";
 	font-weight: lighter;
 	-webkit-transition: 0.1s all ease-in;
 }
