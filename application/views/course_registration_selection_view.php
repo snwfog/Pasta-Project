@@ -61,7 +61,7 @@
                  <?php endforeach?>
 			<?php endforeach; ?>
 			<tr>
-				<td colspan="5" style="text-align: right;">
+				<td colspan="6" class="controller-navigation">
 					<?=form_button(array(
 						'name'  => 'course-preferences-reselect',
 						'id'	=> 'course-preferences-reselect',

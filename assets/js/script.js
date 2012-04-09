@@ -212,4 +212,16 @@ $(document).ready(function () {
     $('table#time_column tr:odd td').css({
         'background-color': 'rgba(154, 23, 41, 0.1)',
     });
+
+    /**
+     * Quick media query hack for the table column in the 
+     * course registration site
+     */
+    if (screen.width > 20) {
+        alert(screen.width);
+    }
+
+
+
+
 });

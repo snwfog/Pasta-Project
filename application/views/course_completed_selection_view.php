@@ -37,7 +37,7 @@
 	<?php endforeach; ?>
 	
 	<tr>
-		<td colspan="5" style="text-align: right;">
+		<td colspan="5" class='controller-navigation'>
 			<?=form_submit(array(
 						'name'  => 'submit',
 						'id' 	=> 'continue',
