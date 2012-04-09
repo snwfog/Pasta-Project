@@ -71,7 +71,7 @@ class Pasta extends MY_Controller {
 			// echo $query->num_rows();
 
 			if ($query->result()) {
-				echo "USER ALREADY REGISTERED";
+				echo "User is already registered.";
 			} else {
 				$this->db->insert('logins', array(
 					'student_id' => $this->input->post('student_id'),
@@ -110,7 +110,7 @@ class Pasta extends MY_Controller {
 		$this->form_validation->set_rules(
 			'login_student_id', 
 			'Student ID', 
-			'required|trim|xss_clean|exact_length[7]|numeric'
+			'required|trim|xss_clean|exact_length[7]|numeric|callback_has_record'
 		); 
 
 		$this->form_validation->set_rules(
@@ -122,34 +122,23 @@ class Pasta extends MY_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$this->index();
 		} else {
-			// from http://www.haughin.com/2008/02/handling-passwords-in-codeigniter/
-			if ($this->logins_table->find_by_login_info(
-					$this->input->post('login_student_id'),
-					$this->encrypt->sha1($this->input->post('login_password')))) {
+			// ------------------------------------
+			// initialize sessions
+			// ------------------------------------
 
-				// ------------------------------------
-				// initialize sessions
-				// ------------------------------------
+			$user_data = $this->logins_table->find_by_student_id(
+				$this->input->post('login_student_id'));
 
-				$user_data = $this->logins_table->find_by_student_id(
-					$this->input->post('login_student_id'));
+			$this->session->set_userdata(array(
+                'id'         => $user_data['id'],
+				'student_id' => $user_data['student_id'],
+				'first_name' => $user_data['first_name'],
+				'last_name'  => $user_data['last_name'],
+				'logged_in'  => true
+			));
 
-				$this->session->set_userdata(array(
-                    'id'         => $user_data['id'],
-					'student_id' => $user_data['student_id'],
-					'first_name' => $user_data['first_name'],
-					'last_name'  => $user_data['last_name'],
-					'logged_in'  => true
-				));
-
-				// redirect to user profile page
-				redirect('profile', 'redirect');
-			} else {
-				echo "Sorry, we could not find you in our records. "
-				 	 . ", should you "
-				 	 . anchor(site_url('pasta'), 'register first')
-					 . "?";
-			}
+			// redirect to user profile page
+			redirect('profile', 'redirect');
 		}
 	}
 
@@ -168,12 +157,24 @@ class Pasta extends MY_Controller {
 	 * Callback function for an unique student it form validation
 	 * Disallow already taken student it
 	 */
-	public function is_unique_student_it($student_it) 
+	public function is_unique_student_it($student_id) 
 	{
 		$this->form_validation->set_message('is_unique_student_it',
 			'Student ID already taken.');
-		$query = $this->logins_table->find_by_student_id($student_it);
+		$query = $this->logins_table->find_by_student_id($student_id);
 		return ($query == NULL) ? TRUE : FALSE;
+	}
+
+	/**
+	 * Callback function for if an user tries to login with unexisting
+	 * student ID from the record
+	 */
+	public function has_record($student_id) 
+	{
+		$this->form_validation->set_message('has_record',
+			'User record not found.');
+		$query = $this->logins_table->find_by_student_id($student_id);
+		return ($query == NULL) ? FALSE : TRUE;
 	}
 }
 

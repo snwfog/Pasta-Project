@@ -3,6 +3,10 @@
 <!-- P.A.S.T.A. header -->
 <head>
 	<meta charset="utf-8">
+	<!-- meta -->
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	
 	<title><?php echo $title; ?></title>
 	
 	<!-- style -->
@@ -23,7 +27,7 @@
 
 	<script type="text/javascript" src="<?=base_url();?>assets/js/script.js"></script>
 
-	
+
 		
 </head>
 <body>
