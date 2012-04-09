@@ -25,18 +25,18 @@ $(document).ready(function () {
             // must be checked previously, because checkbox state
             // went from checked to unchecked: unselect a course
             $(this).parents('tr').css({
-                'background-color': '#ffefea'
+                'background-color': '#ff9fa2'
             }); // red
         } else {
             // selecting a course
             $(this).parents('tr').css({
-                'background-color': '#f0ffed'
+                'background-color': '#a9ffa4'
             }); // green
         }
     });
 
     $('input:checkbox:checked').parents('tr').css({
-        'background-color': '#f0ffed' // green
+        'background-color': '#a9ffa4' // green
     });
 
     /**
@@ -46,12 +46,12 @@ $(document).ready(function () {
         if ($("input:checkbox", this).is(':checked')) {
             $("input:checkbox", this).removeAttr("checked");
             $(this).css({
-                'background-color': '#ffefea'
+                'background-color': '#ff9fa2'
             }); // red
         } else {
             $("input:checkbox", this).attr("checked", "checked");
             $(this).css({
-                'background-color': '#f0ffed'
+                'background-color': '#a9ffa4'
             }); // green
         }
     });
@@ -156,7 +156,7 @@ $(document).ready(function () {
             $('input:checkbox', this).removeAttr("checked");
             // change color indicator
             $(this).css({
-                'background-color': '#ffefea'
+                'background-color': '#ff9fa2'
             }); // red
             // increment the MAX_COURSES_ALLOWED
             MAX_COURSES_ALLOWED++;
@@ -169,7 +169,7 @@ $(document).ready(function () {
                 $('input:checkbox', this).attr("checked", "checked");
                 // change color indicator
                 $(this).css({
-                    'background-color': '#f0ffed'
+                    'background-color': '#a9ffa4'
                 }); // green
                 MAX_COURSES_ALLOWED--;
                 // if MAX_COURSES_ALLOWED reached zero
