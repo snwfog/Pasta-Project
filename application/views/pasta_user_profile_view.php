@@ -61,10 +61,10 @@
 								<?php
                                     // If the time is earlier than 10:00, we need an to prefix a 0. ex: 8:45 => 08:45
                                     if ( strlen($course['lecture']['start_time']) < 4 ) {
-                                        $course['lecture']['start_time'] = '0' . $course['tutorial']['start_time'];
+                                        $course['lecture']['start_time'] = '0' . $course['lecture']['start_time'];
                                     }
                                     if ( strlen($course['lecture']['end_time']) < 4 ) {
-                                        $course['lecture']['end_time'] = '0' . $course['tutorial']['end_time'];
+                                        $course['lecture']['end_time'] = '0' . $course['lecture']['end_time'];
                                     }
 									// essentially a bunch of concat with 
 									// string manipulation that will display
