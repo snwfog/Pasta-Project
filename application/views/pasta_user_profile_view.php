@@ -58,7 +58,14 @@
 						<tr>
 							<td>Time</td>
 							<td colspan="5">
-								<?php 
+								<?php
+                                    // If the time is earlier than 10:00, we need an to prefix a 0. ex: 8:45 => 08:45
+                                    if ( strlen($course['lecture']['start_time']) < 4 ) {
+                                        $course['lecture']['start_time'] = '0' . $course['tutorial']['start_time'];
+                                    }
+                                    if ( strlen($course['lecture']['end_time']) < 4 ) {
+                                        $course['lecture']['end_time'] = '0' . $course['tutorial']['end_time'];
+                                    }
 									// essentially a bunch of concat with 
 									// string manipulation that will display
 									// the start to end time from 1235 and 0235
@@ -97,11 +104,18 @@
 								<td>Time</td>
 								<td colspan="5">
 									<?php 
+                                        // If the time is earlier than 10:00, we need an to prefix a 0. ex: 8:45 => 08:45
+                                        if ( strlen($course['tutorial']['start_time']) < 4 ) {
+                                            $course['tutorial']['start_time'] = '0' . $course['tutorial']['start_time'];
+                                        }
+                                        if ( strlen($course['tutorial']['end_time']) < 4 ) {
+                                            $course['tutorial']['end_time'] = '0' . $course['tutorial']['end_time'];
+                                        }
 										// essentially a bunch of concat with 
 										// string manipulation that will display
 										// the start to end time from 1235 and 0235
 										// to 12:35 - 02:35
-										echo substr($course['tutorial']['start_time'], 0, 2) . ":" . substr($course['tutorial']['start_time'], 2, 2) . " - " . substr($course['tutorial']['end_time'], 0, 2) . ":" . substr($course['tutorial']['end_time'], 2, 2);
+										echo substr($course['tutorial']['start_time'], -4, 2) . ":" . substr($course['tutorial']['start_time'], 2, 2) . " - " . substr($course['tutorial']['end_time'], 0, 2) . ":" . substr($course['tutorial']['end_time'], 2, 2);
 									?>
 								</td>
 							</tr>
