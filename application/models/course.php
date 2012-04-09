@@ -18,9 +18,9 @@ class Course extends CI_Model {
                             SELECT * FROM completed_courses
                             WHERE student_id = $student_id)
                         AS course_taken_id 
-                        ON course_taken_id.course_id = course.id IS NULL
+                        ON course_taken_id.course_id = courses.id IS NULL
                         GROUP BY courses.id";
-        return $this->db->query($custome_query)->result_array();
+        return $this->db->query($custom_query)->result_array();
     }
     
     function find_by_id($id) {
