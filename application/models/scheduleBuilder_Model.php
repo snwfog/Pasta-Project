@@ -272,7 +272,7 @@ class ScheduleBuilder_model extends CI_Model{
     }
 
     function sort_courses_by_type($courses){
-        $this->config->load('pasta_constants/option_courses');
+        $this->config->load('pasta_constants/OPTION_COURSES');
         $this->config->load('pasta_constants/soft_eng_courses');
         $soft_eng_courses =$this->config->item('SOFT_ENG_COURSES');
         $option_courses = $this->config->item('OPTION_COURSES');
