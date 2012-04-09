@@ -11,7 +11,7 @@
 	<div id="modal-dummy"></div>
 	<div id="drop-schedule-confirm-box" class="dialog">
 		<h1>
-			Are you sure you want to drop this entire semester of course? You will be taken back to the course selection page automatically after.
+			Are you sure you want to drop this entire semester of courses? You will be taken back to the course selection page.
 		</h1>
 
 		<?=form_open("profile/drop_course/".$schedules['id']);?>
