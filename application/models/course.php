@@ -7,6 +7,7 @@ class Course extends CI_Model {
         $query = $this->db->get('courses');
         return $query->result_array();
     }
+    
     /**
      * Get all the courses that is not taken by a student
      * @param  $student_id
@@ -19,20 +20,24 @@ class Course extends CI_Model {
         $this->db->select('courses.*');
         return $this->db->get('courses')->result_array();
     }
+    
     function find_by_id($id) {
         $query = $this->db->get_where('courses', array('id' => $id));
         // row_array returns a single result in a pure array.
         // Better for generating single results.
         return $query->row_array();
     }
+    
     function find_by_code($code) {
         $query = $this->db->get_where('courses', array('code' => $code));
         return $query->result_array();
     }
+    
     function find_by_code_number($code, $number) {
         $query = $this->db->get_where('courses', array('code' => $code, 'number' => $number));
         return $query->row_array();
     }
+    
     // Overload find_by_code_number function taking course code
     // and number as an array
     function find_by_code_number_array($course) {
@@ -41,6 +46,7 @@ class Course extends CI_Model {
         if (array_key_exists('code', $course) && array_key_exists('number', $course)) return $this->find_by_code_number($course['code'], $course['number']);
         else return $this->find_by_code_number($course['0'], $course['1']);
     }
+    
     /**
      *
      * @param: course - Course information as array 'code' and 'number'
@@ -50,6 +56,7 @@ class Course extends CI_Model {
         $result = $this->find_by_code_number_array($course);
         return (isset($result['id']) ? $result['id'] : FALSE);
     }
+    
     /*------------------------------------------------------*/
     /* Insert course information functions
     /*------------------------------------------------------*/
@@ -68,21 +75,33 @@ class Course extends CI_Model {
         // insert the value into the table
         $this->db->insert('courses', $course_variables);
     }
+    
     function get_all_courses_allowed($student_id) {
         $this->load->model("prerequisite", "prerequisite_model");
         $this->load->model('CompletedCourse', 'completed_courses');
+        
         $courses = $this->get_all_untaken_courses($student_id);
         $completedCourses = $this->completed_courses->find_by_student_id($student_id);
         $completedCourses = $this->map_course_id($completedCourses);
-        foreach($courses as $key => $course) {
-            //Retrieve array of prerequisites for each course
-            $prerequisites = $this->prerequisite_model->find_by_course_id($course["id"]);
-            foreach($prerequisites as $prerequisite) {
-                //Loops through the each prequisite for each course
-                if (isset($prerequisite["required_course_id"])) {
-                    //Check against student completed courses. If course does not exist in completedCourses, remove course from courses array.
-                    if (!in_array($prerequisite["required_course_id"], $completedCourses)) {
-                        unset($courses[$key]);
+        
+        foreach($courses as $key => $course) {        
+            // If the student has already completed the courses, they can't take it again. Remove it.
+            if ( in_array( $course['id'], $completedCourses ) ) {
+                unset( $courses[$key] );
+            }
+            else {
+                // Check if the student has the prerequisites for the course.
+                // If they don't have the prereqs, remove that course from the list.
+                
+                // Retrieve array of prerequisites for the current course.
+                $prerequisites = $this->prerequisite_model->find_by_course_id($course["id"]);
+                // Loops through each prequisite of the course.
+                foreach($prerequisites as $prerequisite) {
+                    if (isset($prerequisite["required_course_id"])) {
+                        // Check prereqs against student completed courses. If the student doesn't have the prereqs, remove course from courses array.
+                        if (!in_array($prerequisite["required_course_id"], $completedCourses)) {
+                            unset($courses[$key]);
+                        }
                     }
                 }
             }
@@ -91,6 +110,7 @@ class Course extends CI_Model {
         $courses = array_values($courses); // reindex them
         return $courses;
     }
+    
     private function map_course_id($array) {
         //this function is called to return a 1-dimensional consisting course id only.
         function return_course_id($record) { // Function within a Function: A hack for array_map callback problem with models
@@ -98,6 +118,7 @@ class Course extends CI_Model {
         }
         return $courseCompleted = array_map("return_course_id", $array);
     }
+    
     function sort_courses_by_type($courses) {
         $this->config->load('pasta_constants/OPTION_COURSES');
         $this->config->load('pasta_constants/soft_eng_courses');
@@ -117,6 +138,7 @@ class Course extends CI_Model {
         $REA = $this->map_optional_courses($option_courses["Technical Electives"]["Real-Time, Embedded, and Avionics Software (REA)"]);
         $otherElectives = $this->map_optional_courses($option_courses["Technical Electives"]["Others"]);
     }
+    
     function map_core_courses($array) {
         //made specific to match for item SOFT_ENG_COURSES array structure
         $list = array();
@@ -129,6 +151,7 @@ class Course extends CI_Model {
         }
         return $list;
     }
+    
     function map_optional_courses($array) {
         $list = array();
         foreach($array as $course) {
