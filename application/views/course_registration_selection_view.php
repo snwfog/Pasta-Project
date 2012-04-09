@@ -62,7 +62,7 @@
 			<?php endforeach; ?>
 	</table>
 
-	<div>
+	<div class="bottom-control-button-bar">
 		<td colspan="5" style="text-align: right;">
 			<?=form_button(array(
 				'name'  => 'course-preferences-reselect',

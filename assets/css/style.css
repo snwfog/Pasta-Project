@@ -139,6 +139,12 @@ h5#caption {
 	top: -125px;
 }
 
+.bottom-control-button-bar {
+	position: fixed;
+	bottom: 60px;
+	left: 30%;
+}
+
 /* End of static styling */
 
 /**
