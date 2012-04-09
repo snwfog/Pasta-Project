@@ -132,7 +132,7 @@ class Scrape extends MY_Controller {
     
     function getUniqueCourseList() {
         $this->config->load('pasta_constants/course_list');
-        $this->config->load('pasta_constants/option_courses');
+        $this->config->load('pasta_constants/OPTION_COURSES');
         $this->config->load('pasta_constants/soft_eng_courses');
 
         $ALL_COURSES = $this->config->item('COURSE_LIST');
