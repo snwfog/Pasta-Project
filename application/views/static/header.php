@@ -39,7 +39,7 @@
 		<li>
 			<?php 
 				if ($this->session->userdata('logged_in'))
-					echo anchor(site_url("pasta/logout"), "logout");
+					echo anchor(site_url("pasta/logout"), "Logout");
 			?>
 		</li>
 		<!-- <li><a href="">stats</a></li> -->
