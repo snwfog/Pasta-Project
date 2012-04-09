@@ -60,27 +60,26 @@
     				</tr>
                  <?php endforeach?>
 			<?php endforeach; ?>
+			<tr>
+				<td colspan="5" style="text-align: right;">
+					<?=form_button(array(
+						'name'  => 'course-preferences-reselect',
+						'id'	=> 'course-preferences-reselect',
+						'value' => 'Reset Preferences',
+						'class' => 'button',
+						'content' => 'Reset Preferences'
+					));?>
+
+					<?=form_submit(array(
+						'name'  => 'register',
+						'id' 	=> 'register-selected-courses',
+						'value' => 'Generate Schedules',
+						'class' => 'button'
+					));?>	
+
+				</td>
+			</tr>
 	</table>
-
-	<div class="bottom-control-button-bar">
-		<td colspan="5" style="text-align: right;">
-			<?=form_button(array(
-				'name'  => 'course-preferences-reselect',
-				'id'	=> 'course-preferences-reselect',
-				'value' => 'Reset Preferences',
-				'class' => 'button',
-				'content' => 'Reset Preferences'
-			));?>
-
-			<?=form_submit(array(
-				'name'  => 'register',
-				'id' 	=> 'register-selected-courses',
-				'value' => 'Generate Schedules',
-				'class' => 'button'
-			));?>	
-
-		</td>
-	</div>
 <?php endif; ?>
 	
 	
