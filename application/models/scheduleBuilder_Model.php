@@ -1,5 +1,5 @@
 <?php
-class ScheduleBuilder_Model extends CI_Model{
+class ScheduleBuilder_model extends CI_Model{
    function filter_courses_by_preference($courses,$time,$longWeekend, $season){
       $constraint ="< 2400";
       $fridayOff = null;
@@ -122,7 +122,7 @@ class ScheduleBuilder_Model extends CI_Model{
        $branched_course = array();
 
        for($i=0; $i<count($courses); $i++){
-         $branched_course[$i] = $this->scheduleBuilder_Model->branching($courses[$i]);
+         $branched_course[$i] = $this->ScheduleBuilder_model->branching($courses[$i]);
        };
 
        //First step compare two course to set up the sets of course array

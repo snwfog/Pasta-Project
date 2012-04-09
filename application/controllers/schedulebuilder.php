@@ -8,8 +8,8 @@ class ScheduleBuilder extends MY_Controller {
     */
   	function __construct() {
   		  parent::__construct();
-        $this->load->model('course');
-        $this->load->model('scheduleBuilder_Model');
+        $this->load->model('Course');
+        $this->load->model('ScheduleBuilder_model');
         if (!$this->session->userdata('logged_in')) {
             // if is not logged in, redirect user to the login page
             redirect('pasta', 'refresh');
@@ -32,9 +32,9 @@ class ScheduleBuilder extends MY_Controller {
 		    } else {
             $id = 3;//temporary, this should be retrieve from session.
             $form_data = $this->input->post(); //array( time => , longWeekend, season => , year =>
-            $courses = $this->course->get_all_courses();
-            $courses = $this->scheduleBuilder_Model->filter_courses_by_season($courses, $form_data["season"]);
-            $courses = $this->scheduleBuilder_Model->filter_courses_by_preference($courses, $form_data["time"], $form_data["long_weekend"], $form_data["season"]);
+            $courses = $this->Course->get_all_courses();
+            $courses = $this->ScheduleBuilder_model->filter_courses_by_season($courses, $form_data["season"]);
+            $courses = $this->ScheduleBuilder_model->filter_courses_by_preference($courses, $form_data["time"], $form_data["long_weekend"], $form_data["season"]);
             $data['courseList'] = $courses;
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
@@ -56,9 +56,9 @@ class ScheduleBuilder extends MY_Controller {
             //First get all courses that user have pre-requisite for
             //Then remove all courses that doesn't lecture in specified season
             //Last remove all courses that doesn't meet his time constraint
-            $courses = $this->course->get_all_courses_allowed($id);
-            $courses = $this->scheduleBuilder_Model->filter_courses_by_season($courses, $form_data["season"]);
-            $courses = $this->scheduleBuilder_Model->
+            $courses = $this->Course->get_all_courses_allowed($id);
+            $courses = $this->ScheduleBuilder_model->filter_courses_by_season($courses, $form_data["season"]);
+            $courses = $this->ScheduleBuilder_model->
                 filter_courses_by_preference(
                     $courses,
                     $form_data["time"], 
@@ -66,7 +66,7 @@ class ScheduleBuilder extends MY_Controller {
                     $form_data['season']
                 );
 
-            $courses = $this->scheduleBuilder_Model->sort_courses_by_type($courses);
+            $courses = $this->ScheduleBuilder_model->sort_courses_by_type($courses);
             $data['course_list'] = $courses;
             $data['season'] = $form_data["season"];
             $data['preference'] = $form_data;
@@ -116,25 +116,14 @@ class ScheduleBuilder extends MY_Controller {
     private function get_possible_sequence($form_data){
      $courses = array();
      foreach($form_data["registered_courses"] as $course_id):
-        $the_course = $this->course->find_by_id($course_id);
+        $the_course = $this->Course->find_by_id($course_id);
         array_push($courses,$the_course);
      endforeach;
-     $courses = $this->scheduleBuilder_Model->filter_courses_by_preference(
-                                                                           $courses,$form_data["time"], 
-                                                                           $form_data["long_weekend"],
-                                                                           $form_data["season"]
-                                                                          );
-     return $this->scheduleBuilder_Model->generate_possibility($courses);
+     $courses = $this->ScheduleBuilder_model->filter_courses_by_preference(
+        $courses,$form_data["time"], $form_data["long_weekend"], $form_data["season"]);
+     return $this->ScheduleBuilder_model->generate_possibility($courses);
 
     }
-
-
-
-
-
-
-
-
 
 /*
 SELECT * FROM  courses, lectures, time_locations, tutorials, labs
@@ -153,7 +142,7 @@ and time_locations.start_time < 1500
       $course_detail = array();
       foreach($courses as $course):
         $id = (int)$course["id"];
-        $the_course = $this->course->find_by_id($id);
+        $the_course = $this->Course->find_by_id($id);
         $the_course['lectures'] = $this->get_lectures($id,$season);
         array_push($course_detail,$the_course);
       endforeach;
