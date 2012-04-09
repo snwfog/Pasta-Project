@@ -14,11 +14,13 @@ class Course extends CI_Model {
      * @return All the untaken courses as array
      */
     function get_all_untaken_courses($student_id) {
-        $this->db->join('completed_courses', 'courses.id = completed_courses.course_id', 'left');
-        $this->db->where("completed_courses.student_id != $student_id" . " OR completed_courses.student_id IS NULL");
-        $this->db->group_by(array('courses.code', 'courses.number'));
-        $this->db->select('courses.*');
-        return $this->db->get('courses')->result_array();
+        $custom_query = "SELECT courses.* FROM courses LEFT JOIN (
+                            SELECT * FROM completed_courses
+                            WHERE student_id = $student_id)
+                        AS course_taken_id 
+                        ON course_taken_id.course_id = course.id IS NULL
+                        GROUP BY courses.id";
+        return $this->db->query($custome_query)->result_array();
     }
     
     function find_by_id($id) {

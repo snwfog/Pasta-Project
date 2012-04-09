@@ -60,9 +60,9 @@
     				</tr>
                  <?php endforeach?>
 			<?php endforeach; ?>
+	</table>
 
-	
-	<tr>
+	<div>
 		<td colspan="5" style="text-align: right;">
 			<?=form_button(array(
 				'name'  => 'course-preferences-reselect',
@@ -80,8 +80,7 @@
 			));?>	
 
 		</td>
-	</tr>
-	</table>
+	</div>
 <?php endif; ?>
 	
 	
