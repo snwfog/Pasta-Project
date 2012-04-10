@@ -1,4 +1,10 @@
 <?php
+/*
+   Query, insertion and deletion of record related to lecture table
+  Authors:  Eric Rideough
+            Duc Hoang Michel Pham
+            Charles Yang
+*/
 class Lecture extends CI_Model{
 
     /**

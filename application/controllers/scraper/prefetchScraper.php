@@ -2,6 +2,11 @@
 
 require_once 'scrape.php';
 
+/**
+  Author Eric Rideough
+  *
+  */
+
 class PrefetchScraper extends Scrape {
 	function __construct() {
 		parent::__construct();

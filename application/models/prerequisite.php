@@ -1,4 +1,9 @@
 <?php
+
+/*
+   Query, insertion and deletion of record related to lecture table
+   Authors:  Duc Hoang Michel Pham
+*/
 class Prerequisite extends CI_Model{
   
     function find_by_course_id($id)

@@ -1,4 +1,7 @@
 <?php
+/*
+  Author: Duc Hoang Michel Pham 2394472
+*/
 class ScheduleBuilder_model extends CI_Model {
     function filter_courses_by_preference($courses, $time, $longWeekend, $season) {
         $constraint = "< 2400";

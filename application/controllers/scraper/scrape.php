@@ -1,6 +1,8 @@
 <?php
 
 /*
+ Author Eric Rideough
+ *
  * A quick and dirty error handler to mass-test the scraper.
  * For simple tests, this is much easier than extending CI's exception handler, which we may do in the future.
  */

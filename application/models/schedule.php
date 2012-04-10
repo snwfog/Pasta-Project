@@ -6,7 +6,8 @@
  * Functions to query the schedule database
  * 
  * @package		PASTA
- * @author		Charles Yang
+ * @authors		Charles Yang
+                Duc Hoang Michel Pham
  */
 
 class Schedule extends CI_Model {

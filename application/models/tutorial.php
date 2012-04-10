@@ -1,6 +1,10 @@
 <?php
+/*
+   Query, insertion and deletion of record related to tutorial table
+  Authors: Duc Hoang Michel Pham
+*/
 class Tutorial extends CI_Model{
-  
+
   	/**
   	 * Return the tutorial information given the tutorial id
   	 * using SQL `JOIN` command.

@@ -1,4 +1,9 @@
 <?php
+
+/*
+   Query, insertion and deletion of record related to Lab table
+  Authors: Duc Hoang Michel Pham
+*/
 class Lab extends CI_Model{
    
     function find_by_tutorial_id($id){

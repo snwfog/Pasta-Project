@@ -99,35 +99,5 @@ class ScheduleBuilder extends MY_Controller {
         $courses = $this->ScheduleBuilder_model->filter_courses_by_preference($courses, $form_data["time"], $form_data["long_weekend"], $form_data["season"]);
         return $this->ScheduleBuilder_model->generate_possibility($courses);
     }
-    /*
-    SELECT * FROM  courses, lectures, time_locations, tutorials, labs
-    where lectures.course_id = courses.id
-    and tutorials.lecture_id = lectures.id
-    and labs.tutorial_id = tutorials.id
-    and lectures.time_location_id = time_locations.id
-    and tutorials.time_location_id = time_locations.id
-    and labs.time_location_id = time_locations.id
-    and time_locations.start_time < 1500
-    
-    
-    
-    private function get_course_detail($courses,$season)
-    {
-    $course_detail = array();
-    foreach($courses as $course):
-    $id = (int)$course["id"];
-    $the_course = $this->Course->find_by_id($id);
-    $the_course['lectures'] = $this->get_lectures($id,$season);
-    array_push($course_detail,$the_course);
-    endforeach;
-    return $course_detail;
-    }
-    
-    
-    
-    
-    
-    
-    */
 }
 // End of ScheduleBuilder.php

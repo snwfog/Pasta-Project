@@ -1,5 +1,13 @@
 <?php
 
+/*
+   Query, insertion and deletion of record related to course table
+   Method to retrieve specific course.
+  Authors:  Eric Rideough
+            Duc Hoang Michel Pham
+            Charles Yang
+*/
+
 class Course extends CI_Model {
     //NOTE: ADD TITLE COLUMN FOR COURSE TABLE
     function get_all_courses() {

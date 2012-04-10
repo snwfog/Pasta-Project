@@ -1,4 +1,8 @@
 <?php
+/*
+  Display user schedule
+  Authors: Duc Hoang Michel Pham
+*/
 class Scheduler extends MY_Controller {
     public function index() {
     }
