@@ -139,6 +139,10 @@ h5#caption {
 	top: -125px;
 }
 
+.controller-navigation {
+	text-align: right;
+}
+
 /* End of static styling */
 
 /**
@@ -408,7 +412,6 @@ h3#section-subtitle {
 #course-registration-selection-table, 
 #course-registration-selection-table tr,
 #course-registration-selection-table td {
-	border: 1px solid black;
 	padding: 5px;
 	margin: 0px auto;
 	
@@ -775,12 +778,12 @@ p#reason {
 	    min-height: none;
 		position: static;
 		margin: 0px;
-		padding: 20px;
+		padding: 0px;
 	}
 
 	#content #left-content {
 		float: none;
-		width: 100%;
+		padding: 20px 0px 20px 0px;
 	}
 
 	#content #left-content #wrapper {
@@ -827,5 +830,9 @@ p#reason {
 
 	#right-content .button#login {
 		padding: 2px 23px 4px 23px;
+	}
+
+	.controller-navigation {
+		text-align: left;
 	}
 }

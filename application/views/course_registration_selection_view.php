@@ -39,8 +39,7 @@
 	<table id="course-registration-selection-table">
 			<?php foreach($course_list as $key=>$type): ?>
                 <tr style="border-bottom: 2px solid lightgray">
-                    <td id="course_type" style="text-align: right"><?= $key ?></td>
-                    <td colspan="4"></td>
+                    <td id="course_type" style="text-align: right" colspan="5"><?= $key ?></td>
                 </tr>
                 <? foreach($type as $course): ?>
     				<tr>
@@ -61,7 +60,7 @@
                  <?php endforeach?>
 			<?php endforeach; ?>
 			<tr>
-				<td colspan="5" style="text-align: right;">
+				<td colspan="6" class="controller-navigation">
 					<?=form_button(array(
 						'name'  => 'course-preferences-reselect',
 						'id'	=> 'course-preferences-reselect',

@@ -212,4 +212,5 @@ $(document).ready(function () {
     $('table#time_column tr:odd td').css({
         'background-color': 'rgba(154, 23, 41, 0.1)',
     });
+
 });
